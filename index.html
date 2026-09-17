@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>全量索引导航</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = { darkMode: 'class' }
+    </script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <style>
+        [v-cloak] { display: none; }
+        html { scroll-behavior: smooth; } /* 全局启用平滑滚动 */
+        .sidebar-active { background: #3b82f6; color: white; border-radius: 0.75rem; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3); }
+        .custom-scrollbar::-webkit-scrollbar { width: 5px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb { background: #475569; }
+        .category-section { scroll-margin-top: 80px; } /* 滚动补偿，防止标题被顶部导航遮挡 */
+    </style>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
+
+<div id="app" v-cloak class="flex flex-col h-screen overflow-hidden">
+    
+    <header class="h-16 border-b dark:border-gray-800 bg-white/80 dark:bg-gray-800/80 backdrop-blur-md flex items-center justify-between px-6 z-50 sticky top-0 shadow-sm">
+        <div class="flex items-center space-x-8">
+            <h1 @click="goHome" class="font-black text-2xl text-blue-600 cursor-pointer tracking-tighter">KeepLearning</h1>
+            <nav class="flex space-x-1">
+                <button v-for="(p, i) in pages" :key="p.id" @click="switchMainPage(i)" :class="activeMainIdx === i ? 'bg-blue-600 text-white shadow-lg' : 'text-gray-500'" class="px-4 py-2 rounded-xl text-sm font-bold transition-all">{{ p.name }}</button>
+            </nav>
+        </div>
+
+        <div class="flex items-center space-x-4">
+            <button @click="toggleDark" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-all text-xl border dark:border-gray-700 w-10 h-10 flex items-center justify-center">
+                {{ isDark ? '🌙' : '☀️' }}
+            </button>
+            <button @click="currentView = (currentView === 'home' ? 'admin' : 'home')" class="px-5 py-2 bg-gray-900 dark:bg-blue-600 text-white rounded-xl text-sm font-bold">
+                {{ currentView === 'home' ? '⚙️ 管理与历史' : '🚀 返回导航' }}
+            </button>
+        </div>
+    </header>
+
+    <div class="flex flex-1 overflow-hidden">
+        
+        <template v-if="currentView === 'home'">
+            
+            <main v-if="activeMainIdx === -1" class="flex-1 overflow-y-auto p-12 custom-scrollbar bg-gray-50 dark:bg-gray-900">
+                <div class="max-w-6xl mx-auto text-center mb-16">
+                    <h2 class="text-5xl font-black mb-4">资源全索引</h2>
+                    <p class="text-gray-400">快速概览全站分类，点击卡片直接跳转</p>
+                </div>
+                <div class="max-w-6xl mx-auto space-y-16">
+                    <div v-for="(page, pIdx) in pages" :key="page.id">
+                        <h3 class="text-xs font-bold text-gray-400 uppercase tracking-[0.3em] mb-8 flex items-center">
+                            <span class="mr-4">{{ page.name }}</span>
+                            <div class="flex-1 h-px bg-gray-200 dark:bg-gray-800"></div>
+                        </h3>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                            <div v-for="(sub, sIdx) in page.categories" @click="jumpToSection(pIdx, sIdx)" class="group bg-white dark:bg-gray-800 p-8 rounded-[2.5rem] border border-gray-100 dark:border-gray-700 hover:border-blue-500 hover:shadow-2xl transition-all cursor-pointer">
+                                <div class="text-4xl mb-4">{{ sub.icon || '📁' }}</div>
+                                <h4 class="text-xl font-bold mb-3 group-hover:text-blue-500">{{ sub.categoryName }}</h4>
+                                <p class="text-sm text-gray-400 line-clamp-2 leading-relaxed">{{ sub.description }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <template v-else>
+                <aside class="w-100 border-r dark:border-gray-800 bg-white dark:bg-gray-800 flex flex-col py-8">
+                    <div class="px-8 mb-6 text-xs font-bold text-gray-400 uppercase tracking-widest">目录</div>
+                    <nav class="flex-1 overflow-y-auto px-4 space-y-2 custom-scrollbar">
+                        <button v-for="(sub, si) in activeMainPage.categories" :key="si" 
+                                @click="scrollToCategory(si)"
+                                :class="activeSubIdx === si ? 'sidebar-active' : 'text-gray-500 hover:bg-gray-50 dark:hover:bg-gray-700'"
+                                class="w-full text-left px-5 py-3 text-sm font-bold transition-all flex items-center justify-between">
+                            <span class="truncate">{{ sub.categoryName }}</span>
+                            <span class="ml-2 text-[10px] opacity-50">{{ sub.links.length }}</span>
+                        </button>
+                    </nav>
+                </aside>
+
+                <main id="content-main" @scroll="handleScrollSensing" class="flex-1 overflow-y-auto p-12 bg-gray-50 dark:bg-gray-900 custom-scrollbar">
+                    <div class="max-w-5xl mx-auto">
+                        <div v-for="(sub, si) in activeMainPage.categories" 
+                             :key="si" 
+                             :id="'cat-' + si" 
+                             class="category-section mb-24">
+                            <div class="flex items-center mb-8">
+                                <span class="text-3xl mr-4">{{ sub.icon || '📁' }}</span>
+                                <div>
+                                    <h2 class="text-3xl font-black">{{ sub.categoryName }}</h2>
+                                    <p class="text-gray-500 mt-1">{{ sub.description }}</p>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                <a v-for="link in sub.links" :href="link.url" target="_blank" class="group p-6 bg-white dark:bg-gray-800 rounded-3xl border border-transparent hover:border-blue-500 hover:shadow-xl transition-all">
+                                    <div class="font-bold mb-1 group-hover:text-blue-600">{{ link.title }}</div>
+                                    <div class="text-xs text-gray-400 line-clamp-2">{{ link.desc }}</div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </template>
+        </template>
+
+        <template v-else>
+            <main class="flex-1 overflow-y-auto p-8 bg-white dark:bg-gray-900 custom-scrollbar text-sm">
+                <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <div class="lg:col-span-2 space-y-6">
+                        <div class="bg-gray-50 dark:bg-gray-800 p-8 rounded-3xl border dark:border-gray-700">
+                            <div class="flex justify-between items-center mb-4">
+                                <h3 class="text-xl font-bold">数据配置</h3>
+                                <button @click="copyToClipboard(jsonInput)" class="text-blue-500 hover:underline">复制当前全部内容</button>
+                            </div>
+                            <textarea v-model="jsonInput" class="w-full h-96 p-4 font-mono text-xs border rounded-2xl dark:bg-gray-900 dark:border-gray-700 focus:ring-2 focus:ring-blue-500 outline-none custom-scrollbar"></textarea>
+                            <div class="mt-6 flex gap-4">
+                                <button @click="applyJSON" class="flex-1 py-4 bg-blue-600 text-white rounded-2xl font-black shadow-lg shadow-blue-200">应用并备份</button>
+                                <label class="flex-1 py-4 bg-gray-200 dark:bg-gray-700 text-center rounded-2xl font-black cursor-pointer">上传JSON文件<input type="file" class="hidden" @change="handleUpload" accept=".json"></label>
+                            </div>
+                        </div>
+                        <div class="bg-blue-50 dark:bg-blue-900/10 p-6 rounded-2xl border border-blue-100 flex justify-between items-center">
+                            <span class="text-blue-800 dark:text-blue-400 font-bold">需要 JSON 模板示例？</span>
+                            <button @click="copyExample" class="bg-blue-600 text-white px-6 py-2 rounded-xl font-bold">一键复制示例</button>
+                        </div>
+                    </div>
+
+                    <div class="space-y-6">
+                        <div class="bg-white dark:bg-gray-800 p-6 rounded-3xl border dark:border-gray-700 shadow-xl">
+                            <h3 class="text-lg font-black text-blue-600 mb-6">最近版本</h3>
+                            <div v-for="(ver, idx) in history" :key="ver.time" class="p-4 mb-4 rounded-2xl border dark:border-gray-700">
+                                <div class="flex justify-between mb-3 text-[10px] font-bold text-gray-400 uppercase">
+                                    <span>版本 #{{ history.length - idx }}</span>
+                                    <span>{{ formatTime(ver.time) }}</span>
+                                </div>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <button @click="copyToClipboard(JSON.stringify(ver.data, null, 2))" class="py-2 bg-gray-100 dark:bg-gray-700 rounded-lg text-[10px] font-bold">复制源码</button>
+                                    <button @click="restoreVersion(ver)" class="py-2 bg-blue-600 text-white rounded-lg text-[10px] font-bold">还原</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </template>
+    </div>
+</div>
+
+<script>
+const { createApp, ref, computed, onMounted } = Vue;
+
+createApp({
+    setup() {
+        const currentView = ref('home');
+        const isDark = ref(localStorage.getItem('nav_theme') === 'dark');
+        const activeMainIdx = ref(-1);
+        const activeSubIdx = ref(0);
+        const jsonInput = ref('');
+        const pages = ref(JSON.parse(localStorage.getItem('nav_current')) || []);
+        const history = ref(JSON.parse(localStorage.getItem('nav_history')) || []);
+
+        const activeMainPage = computed(() => activeMainIdx.value === -1 ? null : pages.value[activeMainIdx.value]);
+
+        // 切换主题
+        const applyTheme = () => {
+            document.documentElement.classList.toggle('dark', isDark.value);
+            localStorage.setItem('nav_theme', isDark.value ? 'dark' : 'light');
+        };
+        const toggleDark = () => { isDark.value = !isDark.value; applyTheme(); };
+
+        // 核心功能：平滑滚动
+        const scrollToCategory = (idx) => {
+            activeSubIdx.value = idx;
+            const el = document.getElementById('cat-' + idx);
+            if (el) el.scrollIntoView({ behavior: 'smooth' });
+        };
+
+        // 核心功能：滚动监听（自动高亮左侧菜单）
+        const handleScrollSensing = (e) => {
+            const sections = document.querySelectorAll('.category-section');
+            const scrollPos = e.target.scrollTop + 100;
+            sections.forEach((section, index) => {
+                if (section.offsetTop <= scrollPos && (section.offsetTop + section.offsetHeight) > scrollPos) {
+                    activeSubIdx.value = index;
+                }
+            });
+        };
+
+        // 通用复制功能
+        const copyToClipboard = (text) => {
+            if (!text) return;
+            navigator.clipboard.writeText(text).then(() => alert('已成功复制到剪贴板！'));
+        };
+
+        const copyExample = () => {
+            const example = `[\n  {\n    "id": 1,\n    "name": "AI工具",\n    "categories": [\n      {\n        "categoryName": "文本助手",\n        "description": "高效内容创作工具...",\n        "icon": "🤖",\n        "links": [{ "title": "ChatGPT", "url": "https://chatgpt.com", "desc": "OpenAI 旗舰产品" }]\n      }\n    ]\n  }\n]`;
+            copyToClipboard(example);
+        };
+
+        const applyJSON = () => {
+            try {
+                const newData = JSON.parse(jsonInput.value);
+                if (pages.value.length > 0) {
+                    history.value.unshift({ time: Date.now(), data: pages.value });
+                    if (history.value.length > 3) history.value.pop();
+                    localStorage.setItem('nav_history', JSON.stringify(history.value));
+                }
+                pages.value = newData;
+                localStorage.setItem('nav_current', JSON.stringify(pages.value));
+                alert('更新成功！');
+                currentView.value = 'home';
+            } catch (e) { alert('JSON 格式错误！'); }
+        };
+
+        const jumpToSection = (pIdx, sIdx) => {
+            activeMainIdx.value = pIdx;
+            currentView.value = 'home';
+            // 延迟确保 DOM 渲染后再滚动
+            setTimeout(() => scrollToCategory(sIdx), 100);
+        };
+
+        const goHome = () => { activeMainIdx.value = -1; currentView.value = 'home'; };
+        const switchMainPage = (i) => { activeMainIdx.value = i; activeSubIdx.value = 0; currentView.value = 'home'; };
+        const formatTime = (ts) => {
+            const d = new Date(ts);
+            return `${d.getMonth()+1}/${d.getDate()} ${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}`;
+        };
+        const handleUpload = (e) => {
+            const reader = new FileReader();
+            reader.onload = (ev) => jsonInput.value = ev.target.result;
+            reader.readAsText(e.target.files[0]);
+        };
+        const restoreVersion = (ver) => {
+            if (confirm('确认还原此版本？')) {
+                pages.value = ver.data;
+                localStorage.setItem('nav_current', JSON.stringify(pages.value));
+                currentView.value = 'home';
+            }
+        };
+
+        onMounted(() => {
+            applyTheme();
+            if (pages.value.length > 0) jsonInput.value = JSON.stringify(pages.value, null, 2);
+        });
+
+        return {
+            currentView, isDark, pages, activeMainIdx, activeSubIdx, activeMainPage, jsonInput, history,
+            toggleDark, applyJSON, handleUpload, restoreVersion, formatTime, goHome, switchMainPage, 
+            jumpToSection, scrollToCategory, handleScrollSensing, copyToClipboard, copyExample
+        }
+    }
+}).mount('#app');
+</script>
+</body>
+</html>
