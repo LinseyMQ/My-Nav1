@@ -242,16 +242,24 @@ createApp({
 
         onMounted(() => {
             applyTheme();
-            if (pages.value.length > 0) jsonInput.value = JSON.stringify(pages.value, null, 2);
-        });
-
-        return {
-            currentView, isDark, pages, activeMainIdx, activeSubIdx, activeMainPage, jsonInput, history,
-            toggleDark, applyJSON, handleUpload, restoreVersion, formatTime, goHome, switchMainPage, 
-            jumpToSection, scrollToCategory, handleScrollSensing, copyToClipboard, copyExample
+            // 先尝试从 GitHub 上获取最新的公共 JSON 数据
+    try {
+        const response = await fetch('./data.json');
+        if (response.ok) {
+            const remoteData = await response.json();
+            pages.value = remoteData;
+            jsonInput.value = JSON.stringify(remoteData, null, 2);
+        }
+    } catch (error) {
+        console.error('获取公共数据失败，尝试读取本地缓存', error);
+        // 请求失败时备用：读取本地存储
+        const localData = localStorage.getItem('nav_current');
+        if (localData) {
+            pages.value = JSON.parse(localData);
+            jsonInput.value = localData;
         }
     }
-}).mount('#app');
+});
 </script>
 </body>
 </html>
