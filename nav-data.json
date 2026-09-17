@@ -1,0 +1,1058 @@
+[
+  {
+    "id": 1,
+    "name": "全球 AI 工具",
+    "categories": [
+      {
+        "categoryName": "AI 聊天机器人 (Chatbots)",
+        "description": "通用语言模型，擅长对话、逻辑推理与多模态交互",
+        "icon": "🤖",
+        "links": [
+          {
+            "title": "ChatGPT (OpenAI)",
+            "url": "https://chatgpt.com",
+            "desc": "【综合最强】优点：多模态领先，生态丰富；缺点：高峰期响应慢。"
+          },
+          {
+            "title": "Claude 4 (Anthropic)",
+            "url": "https://claude.ai",
+            "desc": "【文案与逻辑】优点：文风拟人，安全性极高；缺点：部分地区受限。"
+          },
+          {
+            "title": "Gemini 3 Flash",
+            "url": "https://gemini.google.com",
+            "desc": "【Google生态】优点：百万级上下文，搜索集成；缺点：幻觉偶尔存在。"
+          },
+          {
+            "title": "Perplexity AI",
+            "url": "https://perplexity.ai",
+            "desc": "【搜索神器】优点：引用源透明，学术感强；缺点：创意写作略逊。"
+          },
+          {
+            "title": "DeepSeek V3",
+            "url": "https://deepseek.com",
+            "desc": "【国产之光】优点：推理能力极强，编程神器；缺点：多模态刚起步。"
+          },
+          {
+            "title": "Kimi 智能助手",
+            "url": "https://kimi.moonshot.cn",
+            "desc": "【长文本专家】优点：处理超长文档极稳；缺点：功能相对单一。"
+          },
+          {
+            "title": "Microsoft Copilot",
+            "url": "https://copilot.microsoft.com",
+            "desc": "【办公辅助】优点：与Office无缝集成；缺点：界面操作稍显臃肿。"
+          },
+          {
+            "title": "Pi",
+            "url": "https://pi.ai",
+            "desc": "【情绪伴侣】优点：语音自然，情商极高；缺点：不适合复杂任务。"
+          },
+          {
+            "title": "Grok-2",
+            "url": "https://x.ai",
+            "desc": "【实时资讯】优点：直连X平台，幽默犀利；缺点：部分回复较主观。"
+          },
+          {
+            "title": "智谱清言",
+            "url": "https://chatglm.cn",
+            "desc": "【全能国产】优点：绘图对话代码均衡；缺点：英文理解略弱于顶尖。"
+          },
+          {
+            "title": "文心一言 5.0",
+            "url": "https://yiyan.baidu.com",
+            "desc": "【中文语境】优点：本土知识库最全；缺点：广告/商业推广较多。"
+          },
+          {
+            "title": "Mistral Large",
+            "url": "https://mistral.ai",
+            "desc": "【欧洲力量】优点：效率高，模型轻量化；缺点：中文优化一般。"
+          },
+          {
+            "title": "Poe",
+            "url": "https://poe.com",
+            "desc": "【模型聚合】优点：一个账号用所有模型；缺点：高级模型积分制。"
+          },
+          {
+            "title": "通义千问 2.5",
+            "url": "https://tongyi.aliyun.com",
+            "desc": "【企业级】优点：计算能力强，API友好；缺点：UI设计较平庸。"
+          },
+          {
+            "title": "Duck.ai",
+            "url": "https://duckduckgo.com/aichat",
+            "desc": "【隐私首选】优点：不记录数据；缺点：模型版本较旧。"
+          },
+          {
+            "title": "Character.ai",
+            "url": "https://character.ai",
+            "desc": "【角色扮演】优点：人设丰富，娱乐性强；缺点：逻辑严谨度不足。"
+          },
+          {
+            "title": "讯飞星火",
+            "url": "https://xinghuo.xfyun.cn",
+            "desc": "【语音领先】优点：听写转化极准；缺点：长文本逻辑稍欠。"
+          },
+          {
+            "title": "豆包",
+            "url": "https://doubao.com",
+            "desc": "【轻量便捷】优点：APP端体验极佳；缺点：深度调研能力有限。"
+          },
+          {
+            "title": "HuggingChat",
+            "url": "https://huggingface.co/chat",
+            "desc": "【开源前沿】优点：免费体验最新模型；缺点：服务器不稳定。"
+          },
+          {
+            "title": "Le Chat Mistral",
+            "url": "https://chat.mistral.ai",
+            "desc": "【简洁办公】优点：无干扰对话环境；缺点：多模态功能较少。"
+          }
+        ]
+      },
+      {
+        "categoryName": "AI 图片生成 (Image Generation)",
+        "description": "从文本到图像的视觉创作，涵盖艺术、摄影与设计",
+        "icon": "🖼️",
+        "links": [
+          {
+            "title": "Midjourney V7",
+            "url": "https://midjourney.com",
+            "desc": "【艺术之王】优点：审美天花板；缺点：必须在Discord或Web操作。"
+          },
+          {
+            "title": "Nano Banana Pro",
+            "url": "#",
+            "desc": "【写实标杆】优点：人体结构与文字完美；缺点：生成速度略慢。"
+          },
+          {
+            "title": "DALL-E 3",
+            "url": "#",
+            "desc": "【理解力最强】优点：精准执行复杂指令；缺点：风格略有“AI味”。"
+          },
+          {
+            "title": "Stable Diffusion 3.5",
+            "url": "https://stability.ai",
+            "desc": "【自由度最高】优点：可本地部署，插件多；缺点：学习门槛高。"
+          },
+          {
+            "title": "Flux.1",
+            "url": "#",
+            "desc": "【细节怪物】优点：手部和皮肤纹理无敌；缺点：对硬件要求极高。"
+          },
+          {
+            "title": "Adobe Firefly 5",
+            "url": "https://adobe.com",
+            "desc": "【版权无忧】优点：商业安全，整合PS；缺点：创意限制较多。"
+          },
+          {
+            "title": "Leonardo.ai",
+            "url": "https://leonardo.ai",
+            "desc": "【模型超市】优点：一键切换多种模型风格；缺点：收费层级复杂。"
+          },
+          {
+            "title": "Ideogram 2.0",
+            "url": "https://ideogram.ai",
+            "desc": "【排版神器】优点：海报文字设计首选；缺点：写实人像稍逊。"
+          },
+          {
+            "title": "Canva Magic Media",
+            "url": "https://canva.com",
+            "desc": "【设计整合】优点：直接用于排版；缺点：参数调优空间小。"
+          },
+          {
+            "title": "Playground AI",
+            "url": "https://playground.com",
+            "desc": "【新手友好】优点：界面直观，免费额度多；缺点：高级功能较少。"
+          },
+          {
+            "title": "Recraft V3",
+            "url": "https://recraft.ai",
+            "desc": "【矢量图专家】优点：生成SVG矢量图；缺点：不适合写实大片。"
+          },
+          {
+            "title": "Getimg.ai",
+            "url": "https://getimg.ai",
+            "desc": "【全能编辑】优点：补全、扩图功能强大；缺点：风格一致性难控制。"
+          },
+          {
+            "title": "Bluewillow",
+            "url": "https://bluewillow.ai",
+            "desc": "【MJ平替】优点：价格亲民；缺点：画质细腻度不及MJ。"
+          },
+          {
+            "title": "SeaArt",
+            "url": "https://seaart.ai",
+            "desc": "【国产二次元】优点：动漫风建模极强；缺点：社区内容较杂乱。"
+          },
+          {
+            "title": "Microsoft Designer",
+            "url": "https://designer.microsoft.com",
+            "desc": "【快速出图】优点：完全免费集成；缺点：定制化程度低。"
+          },
+          {
+            "title": "NightCafe",
+            "url": "https://nightcafe.studio",
+            "desc": "【社区驱动】优点：算法迭代快；缺点：生成消耗积分快。"
+          },
+          {
+            "title": "Artbreeder",
+            "url": "https://artbreeder.com",
+            "desc": "【基因混合】优点：角色捏脸神器；缺点：不支持复杂构图。"
+          },
+          {
+            "title": "Fooocus",
+            "url": "#",
+            "desc": "【极简部署】优点：离线使用，傻瓜操作；缺点：需要本地显卡。"
+          },
+          {
+            "title": "Krea.ai",
+            "url": "https://krea.ai",
+            "desc": "【实时渲染】优点：边画边生成；缺点：细节精细度待提升。"
+          },
+          {
+            "title": "PromeAI",
+            "url": "https://promeai.com",
+            "desc": "【建筑室内】优点：设计草图转实拍；缺点：泛用性较低。"
+          }
+        ]
+      },
+      {
+        "categoryName": "AI 视频生成 (Video Generation)",
+        "description": "从文字或图片生成高质量动态视频及数字人",
+        "icon": "🎬",
+        "links": [
+          {
+            "title": "Sora (OpenAI)",
+            "url": "#",
+            "desc": "【电影级】优点：长达60秒一致性；缺点：尚未完全公测。"
+          },
+          {
+            "title": "Veo (Google)",
+            "url": "#",
+            "desc": "【高保真】优点：光影极其自然；缺点：对提示词敏感度高。"
+          },
+          {
+            "title": "Runway Gen-3",
+            "url": "https://runwayml.com",
+            "desc": "【行业标杆】优点：控镜功能极其专业；缺点：订阅价格昂贵。"
+          },
+          {
+            "title": "Kling (可灵)",
+            "url": "https://klingai.com",
+            "desc": "【写实之冠】优点：动作连贯性国产最强；缺点：排队时间长。"
+          },
+          {
+            "title": "Luma Dream Machine",
+            "url": "https://lumalabs.ai",
+            "desc": "【速度惊人】优点：生成极快，动态大；缺点：偶有物理扭曲。"
+          },
+          {
+            "title": "Pika 2.5",
+            "url": "https://pika.art",
+            "desc": "【创意特效】优点：物理特效（压扁/融化）有趣；缺点：时长较短。"
+          },
+          {
+            "title": "HeyGen",
+            "url": "https://heygen.com",
+            "desc": "【翻译数字人】优点：口型匹配与翻译完美；缺点：价格极高。"
+          },
+          {
+            "title": "Synthesia",
+            "url": "https://synthesia.io",
+            "desc": "【企业培训】优点：虚拟讲师极其稳重；缺点：缺乏肢体动作表现力。"
+          },
+          {
+            "title": "Hailuo AI (海螺)",
+            "url": "https://hailuoai.com",
+            "desc": "【动作理解】优点：复杂动作执行精准；缺点：清晰度略有抖动。"
+          },
+          {
+            "title": "Vidu",
+            "url": "https://vidu.com",
+            "desc": "【唯美风格】优点：构图有东方审美；缺点：功能更新稍慢。"
+          },
+          {
+            "title": "Stable Video Diffusion",
+            "url": "#",
+            "desc": "【开源动力】优点：可本地微调；缺点：原生闪烁较严重。"
+          },
+          {
+            "title": "InVideo AI",
+            "url": "https://invideo.io",
+            "desc": "【自动剪辑】优点：一句话生成整段带解说视频；缺点：素材库感强。"
+          },
+          {
+            "title": "Pictory",
+            "url": "https://pictory.ai",
+            "desc": "【文转视频】优点：博客转视频极快；缺点：AI配音略显生硬。"
+          },
+          {
+            "title": "LivePortrait",
+            "url": "#",
+            "desc": "【表情迁移】优点：静态图秒变动态表情；缺点：仅限于面部。"
+          },
+          {
+            "title": "Wonder Dynamics",
+            "url": "#",
+            "desc": "【特效替换】优点：视频真人转CG角色；缺点：处理速度慢。"
+          },
+          {
+            "title": "Fliki",
+            "url": "https://fliki.ai",
+            "desc": "【短视频神器】优点：适合做TikTok/Reels；缺点：艺术感不足。"
+          },
+          {
+            "title": "D-ID",
+            "url": "https://d-id.com",
+            "desc": "【老牌数字人】优点：操作极简；缺点：口型一致性略逊于HeyGen。"
+          },
+          {
+            "title": "Kaiber",
+            "url": "https://kaiber.ai",
+            "desc": "【音乐视效】优点：赛博朋克风转场极酷；缺点：写实能力弱。"
+          },
+          {
+            "title": "Tavus",
+            "url": "https://tavus.io",
+            "desc": "【个性化营销】优点：大规模定制数字人视频；缺点：仅针对B端。"
+          },
+          {
+            "title": "CapCut AI",
+            "url": "https://capcut.com",
+            "desc": "【手机必备】优点：集成在剪映中，免费好用；缺点：专业深度一般。"
+          }
+        ]
+      },
+      {
+        "categoryName": "AI 音乐生成 (Music Generation)",
+        "description": "涵盖词曲编唱的全流程音频 AI 创作工具",
+        "icon": "🎵",
+        "links": [
+          {
+            "title": "Suno V4",
+            "url": "https://suno.com",
+            "desc": "【全能歌王】优点：人声情感丰富，支持多语言；缺点：复杂编曲失真。"
+          },
+          {
+            "title": "Udio",
+            "url": "https://udio.com",
+            "desc": "【音质之冠】优点：高保真音质，纯正唱腔；缺点：生成时间较长。"
+          },
+          {
+            "title": "Lyria 3 (Google)",
+            "url": "#",
+            "desc": "【精准控节奏】优点：自带SynthID水印，音质纯净；缺点：限制较多。"
+          },
+          {
+            "title": "Stable Audio 2.0",
+            "url": "https://stableaudio.com",
+            "desc": "【背景乐专家】优点：长达3分钟纯音乐；缺点：人声表现较弱。"
+          },
+          {
+            "title": "AIVA",
+            "url": "https://aiva.ai",
+            "desc": "【古典配乐】优点：乐谱级控制，适合BGM；缺点：现代风格一般。"
+          },
+          {
+            "title": "Soundraw",
+            "url": "https://soundraw.io",
+            "desc": "【创作者友好】优点：无版权纠纷，无限修改；缺点：旋律稍显套路化。"
+          },
+          {
+            "title": "Mubert",
+            "url": "https://mubert.com",
+            "desc": "【直播神器】优点：生成无限长氛围乐；缺点：缺乏记忆点。"
+          },
+          {
+            "title": "Beatoven.ai",
+            "url": "https://beatoven.ai",
+            "desc": "【心情配乐】优点：按情绪生成视频背景乐；缺点：乐器种类偏少。"
+          },
+          {
+            "title": "Boomy",
+            "url": "https://boomy.com",
+            "desc": "【快速出片】优点：几秒一首歌，能上架Spotify；缺点：深度定制难。"
+          },
+          {
+            "title": "ElevenLabs Music",
+            "url": "#",
+            "desc": "【黑马】优点：人声质感顶尖；缺点：目前功能还在迭代。"
+          },
+          {
+            "title": "Loudly",
+            "url": "https://loudly.com",
+            "desc": "【流行风向】优点：电音/流行风格出众；缺点：免费额度紧俏。"
+          },
+          {
+            "title": "Splice Create",
+            "url": "https://splice.com",
+            "desc": "【采样之王】优点：与海量采样库结合；缺点：需要基础乐理知识。"
+          },
+          {
+            "title": "Riffusion",
+            "url": "https://riffusion.com",
+            "desc": "【视觉转音乐】优点：基于频谱图生成，很有趣；缺点：音质较差。"
+          },
+          {
+            "title": "Sunauto",
+            "url": "#",
+            "desc": "【旋律天才】优点：副歌洗脑度高；缺点：前奏稍显拖沓。"
+          },
+          {
+            "title": "MusicLM",
+            "url": "#",
+            "desc": "【学术派】优点：对抽象文字理解好；缺点：不开放完整下载。"
+          },
+          {
+            "title": "Voicemod",
+            "url": "https://voicemod.net",
+            "desc": "【实时变声】优点：直播/语音即时处理；缺点：更偏向工具而非生成。"
+          },
+          {
+            "title": "Endel",
+            "url": "https://endel.io",
+            "desc": "【功能音乐】优点：专注睡眠与专注；缺点：不是传统意义的歌曲。"
+          },
+          {
+            "title": "Hydra (Rightsify)",
+            "url": "#",
+            "desc": "【商业授权】优点：版权清晰，适合广告；缺点：创意度一般。"
+          },
+          {
+            "title": "Amper Music",
+            "url": "#",
+            "desc": "【快速编曲】优点：结构清晰；缺点：已被收购，独立性减弱。"
+          },
+          {
+            "title": "Emergent Drums",
+            "url": "#",
+            "desc": "【鼓点专家】优点：唯一专注打击乐的AI；缺点：受众极窄。"
+          }
+        ]
+      },
+      {
+        "categoryName": "AI 写作与办公 (Writing & Productivity)",
+        "description": "长文创作、论文润色及专业文案生成工具",
+        "icon": "✍️",
+        "links": [
+          {
+            "title": "Jasper AI",
+            "url": "https://jasper.ai",
+            "desc": "【营销鼻祖】优点：内置百种文案模板；缺点：价格非常贵。"
+          },
+          {
+            "title": "Grammarly AI",
+            "url": "https://grammarly.com",
+            "desc": "【润色大师】优点：纠错纠偏，学术必备；缺点：缺乏创意生成。"
+          },
+          {
+            "title": "Copy.ai",
+            "url": "https://copy.ai",
+            "desc": "【社媒利器】优点：写爆款推文极快；缺点：长逻辑文章较松散。"
+          },
+          {
+            "title": "Writesonic",
+            "url": "https://writesonic.com",
+            "desc": "【SEO专家】优点：自带关键词优化；缺点：部分回复同质化。"
+          },
+          {
+            "title": "Notion AI",
+            "url": "https://notion.so",
+            "desc": "【笔记增强】优点：直接在笔记内续写排版；缺点：深度不如专业写作。"
+          },
+          {
+            "title": "Quillbot",
+            "url": "https://quillbot.com",
+            "desc": "【改写神器】优点：降重、变换语气的神级工具；缺点：原创意图易丢失。"
+          },
+          {
+            "title": "Rytr",
+            "url": "https://rytr.me",
+            "desc": "【性价比】优点：界面清爽，价格便宜；缺点：语言丰富度一般。"
+          },
+          {
+            "title": "Anyword",
+            "url": "https://anyword.com",
+            "desc": "【转化预测】优点：能预测文案点击率；缺点：偏向纯商业广告。"
+          },
+          {
+            "title": "Sudowrite",
+            "url": "https://sudowrite.com",
+            "desc": "【小说家必备】优点：扩写、描绘感极强；缺点：不适合公文。"
+          },
+          {
+            "title": "Heckfree",
+            "url": "#",
+            "desc": "【降重专家】优点：躲避AI检测；缺点：合法性存在争议。"
+          },
+          {
+            "title": "Wordtune",
+            "url": "https://wordtune.com",
+            "desc": "【短句重构】优点：让英文表达更地道；缺点：长文处理慢。"
+          },
+          {
+            "title": "Surfer SEO",
+            "url": "https://surferseo.com",
+            "desc": "【内容排名】优点：文章结构符合搜索引擎习惯；缺点：收费高昂。"
+          },
+          {
+            "title": "Hypotenuse AI",
+            "url": "https://hypotenuse.ai",
+            "desc": "【电商文案】优点：批量生成产品描述；缺点：缺乏品牌深度。"
+          },
+          {
+            "title": "Bearly AI",
+            "url": "https://bearly.ai",
+            "desc": "【阅读提效】优点：快速总结万字长文；缺点：写作功能相对次要。"
+          },
+          {
+            "title": "Frase",
+            "url": "https://frase.io",
+            "desc": "【大纲生成】优点：从搜索结果直接提炼大纲；缺点：学习曲线陡。"
+          },
+          {
+            "title": "Jenni AI",
+            "url": "https://jenni.ai",
+            "desc": "【论文助手】优点：内置引用文献库；缺点：过度依赖易导致查重。"
+          },
+          {
+            "title": "Simplified",
+            "url": "https://simplified.com",
+            "desc": "【全能型】优点：图文视频文案全搞定；缺点：样样通样样松。"
+          },
+          {
+            "title": "ProWritingAid",
+            "url": "https://prowritingaid.com",
+            "desc": "【深度编辑】优点：语法报告极详尽；缺点：UI 比较复古。"
+          },
+          {
+            "title": "Tome",
+            "url": "https://tome.app",
+            "desc": "【PPT写作】优点：自动生成故事型幻灯片；缺点：排版灵活度受限。"
+          },
+          {
+            "title": "HyperWrite",
+            "url": "https://hyperwriteai.com",
+            "desc": "【全网同步】优点：浏览器插件适配各网站；缺点：隐私权限要求高。"
+          }
+        ]
+      }
+    ]
+  },
+
+
+
+{
+  "id": 2,
+  "name": "素材、设计与视频学习全库",
+  "categories": [
+    {
+      "categoryName": "素材资源库",
+      "description": "包含高质图片、矢量素材、视频素材及音效库",
+      "icon": "📦",
+      "links": [
+        { "title": "Unsplash", "url": "https://unsplash.com", "desc": "高质摄影图。优点：审美极高，免费商用；缺点：搜中文结果较少。" },
+        { "title": "Pexels", "url": "https://www.pexels.com", "desc": "图片与视频。优点：不仅有图还有免费短视频；缺点：部分素材较常规。" },
+        { "title": "Pixabay", "url": "https://pixabay.com", "desc": "素材全才。优点：插画、矢量图、音乐全覆盖；缺点：画质稍显参差不齐。" },
+        { "title": "Freepik", "url": "https://www.freepik.com", "desc": "设计模版。优点：源文件(PSD/AI)极多；缺点：免费版需标注来源。" },
+        { "title": "Flaticon", "url": "https://www.flaticon.com", "desc": "图标大全。优点：全球最大的矢量图标库；缺点：部分精选图标需付费。" },
+        { "title": "Vecteezy", "url": "https://www.vecteezy.com", "desc": "矢量资源。优点：背景与纹理丰富；缺点：下载等待时间长。" },
+        { "title": "Mixkit", "url": "https://mixkit.co", "desc": "视频模板。优点：Pr/Ae工程文件免费下；缺点：素材量级不如大站。" },
+        { "title": "Mazwai", "url": "https://mazwai.com", "desc": "电影感视频。优点：视频素材极其写意；缺点：分类不够精细。" },
+        { "title": "Bensound", "url": "https://www.bensound.com", "desc": "免版税音乐。优点：适合做视频背景乐；缺点：免费版限制较多。" },
+        { "title": "Freesound", "url": "https://freesound.org", "desc": "音效百科。优点：适合找风声、雨声等特教；缺点：界面复古，搜索难。" },
+        { "title": "Envato Elements", "url": "https://elements.envato.com", "desc": "素材包月。优点：一站式搞定所有商用素材；缺点：需付费订阅。" },
+        { "title": "StockSnap", "url": "https://stocksnap.io", "desc": "CCO图片。优点：每周更新大量高清图；缺点：缺少人物精修图。" },
+        { "title": "Burst (by Shopify)", "url": "https://burst.shopify.com", "desc": "电商素材。优点：适合网店和商业宣传；缺点：风格较为单一。" },
+        { "title": "Remove.bg", "url": "https://www.remove.bg", "desc": "在线抠图。优点：一键精准去背景；缺点：高清导出需付费。" },
+        { "title": "Foodiesfeed", "url": "https://www.foodiesfeed.com", "desc": "美食摄影。优点：垂类极深，画质诱人；缺点：仅限于食品领域。" },
+        { "title": "Iconfont", "url": "https://www.iconfont.cn", "desc": "阿里图标库。优点：国内项目必备，适配好；缺点：部分图标版权不一。" },
+        { "title": "Adobe Stock", "url": "https://stock.adobe.com", "desc": "行业标准。优点：与PS/PR无缝联动；缺点：单价非常高。" },
+        { "title": "Gratisography", "url": "https://gratisography.com", "desc": "怪诞风格。优点：图片极具个性和创意；缺点：素材量较小。" },
+        { "title": "LottieFiles", "url": "https://lottiefiles.com", "desc": "轻量动画。优点：UI动效JSON文件首选；缺点：需要开发知识对接。" },
+        { "title": "Videvo", "url": "https://www.videvo.net", "desc": "动态背景。优点：大量循环背景视频；缺点：免费比例逐渐降低。" }
+      ]
+    },
+    {
+      "categoryName": "设计学习与资讯",
+      "description": "平面设计、UI/UX、色彩搭配及行业趋势",
+      "icon": "🎨",
+      "links": [
+        { "title": "Behance", "url": "https://www.behance.net", "desc": "大牛作品。优点：全球顶尖设计师聚集地；缺点：更偏向展示而非教学。" },
+        { "title": "Dribbble", "url": "https://dribbble.com", "desc": "设计灵感。优点：UI/交互设计的风向标；缺点：由于邀请制，内容较雷同。" },
+        { "title": "Adobe Create", "url": "https://create.adobe.com", "desc": "官方杂志。优点：深度访谈与技法分享；缺点：偏向软件功能推广。" },
+        { "title": "Smashing Magazine", "url": "https://www.smashingmagazine.com", "desc": "专业文章。优点：Web设计领域最深度刊物；缺点：文章篇幅长，需耐心。" },
+        { "title": "Canva Academy", "url": "https://www.canva.com/designschool/", "desc": "小白速成。优点：教你最基础的构图色彩；缺点：不涉及专业软件操作。" },
+        { "title": "UX Design.cc", "url": "https://uxdesign.cc", "desc": "体验设计。优点：聚焦用户体验与产品逻辑；缺点：理论性较强。" },
+        { "title": "Nielsen Norman Group", "url": "https://www.nngroup.com", "desc": "交互科学。优点：UI测试的科学依据来源；缺点：网站非常学术，枯燥。" },
+        { "title": "Designspiration", "url": "https://www.designspiration.com", "desc": "配色参考。优点：按颜色搜索图片灵感；缺点：社区互动性一般。" },
+        { "title": "Adobe Color", "url": "https://color.adobe.com", "desc": "配色利器。优点：自动提取配色方案；缺点：需基础色彩知识操作。" },
+        { "title": "Google Design", "url": "https://design.google", "desc": "材料设计。优点：Material Design 官方指南；缺点：规范极多，学习量大。" },
+        { "title": "Abstract", "url": "https://www.abstract.com", "desc": "设计版本管理。优点：像Git一样管理设计稿；缺点：仅适合团队协作。" },
+        { "title": "Interaction Design Foundation", "url": "https://www.interaction-design.org", "desc": "交互课程。优点：行业认可度极高的证书；缺点：需付费订阅。" },
+        { "title": "Zcool (站酷)", "url": "https://www.zcool.com.cn", "desc": "国内设计师首选。优点：中文语境，资源多；缺点：评论区风气一般。" },
+        { "title": "The Dieline", "url": "https://thedieline.com", "desc": "包装设计。优点：全球最好的包装灵感站；缺点：受众领域较窄。" },
+        { "title": "AIGA", "url": "https://www.aiga.org", "desc": "设计协会。优点：包含大量职业标准指南；缺点：偏向美国市场。" },
+        { "title": "Fonts in Use", "url": "https://fontsinuse.com", "desc": "字体百科。优点：展示字体在实战中的效果；缺点：主要为西文字体。" },
+        { "title": "UI Movement", "url": "https://uimovement.com", "desc": "动效灵感。优点：每天精选最佳UI动画；缺点：更新频率较低。" },
+        { "title": "Typewolf", "url": "https://www.typewolf.com", "desc": "排版指南。优点：字体搭配的最佳建议；缺点：主要是网页字体方向。" },
+        { "title": "Abduzeedo", "url": "https://abduzeedo.com", "desc": "创意精选。优点：每天更新的高质量案例；缺点：更像画册，干货较散。" },
+        { "title": "Tuts+", "url": "https://design.tutsplus.com", "desc": "软件教程。优点：PS/AI基础操作极全；缺点：大部分进阶教程收费。" }
+      ]
+    },
+    {
+      "categoryName": "视频剪辑与后期",
+      "description": "包含 PR/AE/剪映教程、转场音效及调色知识",
+      "icon": "🎬",
+      "links": [
+        { "title": "VideoCopilot", "url": "https://www.videocopilot.net", "desc": "AE神级站。优点：Andrew Kramer的特效教程必看；缺点：插件需购买。" },
+        { "title": "Premiere Gal", "url": "https://premieregal.com", "desc": "PR实战。优点：技巧非常实用且接地气；缺点：英文讲解。" },
+        { "title": "Film Riot", "url": "https://www.filmriot.com", "desc": "低成本特效。优点：教你如何用小预算拍大片；缺点：更偏向拍摄而非纯剪辑。" },
+        { "title": "Blackmagic Design", "url": "https://www.blackmagicdesign.com", "desc": "达芬奇官方。优点：最权威的调色教学；缺点：对电脑硬件要求极高。" },
+        { "title": "Shutterstock Blog", "url": "https://www.shutterstock.com/blog", "desc": "视频攻略。优点：常发免费转场和音效包；缺点：软广较多。" },
+        { "title": "No Film School", "url": "https://nofilmschool.com", "desc": "影视学院。优点：电影工业级干货分享；缺点：理论性非常强。" },
+        { "title": "School of Motion", "url": "https://www.schoolofmotion.com", "desc": "动效学院。优点：MG动画教学行业顶尖；缺点：学费极其贵。" },
+        { "title": "Adobe Video (YouTube)", "url": "https://www.youtube.com/user/AdobePR", "desc": "官方频道。优点：软件新功能第一时间解读；缺点：主要是演示而非系统教学。" },
+        { "title": "PremiumBeat Blog", "url": "https://www.premiumbeat.com/blog/", "desc": "剪辑技巧。优点：文章图文并茂，通俗易懂；缺点：偏重配乐宣传。" },
+        { "title": "RocketStock", "url": "https://www.rocketstock.com/blog/", "desc": "后期特效。优点：定期有免费素材和模板；缺点：更新速度放缓。" },
+        { "title": "Digital Juice", "url": "https://www.digitaljuice.com", "desc": "动态素材。优点：拥有大量复古动效素材；缺点：界面操作不友好。" },
+        { "title": "FCP.co", "url": "https://www.fcp.co", "desc": "苹果剪辑。优点：Final Cut Pro 用户的大本营；缺点：Win用户不适用。" },
+        { "title": "Frame.io Blog", "url": "https://blog.frame.io", "desc": "工作流。优点：讲解高效视频协作方案；缺点：非独立剪辑师核心需求。" },
+        { "title": "Bilibili 剪辑频道", "url": "https://www.bilibili.com", "desc": "国内首选。优点：中文教程，适合新手，全免费；缺点：质量良莠不齐。" },
+        { "title": "Cinecom.net", "url": "https://www.cinecom.net", "desc": "创意剪辑。优点：教你模仿电影转场和特效；缺点：内容较娱乐化。" },
+        { "title": "Mister Horse", "url": "https://misterhorse.com", "desc": "AE/PR插件。优点：神级插件管理工具；缺点：免费功能有限。" },
+        { "title": "ActionVFX", "url": "https://www.actionvfx.com", "desc": "实拍特效。优点：火、爆炸、烟雾细节无敌；缺点：单个素材价格贵。" },
+        { "title": "Boris FX", "url": "https://borisfx.com", "desc": "专业跟踪。优点：Mocha等顶尖后期工具；缺点：价格面向工作室。" },
+        { "title": "Learn Video Editing", "url": "https://www.learnvideoediting.com", "desc": "系统课程。优点：从零到一的体系化课程；缺点：需要较高的英语水平。" },
+        { "title": "Red Giant", "url": "https://www.maxon.net", "desc": "视觉特效。优点：Trapcode等后期必备包；缺点：现在已改为订阅制。" }
+      ]
+    }
+  ]
+},
+
+
+{
+  "id": 3,
+  "name": "SEO 进阶与网站运营全库",
+  "categories": [
+   
+    
+    {
+      "categoryName": "进阶关键词与网站结构",
+      "description": "涵盖语义搜索、关键词聚类及网站架构审计工具",
+      "icon": "🏗️",
+      "links": [
+        { "title": "AnswerThePublic", "url": "https://answerthepublic.com/", "desc": "搜索意图可视化。优点：将关键词转化为用户真实的提问和短语。" },
+        { "title": "KeywordTool.io", "url": "https://keywordtool.io/", "desc": "多平台选词。优点：支持 Google、YouTube、Amazon 等多渠道词源。" },
+        { "title": "Answer Socrates", "url": "https://answersocrates.com/", "desc": "话题发掘。优点：免费查找关于特定话题的常见问题，适合内容创作。" },
+        { "title": "Keyword Sheeter", "url": "https://keywordsheeter.com/", "desc": "海量词生成。优点：快速拉取数千条建议词；缺点：不显示具体搜索量。" },
+        { "title": "SearchResponse.io (PAA)", "url": "https://searchresponse.io/people-also-ask", "desc": "PAA 数据挖掘。优点：专门收集谷歌搜索结果中的‘相关问答’。" },
+      
+        { "title": "AlsoAsked", "url": "https://alsoasked.com", "desc": "语义挖掘。优点：展示搜索意图层级图；缺点：免费额度极低。" },
+        { "title": "Keyword Tool.io", "url": "https://keywordtool.io", "desc": "多平台采集。优点：支持拼多多/亚马逊等电商关键词；缺点：不显示搜索量。" },
+        { "title": "LSI Graph", "url": "https://lsigraph.com", "desc": "语义关联。优点：寻找相关语境关键词；缺点：算法更新稍慢。" },
+        { "title": "Visual Site Mapper", "url": "http://www.visualsitemapper.com", "desc": "架构可视化。优点：自动生成网站结构地图；缺点：不支持超大型网站。" },
+        { "title": "Sitebulb", "url": "https://sitebulb.com", "desc": "深度审计。优点：提供极其详细的可视化SEO报告；缺点：仅有桌面客户端。" },
+        { "title": "Keywords Everywhere", "url": "https://keywordseverywhere.com", "desc": "插件神器。优点：直接在搜索结果显示数据；缺点：按点数计费模式。" },
+        { "title": "Dynomapper", "url": "https://dynomapper.com", "desc": "内容审计。优点：检查网站层级与过时内容；缺点：价格偏向企业级。" },
+        { "title": "OnCrawl", "url": "https://www.oncrawl.com", "desc": "日志分析。优点：分析搜索引擎真实的爬行路径；缺点：技术门槛极高。" },
+        { "title": "MarketMuse", "url": "https://www.marketmuse.com", "desc": "内容聚类。优点：AI分析内容缺口；缺点：单次分析成本高。" },
+        { "title": "Internal Link Juicer", "url": "https://internallinkjuicer.com", "desc": "内链优化。优点：自动化建设内链闭环；缺点：主要针对WordPress。" },
+        { "title": "Term Explorer", "url": "https://termexplorer.com", "desc": "海量采集。优点：一次性处理数万个词；缺点：界面操作不直观。" },
+        { "title": "Soovle", "url": "https://soovle.com", "desc": "多源搜索。优点：一键看遍主流引擎下拉词；缺点：不支持数据导出。" },
+        { "title": "SpyFu", "url": "https://www.spyfu.com", "desc": "竞品透视。优点：看对手过去几年的SEO轨迹；缺点：非美语区数据略少。" },
+        { "title": "DeepCrawl", "url": "https://www.lumar.io", "desc": "云端爬虫。优点：适合监控百万级网页；缺点：响应速度受网络限制。" },
+        { "title": "Botify", "url": "https://www.botify.com", "desc": "全链路SEO。优点：从抓取到转化全追踪；缺点：仅面向高端商业用户。" },
+        { "title": "Schema.org", "url": "https://schema.org", "desc": "结构化标准。优点：所有引擎通用的代码标准；缺点：纯技术文档较难读。" },
+        { "title": "Rich Results Test", "url": "https://search.google.com/test/rich-results", "desc": "官方测试。优点：检测搜索预览效果；缺点：仅针对特定富媒体格式。" },
+        { "title": "LinkResearchTools", "url": "https://www.linkresearchtools.com", "desc": "外链排毒。优点：识别并清理垃圾链接；缺点：学习曲线极长。" },
+        { "title": "SERP Robot", "url": "https://www.serprobot.com", "desc": "排名监控。优点：全天候追踪关键词位次；缺点：免费版不稳定。" },
+        { "title": "Netpeak Spider", "url": "https://netpeaksoftware.com", "desc": "轻量审计。优点：像Excel一样处理SEO数据；缺点：UI风格偏传统。" }
+      ]
+    },
+    {
+      "categoryName": "谷歌规则与官方文档",
+      "description": "实时追踪 Google 算法更新、官方政策及站长指南",
+      "icon": "🔍",
+      "links": [
+        { "title": "Google Search Console", "url": "https://search.google.com/search-console/", "desc": "官方搜索表现监测。优点：提供最准确的点击、展示及排名数据。" },
+        { "title": "Google Search Central Docs", "url": "https://developers.google.com/search/docs", "desc": "谷歌搜索官方文档。优点：SEO 从业者的权威准则与技术规范。" },
+        { "title": "Google Search Status Dashboard", "url": "https://status.search.google.com/products/rGHU1u87FJnkP6W2GwMi/history", "desc": "搜索系统状态。优点：实时查看谷歌抓取、索引及排名系统的运行情况。" },
+        { "title": "Google Keyword Planner", "url": "https://ads.google.com/aw/keywordplanner/home", "desc": "关键词规划师。优点：官方提供的关键词搜索量与竞争深度数据。" },
+
+        { "title": "Google Search Central Blog", "url": "https://developers.google.com/search/blog", "desc": "官方资讯。优点：算法更新的第一手发布地；缺点：语言偏官方晦涩。" },
+        { "title": "Google Search Quality Rater Guidelines", "url": "https://static.googleusercontent.com/media/guidelines.google.com/en//qualitytesters/searchqualityevaluatorguidelines.pdf", "desc": "SEO圣经。优点：详解E-E-A-T评分标准；缺点：长达160页的PDF。" },
+        { "title": "Search Engine Land", "url": "https://searchengineland.com", "desc": "算法快讯。优点：对Google更新有深度解读；缺点：部分分析过于主观。" },
+        { "title": "Core Web Vitals", "url": "https://web.dev/vitals/", "desc": "体验指标。优点：详解LCP/FID等核心数据；缺点：涉及大量前端性能知识。" },
+        { "title": "Google Merchant Center", "url": "https://www.google.com/retail/solutions/merchant-center/", "desc": "购物规则。优点：零售商SEO必备入口；缺点：审核规则极其严格。" },
+        { "title": "Google News Publisher", "url": "https://publishercenter.google.com", "desc": "新闻规范。优点：资讯站进入谷歌新闻的门槛；缺点：人工审核极难通过。" },
+        { "title": "Google Transparency Report", "url": "https://transparencyreport.google.com", "desc": "安全红线。优点：检查网站是否被标记为危险；缺点：不提供优化建议。" },
+        { "title": "John Mueller's Twitter", "url": "https://twitter.com/johnmu", "desc": "官方互动。优点：谷歌官方发言人的实时问答；缺点：回答往往比较含蓄。" },
+        { "title": "Google Business Profile", "url": "https://www.google.com/business/", "desc": "本地规则。优点：实体店SEO的核心地带；缺点：经常出现误封现象。" },
+        { "title": "PageSpeed Insights", "url": "https://pagespeed.web.dev", "desc": "官方测速。优点：给出具体的代码优化建议；缺点：满分难度极大。" },
+        { "title": "Safe Browsing Test", "url": "https://sitecheck.sucuri.net", "desc": "安全审计。优点：检查是否触发谷歌黑名单；缺点：仅限于安全层面。" },
+        { "title": "Google Ads Policy", "url": "https://support.google.com/adspolicy", "desc": "广告合规。优点：防止网站因内容违规被降权；缺点：规则更新频繁。" },
+        { "title": "YouTube Creator Academy", "url": "https://creators.youtube.com", "desc": "视频规则。优点：谷歌系视频搜索权重指南；缺点：更偏向运营而非SEO。" },
+        { "title": "Google Webmaster World", "url": "https://www.webmasterworld.com/google/", "desc": "老牌论坛。优点：全球站长实时反馈流量波动；缺点：水贴较多。" },
+        { "title": "AMP Project", "url": "https://amp.dev", "desc": "加速页面。优点：针对移动端极速加载；缺点：由于权重调整，热度降低。" },
+        { "title": "Google Discover News", "url": "https://developers.google.com/search/docs/appearance/google-discover", "desc": "推荐流规则。优点：揭秘零搜流量获取方式；缺点：内容不确定性极高。" },
+        { "title": "Site Kit by Google", "url": "https://sitekit.withgoogle.com", "desc": "官方插件。优点：全套谷歌数据后台集成；缺点：容易拖慢后台速度。" },
+        { "title": "Google Alerts", "url": "https://www.google.com/alerts", "desc": "品牌监控。优点：免费监控全网关键词动态；缺点：漏报率逐年上升。" },
+        { "title": "Google Data Studio", "url": "https://lookerstudio.google.com", "desc": "报表可视化。优点：将多方SEO数据整合分析；缺点：学习曲线陡峭。" },
+        { "title": "Google Lighthouse CI", "url": "https://github.com/GoogleChrome/lighthouse-ci", "desc": "持续监控。优点：代码提交时自动测速；缺点：需要开发背景。" }
+      ]
+    },
+    {
+      "categoryName": "热点追踪与网站运营",
+      "description": "涵盖全网热点监测、用户行为分析及运营策略",
+      "icon": "🔥",
+      "links": [
+        { "title": "Google Trends", "url": "https://trends.google.com", "desc": "官方热点。优点：最具公信力的热搜数据；缺点：详细数据略有延迟。" },
+        { "title": "Exploding Topics", "url": "https://explodingtopics.com", "desc": "趋势预测。优点：提前发现还没火的关键词；缺点：免费版看不了核心词。" },
+        { "title": "Google Analytics (GA4)", "url": "https://analytics.google.com/", "desc": "网站流量分析。优点：深度的用户行为追踪与转化分析。" },
+        { "title": "Looker Studio", "url": "https://lookerstudio.google.com/", "desc": "可视化报表。优点：将 SC 和 GA 数据整合为美观的自动化周报/月报。" },
+        { "title": "SimilarWeb Top Websites", "url": "https://www.similarweb.com/top-websites/", "desc": "流量排行榜。优点：查看全球及各行业流量领先的竞争对手。" },
+        { "title": "外贸 518", "url": "https://www.waimao518.com/", "desc": "行业综合平台。优点：提供特定垂直领域的资源与工具。" },
+        { "title": "我爱查", "url": "https://wuaicha.com/", "desc": "国内常用的查询工具。优点：适配国内使用习惯的 SEO 数据汇总。" },
+      
+        
+        { "title": "BuzzSumo", "url": "https://buzzsumo.com", "desc": "内容热度。优点：查看各大社媒转发最高的内容；缺点：价格极贵。" },
+        { "title": "Feedly", "url": "https://feedly.com", "desc": "行业订阅。优点：一站式阅读上百个SEO博客；缺点：需花费大量时间整理。" },
+        { "title": "Hotjar", "url": "https://www.hotjar.com", "desc": "用户热图。优点：看用户在网页点哪里、滑到哪；缺点：影响页面加载速度。" },
+        { "title": "Crazy Egg", "url": "https://www.crazyegg.com", "desc": "行为分析。优点：精准的A/B测试工具；缺点：免费试用期较短。" },
+        { "title": "SparkToro", "url": "https://sparktoro.com", "desc": "受众研究。优点：看用户平时关注谁、看什么；缺点：主要覆盖英语用户。" },
+        { "title": "Social Mention", "url": "https://socialmention.com", "desc": "口碑追踪。优点：监控全网对品牌的评价；缺点：数据实时性一般。" },
+        { "title": "TrendHunter", "url": "https://www.trendhunter.com", "desc": "创意热点。优点：极具前瞻性的生活方式趋势；缺点：内容较杂乱。" },
+        { "title": "Reddit /r/SEO", "url": "https://www.reddit.com/r/SEO/", "desc": "硬核社区。优点：能看到最真实的避坑指南；缺点：英文交流为主。" },
+        { "title": "Heap", "url": "https://www.heap.io", "desc": "无埋点分析。优点：自动抓取所有用户交互；缺点：处理海量数据时较慢。" },
+        { "title": "Matomo", "url": "https://matomo.org", "desc": "隐私分析。优点：GA的隐私替代品，数据自持；缺点：需自行部署服务器。" },
+        { "title": "TrendWatch", "url": "https://www.trendwatching.com", "desc": "商业趋势。优点：深度消费心理分析报告；缺点：更新频率按季计算。" },
+        { "title": "Statista", "url": "https://www.statista.com", "desc": "数据报告。优点：专业行业调研数据支持；缺点：大部分核心报告收费。" },
+        { "title": "AnswerThePublic", "url": "https://answerthepublic.com", "desc": "痛点挖掘。优点：将搜索词转化成具体问题；缺点：视觉图导出受限。" },
+        { "title": "Bitly", "url": "https://bitly.com", "desc": "短链追踪。优点：监控各渠道点击转化；缺点：免费版不支持自定义域名。" },
+        { "title": "Zapier", "url": "https://zapier.com", "desc": "运营自动化。优点：连接上千个工具实现自动化；缺点：逻辑设置较复杂。" },
+        { "title": "Optimizely", "url": "https://www.optimizely.com", "desc": "实验平台。优点：大型网站必备的A/B测神器；缺点：对小站不友好。" },
+        { "title": "Trello", "url": "https://trello.com", "desc": "内容日历。优点：看板式管理内容发布进度；缺点：缺少深度协作功能。" },
+        { "title": "Keyword Chef", "url": "https://keywordchef.com", "desc": "博客选词。优点：专门找竞争极低的小众词；缺点：按词条数扣点。" }
+      ]
+    },
+
+    {
+      "categoryName": "SEO 核心综合插件",
+      "description": "提供即时页面审计、元数据检查及综合 SEO 指标",
+      "icon": "🔧",
+      "links": [
+        { "title": "Detailed SEO Extension", "url": "https://detailed.com", "desc": "页面审计首选。优点：一键展示标题、描述及 Canonical 标签；缺点：不含外链数据。" },
+        { "title": "SEO Meta in 1-Click", "url": "https://www.seo-checker.com", "desc": "结构化专家。优点：清晰展示 H1-H6 层级及图片 Alt 信息；缺点：界面略显老旧。" },
+        { "title": "SEOquake", "url": "https://www.seoquake.com", "desc": "老牌全能。优点：实时显示百度/谷歌索引数及排位；缺点：开启后网页加载稍慢。" },
+        { "title": "Ahrefs SEO Toolbar", "url": "https://ahrefs.com/seo-toolbar", "desc": "外链大师。优点：直接在搜索结果看网站权重；缺点：核心数据需 Ahrefs 付费账号。" },
+        { "title": "MozBar", "url": "https://moz.com/products/pro/seo-toolbar", "desc": "DA 指标权威。优点：快速查看域名权威度(DA)；缺点：频繁查询易触发验证码。" },
+        { "title": "SEO Pro Extension", "url": "https://seoproextension.com", "desc": "极简审计。优点：UI 非常现代化，交互极佳；缺点：功能相对基础。" },
+        { "title": "Redirect Path", "url": "https://www.ayima.com", "desc": "状态码监控。优点：精准捕获 301/302 重定向路径；缺点：仅限于链接诊断。" },
+        { "title": "Check My Links", "url": "https://logictree.com", "desc": "死链检测。优点：快速找出页面所有 404 链接；缺点：大页面扫描时 CPU 占用高。" }
+      ]
+    },
+    {
+      "categoryName": "SEO工具与谷歌插件",
+      "description": "在搜索结果中直接获取关键词量、难度及趋势预测",
+      "icon": "⌨️",
+      "links": [
+        { "title": "Schema Markup Generator", "url": "https://technicalseo.com/tools/schema-markup-generator/", "desc": "结构化数据生成。优点：快速创建 FAQ、Article 等 Schema 代码。" },
+        { "title": "Schema Validator", "url": "https://validator.schema.org/", "desc": "标记验证。优点：测试网页结构化代码是否符合官方标准。" },
+        { "title": "Sitemap Extractor", "url": "https://www.seowl.co/sitemap-extractor/", "desc": "站点地图提取。优点：一键提取对手网站站点地图中的所有链接。" },
+        { "title": "Wayback Machine", "url": "https://web.archive.org/", "desc": "网页时光机。优点：找回网站历史快照，查看竞争对手过去的修改。" },
+        { "title": "Search Engine Roundtable", "url": "https://www.seroundtable.com/category/google-updates", "desc": "算法更新快讯。优点：SEO 圈内最著名的算法更新讨论社区。" },
+      
+        { "title": "Keyword Surfer", "url": "https://surferseo.com", "desc": "免费选词。优点：在谷歌搜索框直接显示月搜量；缺点：部分小众词无数据。" },
+        { "title": "Keywords Everywhere", "url": "https://keywordseverywhere.com", "desc": "历史趋势。优点：展示过去 10 年的搜索热度变化；缺点：现已改为付费计费制。" },
+        { "title": "Ubersuggest Extension", "url": "https://neilpatel.com/ubersuggest/", "desc": "竞争分析。优点：展示关键词的排名难度(SD)；缺点：免费版每日有限额。" },
+        { "title": "Glimpse", "url": "https://meetglimpse.com", "desc": "趋势增强。优点：让 Google Trends 数据更直观、更超前；缺点：免费额度非常紧俏。" },
+        { "title": "Wappalyzer", "url": "https://www.wappalyzer.com", "desc": "技术探测。优点：看对手站是用什么框架或 SEO 插件；缺点：不直接提供 SEO 数据。" }
+      ]
+    },
+    {
+      "categoryName": "AI 与技术 SEO 插件",
+      "description": "利用 AI 进行内容优化，或处理复杂的 Schema 与 Web Vitals",
+      "icon": "🤖",
+      "links": [
+        { "title": "AIPRM for ChatGPT", "url": "https://www.aiprm.com", "desc": "指令库。优点：内置数千个专业 SEO 提示词模板；缺点：部分优质模板需付费。" },
+        { "title": "HARPA AI", "url": "https://harpa.ai", "desc": "自动化助手。优点：监控网页变动并自动提取 SEO 摘要；缺点：上手逻辑较复杂。" },
+        { "title": "Web Vitals", "url": "https://web.dev/vitals/", "desc": "官方测速。优点：实时显示 LCP/FID 指标，优化体验；缺点：纯技术参数，较深奥。" },
+        { "title": "Schema Builder", "url": "https://schema.dev", "desc": "结构化数据。优点：可视化测试和生成 Schema 代码；缺点：需要基础编程知识。" },
+        { "title": "NoFollow", "url": "https://igame.com", "desc": "链接标注。优点：一眼识别页面上的 Nofollow 链接；缺点：功能极其单一。" },
+        { "title": "SimilarWeb Extension", "url": "https://www.similarweb.com", "desc": "流量解密。优点：看任何网站的跳出率和访问时长；缺点：小站数据往往不准。" },
+        { "title": "Hunter", "url": "https://hunter.io", "desc": "外链开发。优点：一键寻找站长联系邮箱，方便外链建设；缺点：每月免费额度有限。" }
+      ]
+    }
+  ]
+},
+
+{
+  "id": 4,
+  "name": "编程进阶与工具全库",
+  "categories": [
+    {
+      "categoryName": "多语言学习平台",
+      "description": "涵盖前端、后端、AI及系统编程的综合学习资源",
+      "icon": "🎓",
+      "links": [
+        { "title": "Scrimba", "url": "https://scrimba.com", "desc": "交互式前端。优点：在视频中直接编辑代码；缺点：深度后端内容较少。" },
+        { "title": "DataCamp", "url": "https://www.datacamp.com", "desc": "数据科学。优点：Python/SQL 交互式练习极佳；缺点：订阅价格较高。" },
+        { "title": "Educative.io", "url": "https://www.educative.io", "desc": "文本驱动学习。优点：无需配置环境，专注逻辑；缺点：缺少视频讲解。" },
+        { "title": "Exercism", "url": "https://exercism.org", "desc": "思维训练。优点：纯净的代码挑战，导师审阅；缺点：对零基础较难。" },
+        { "title": "Rust By Example", "url": "https://doc.rust-lang.org/stable/rust-by-example/", "desc": "Rust 权威。优点：官方提供的实例教学；缺点：语言本身门槛高。" },
+        { "title": "Go by Example", "url": "https://gobyexample.com", "desc": "Go 语言速成。优点：注释详尽，结构清晰；缺点：仅涵盖基础语法。" },
+        { "title": "The Odin Project", "url": "https://www.theodinproject.com", "desc": "全栈自由。优点：完全开源且项目驱动；缺点：需要极强的自律性。" },
+        { "title": "Full Stack Open", "url": "https://fullstackopen.com/zh/", "desc": "现代 Web。优点：深度讲解 React/Node/GraphQL；缺点：课程量极大。" },
+        { "title": "Sololearn", "url": "https://www.sololearn.com", "desc": "移动端学习。优点：碎片化时间学习语法；缺点：内容深度有限。" },
+        { "title": "Hyperskill", "url": "https://hyperskill.org", "desc": "项目制学习。优点：JetBrains 出品，与 IDE 深度集成；缺点：较依赖网络。" },
+        { "title": "LeetCode (力扣)", "url": "https://leetcode.cn", "desc": "面试必备。优点：算法题库最权威；缺点：容易陷入“刷题”误区。" },
+        { "title": "Codewars", "url": "https://www.codewars.com", "desc": "趣味挑战。优点：通过解题提升 Rank；缺点：部分题目过于偏向技巧。" },
+        { "title": "Learn X in Y Minutes", "url": "https://learnxinyminutes.com", "desc": "速查手册。优点：一页纸看完一门新语言；缺点：不适合初学者。" },
+        { "title": "Frontend Masters", "url": "https://frontendmasters.com", "desc": "高手进阶。优点：业内顶级大牛授课；缺点：价格非常昂贵。" },
+        { "title": "Roadmap.sh", "url": "https://roadmap.sh", "desc": "学习路径图。优点：可视化展示各领域技能树；缺点：只是路线，非内容。" }
+      ]
+    },
+    {
+      "categoryName": "编辑器与 IDE 工具",
+      "description": "包含 2026 年主流的本地及云端代码编辑环境",
+      "icon": "📝",
+      "links": [
+        { "title": "Cursor", "url": "https://cursor.sh", "desc": "AI 原生编辑器。优点：AI 深度集成，代码补全极准；缺点：部分高级模型收费。" },
+        { "title": "Visual Studio Code", "url": "https://code.visualstudio.com", "desc": "全能之王。优点：插件生态无敌；缺点：重度插件后启动变慢。" },
+        { "title": "Zed", "url": "https://zed.dev", "desc": "极致速度。优点：Rust 编写，高性能协作；缺点：插件生态尚在起步。" },
+        { "title": "Windsurf", "url": "https://codeium.com/windsurf", "desc": "新锐 AI 编辑器。优点：Flow 特性支持复杂任务；缺点：社区活跃度较低。" },
+        { "title": "JetBrains WebStorm", "url": "https://www.jetbrains.com/webstorm/", "desc": "前端利器。优点：重构与调试极其强大；缺点：内存占用大，需付费。" },
+        { "title": "Neovim", "url": "https://neovim.io", "desc": "极客首选。优点：极致自定义，键盘流速度快；缺点：配置门槛极高。" },
+        { "title": "Replit", "url": "https://replit.com", "desc": "云端 IDE。优点：一键创建环境，支持多语言；缺点：免费版资源受限。" },
+        { "title": "StackBlitz", "url": "https://stackblitz.com", "desc": "前端预览。优点：在浏览器运行 Node.js；缺点：对大型后端项目支持弱。" },
+        { "title": "Codespaces", "url": "https://github.com/features/codespaces", "desc": "GitHub 原生。优点：完美集成 GitHub 工作流；缺点：按时长计费。" },
+        { "title": "Sublime Text 5", "url": "https://www.sublimetext.com", "desc": "轻量标杆。优点：秒开，大文件处理极稳；缺点：功能需靠插件弥补。" }
+      ]
+    },
+    {
+      "categoryName": "代码优化与生产力工具",
+      "description": "提供代码美化、性能监测及 AI 辅助调试工具",
+      "icon": "⚡",
+      "links": [
+        { "title": "Carbon", "url": "https://carbon.now.sh", "desc": "美化分享。优点：生成高颜值的代码截图；缺点：仅为视觉工具。" },
+        { "title": "Prettier", "url": "https://prettier.io", "desc": "格式化标准。优点：自动统一团队代码风格；缺点：自定义程度有限。" },
+        { "title": "Lighthouse", "url": "https://developers.google.com/web/tools/lighthouse", "desc": "性能审计。优点：官方集成在 Chrome 浏览器；缺点：对非 Web 应用无效。" },
+        { "title": "Snyk", "url": "https://snyk.io", "desc": "安全扫描。优点：自动发现代码依赖漏洞；缺点：深度扫描耗时较长。" },
+        { "title": "Postman", "url": "https://www.postman.com", "desc": "接口调试。优点：API 测试的全球标准；缺点：功能越来越臃肿。" },
+        { "title": "Regex101", "url": "https://regex101.com", "desc": "正则解析。优点：实时可视化正则表达式；缺点：仅限于正则领域。" },
+        { "title": "JSONHero", "url": "https://jsonhero.io", "desc": "JSON 查看。优点：极其美观的 JSON 解析视图；缺点：大文件可能卡顿。" },
+        { "title": "Excalidraw", "url": "https://excalidraw.com", "desc": "手绘架构图。优点：简单、免费、支持实时协作；缺点：非专业 CAD 工具。" },
+        { "title": "TinyPNG", "url": "https://tinypng.com", "desc": "图片压缩。优点：开发者必备的无损压缩；缺点：单次上传有数量限制。" },
+        { "title": "Ray.so", "url": "https://ray.so", "desc": "代码海报。优点：配色方案非常高级；缺点：功能较为单一。" }
+      ]
+    },
+    {
+      "categoryName": "开发者实用资源与资讯",
+      "description": "包含技术文档、面试准备及开发者社区",
+      "icon": "🌍",
+      "links": [
+        { "title": "MDN Web Docs", "url": "https://developer.mozilla.org", "desc": "Web 圣经。优点：最权威的前端参考手册；缺点：内容极多需耐心检索。" },
+        { "title": "Dev.to", "url": "https://dev.to", "desc": "开发者博客。优点：社区氛围友好，干货多；缺点：英文内容为主。" },
+        { "title": "Hacker News", "url": "https://news.ycombinator.com", "desc": "技术风向。优点：获取最前沿的行业动态；缺点：界面极简，信息密度大。" },
+        { "title": "OverAPI", "url": "https://overapi.com", "desc": "全语言速查。优点：收集了几乎所有语言的 Cheat Sheet；缺点：部分文档较旧。" },
+        { "title": "Can I Use", "url": "https://caniuse.com", "desc": "兼容性查询。优点：看前端特性在各浏览器的支持；缺点：仅限前端领域。" },
+        { "title": "Stack Overflow", "url": "https://stackoverflow.com", "desc": "问答社区。优点：几乎所有 Bug 都能找到答案；缺点：新手提问容易被关闭。" },
+        { "title": "Product Hunt", "url": "https://www.producthunt.com", "desc": "产品发布。优点：看全球最新的 AI/编程工具；缺点：广告性质逐渐变强。" },
+        { "title": "GitHub Trending", "url": "https://github.com/trending", "desc": "开源趋势。优点：看现在全球开发者在造什么；缺点：刷星行为偶有发生。" },
+        { "title": "Bilibili 编程频道", "url": "https://www.bilibili.com", "desc": "中文首选。优点：海量免费国产精品视频教程；缺点：由于弹幕干扰可能分心。" },
+        { "title": "Daily.dev", "url": "https://daily.dev", "desc": "资讯聚合。优点：每次开新标签页都能看到新闻；缺点：容易让人产生信息焦虑。" }
+      ]
+    }
+  ]
+},
+
+{
+  "id": 5,
+  "name": "全球语言、文化与本土社交导航",
+  "categories": [
+    {
+  "categoryName": "多语言基础学习",
+  "description": "涵盖英、西、粤、中、法、日、韩、印、印尼语的快速入门与查词工具",
+  "icon": "🗣️",
+  "links": [
+    { "title": "BBC Learning English", "url": "https://www.bbc.co.uk/learningenglish", "desc": "英语官方。优点：地道伦敦腔，职场英语极佳。" },
+    { "title": "SpanishDict", "url": "https://www.spanishdict.com", "desc": "西语神器。优点：变位查询与例句极其详尽。" },
+    { "title": "Language Transfer", "url": "https://www.languagetransfer.org", "desc": "西语思维。优点：完全免费的思维构建音频课。" },
+    { "title": "CantoneseClass101", "url": "https://www.cantoneseclass101.com", "desc": "粤语入门。优点：生活化场景对话，适合速成。" },
+    { "title": "Chinese Grammar Wiki", "url": "https://resources.allsetlearning.com/chinese/grammar/", "desc": "中文百科。优点：分级别整理，老外学中文的首选。" },
+    { "title": "TV5MONDE Apprendre", "url": "https://apprendre.tv5monde.com", "desc": "法语官方。优点：按A1-B2分级，内容全是真实新闻。" },
+    { "title": "Jisho.org", "url": "https://jisho.org", "desc": "日语字典。优点：支持手写与部首查词，解释精准。" },
+    { "title": "Talk To Me In Korean", "url": "https://talktomeinkorean.com", "desc": "韩语翘楚。优点：教材体系现代化，口语极其地道。" },
+    { "title": "Shabdkosh", "url": "https://www.shabdkosh.com", "desc": "印地语工具。优点：印度本土最常用的双语词典。" },
+    { "title": "Learning Indonesian", "url": "https://www.learningindonesian.com", "desc": "印尼语起步。优点：侧重口头沟通而非死记硬背语法。" },
+    { "title": "DeepL", "url": "https://www.deepl.com", "desc": "精准翻译。优点：AI 翻译语感远超传统工具。" }
+  ]
+},
+    {
+      "categoryName": "全球文化与禁忌研究",
+      "description": "帮助运营规避文化风险，理解各国风俗与节日",
+      "icon": "🌍",
+      "links": [
+        { "title": "Hofstede Insights", "url": "https://www.hofstede-insights.com", "desc": "文化维度。优点：数据化对比各国权力距离、个人主义等差异。" },
+        { "title": "Cultural Atlas", "url": "https://culturalatlas.sbs.com.au", "desc": "习俗指南。优点：详尽的国家核心价值观与沟通禁忌。" },
+        { "title": "Commisceo Global", "url": "https://www.commisceo-global.com", "desc": "商务礼仪。优点：覆盖各国送礼、着装及社交红线。" },
+        { "title": "Time and Date", "url": "https://www.timeanddate.com/holidays/", "desc": "全球节日。优点：查全世界任何地区的公休日与节庆日期。" },
+        { "title": "National Today", "url": "https://nationaltoday.com", "desc": "热点节日。优点：包含各种小众营销节日，适合社媒互动。" },
+        { "title": "Color Symbolism Chart", "url": "https://www.shutterstock.com/blog/color-symbolism-and-meaning-around-the-world", "desc": "颜色禁忌。优点：规避不同市场视觉设计的审美冲突。" }
+      ]
+    },
+    {
+      "categoryName": "主要国家本土社交与内容平台",
+      "description": "各国流量最大的“国民级”App、视频站与博客论坛",
+      "icon": "📱",
+      "links": [
+        { "title": "Reddit (全球)", "url": "https://www.reddit.com", "desc": "海外贴吧。优点：最真实的消费者反馈与垂直社区。" },
+        { "title": "Discord (全球)", "url": "https://discord.com", "desc": "社群核心。优点：AI、游戏及品牌私域运营的主战场。" },
+        { "title": "Quora (全球)", "url": "https://www.quora.com", "desc": "海外知乎。优点：高质量问答，长尾流量与 SEO 的宝库。" },
+        { "title": "Naver (韩国)", "url": "https://www.naver.com", "desc": "韩国门户。优点：韩国最大的搜索与博客社区(Cafe/Blog)。" },
+        { "title": "LINE (日韩/东南亚)", "url": "https://line.me", "desc": "通讯之王。优点：日泰市场运营绕不开的社交核心。" },
+        { "title": "Zalo (越南)", "url": "https://zalo.me", "desc": "越南微信。优点：越南市场本地化营销的第一入口。" },
+        { "title": "VK (俄罗斯/东欧)", "url": "https://vk.com", "desc": "俄版 FB。优点：东欧及独联体国家的主流社交平台。" },
+        { "title": "X (全球)", "url": "https://x.com", "desc": "实时热点。优点：快讯发布与海外公关的核心阵地。" },
+        { "title": "Bilibili (中国)", "url": "https://www.bilibili.com", "desc": "中文视频。优点：Z世代集中地，二次元与学习氛围浓厚。" },
+        { "title": "Little Red Book (小红书)", "url": "https://www.xiaohongshu.com", "desc": "种草之王。优点：中文市场最高质量的消费决策平台。" }
+      ]
+    },
+    {
+      "categoryName": "各国用户偏好与洞察工具",
+      "description": "分析不同地区用户在搜什么、看什么、买什么",
+      "icon": "📈",
+      "links": [
+        { "title": "Glimpse", "url": "https://meetglimpse.com", "desc": "趋势雷达。优点：预测未来 6 个月将要流行的文化关键词。" },
+        { "title": "Think with Google", "url": "https://www.thinkwithgoogle.com", "desc": "官方洞察。优点：查看谷歌对各国消费行为的深度分析报告。" },
+        { "title": "Social Blade", "url": "https://socialblade.com", "desc": "达人分析。优点：监控 YouTube/TikTok 账号的真实表现与排行。" },
+        { "title": "SimilarWeb", "url": "https://www.similarweb.com", "desc": "流量解密。优点：一眼看穿某个国家用户最爱访问哪些网站。" },
+        { "title": "Statista", "url": "https://www.statista.com", "desc": "数据统计。优点：提供各国行业市场占有率及消费偏好数据。" }
+      ]
+    },
+    {
+      "categoryName": "基础编辑与排版工具",
+      "description": "涵盖文本润色、格式转换、长文编辑及在线文档处理",
+      "icon": "✍️",
+      "links": [
+        { "title": "Hemingway Editor", "url": "https://hemingwayapp.com", "desc": "写作精炼专家。优点：自动识别冗长句子和被动语态，提升可读性。" },
+        { "title": "Grammarly", "url": "https://www.grammarly.com", "desc": "英文纠错首选。优点：实时语法修正与语气建议，支持多平台插件。" },
+        { "title": "TinyWow", "url": "https://tinywow.com", "desc": "全能处理。优点：免费提供 PDF 转换、图片去底、视频剪辑等百余种功能。" },
+        { "title": "Smallpdf", "url": "https://smallpdf.com/cn", "desc": "PDF 一站式处理。优点：界面简洁，支持云端签名、合并与压缩。" },
+        { "title": "ConvertCase", "url": "https://convertcase.net", "desc": "大小写转换。优点：快速处理大写、小写、标题首字母大写等格式。" },
+        { "title": "Carbon", "url": "https://carbon.now.sh", "desc": "代码美化截图。优点：生成极高颜值的代码分享海报，适合技术分享。" },
+        { "title": "Notion", "url": "https://www.notion.so", "desc": "全能笔记与排版。优点：将文档、数据库与任务完美整合，支持 Markdown。" },
+        { "title": "Draft", "url": "https://draftin.com", "desc": "极简写作。优点：专注于文字本身，支持版本控制与协作编辑。" },
+        { "title": "DeepL Write", "url": "https://www.deepl.com/write", "desc": "AI 写作助手。优点：不仅修正语法，还能提供更地道、优雅的词汇建议。" },
+        { "title": "iLoveIMG", "url": "https://www.iloveimg.com/zh-cn", "desc": "图片批处理。优点：在线批量压缩、调整尺寸与格式转换，效率极高。" }
+      ]
+    },
+    {
+      "categoryName": "计算、转化与逻辑工具",
+      "description": "涵盖科学计算、数学模型解析、单位换算及开发者逻辑工具",
+      "icon": "🔢",
+      "links": [
+        { "title": "WolframAlpha", "url": "https://www.wolframalpha.com", "desc": "知识计算引擎。优点：直接给出数学难题的步骤解析、化学式及统计数据。" },
+        { "title": "Desmos", "url": "https://www.desmos.com", "desc": "图形计算器。优点：可视化函数绘图，极其直观地展示数学逻辑。" },
+        { "title": "Regex101", "url": "https://regex101.com", "desc": "正则表达式解析。优点：实时调试与解释正则逻辑，支持多种编程语言。" },
+        { "title": "CyberChef", "url": "https://cyberchef.io", "desc": "数据瑞士军刀。优点：集成加解密、编码转换、数据提取等复杂操作。" },
+        { "title": "JSONHero", "url": "https://jsonhero.io", "desc": "JSON 查看器。优点：极致精美的 JSON 数据可视化与结构分析工具。" },
+        { "title": "UnitConverters", "url": "https://www.unitconverters.net", "desc": "万能单位换算。优点：覆盖物理、度量衡、工程等几乎所有单位换算。" },
+        { "title": "FormulaBot", "url": "https://formulabot.com", "desc": "Excel 公式生成。优点：输入自然语言描述，AI 自动生成对应的 Excel 公式。" },
+        { "title": "Calculators.org", "url": "https://www.calculators.org", "desc": "综合计算库。优点：提供房贷、理财、健康等多领域的专用计算器。" },
+        { "title": "Speedtest by Ookla", "url": "https://www.speedtest.net", "desc": "网速测试。优点：全球最权威的带宽下行、上行及延迟检测。" },
+        { "title": "Epoch Converter", "url": "https://www.epochconverter.com", "desc": "时间戳转换。优点：在 Unix 时间戳与人类可读日期之间快速切换。" }
+      ]
+    },
+    {
+      "categoryName": "AI 内容检测与合规识别",
+      "description": "识别文本、图片是否由 AI 生成，确保内容的原创性与真实性",
+      "icon": "🛡️",
+      "links": [
+        { "title": "GPTZero", "url": "https://gptzero.me", "desc": "AI 检测标杆。优点：全球最广泛使用的 AI 文本识别工具，准确率极高。" },
+        { "title": "Originality.ai", "url": "https://originality.ai", "desc": "专业防剽窃。优点：同时检测 AI 生成和内容抄袭，专为 SEO 运营设计。" },
+        { "title": "Copyleaks", "url": "https://copyleaks.com/ai-content-detector", "desc": "多语言检测。优点：支持包括中文、西语在内的多种语言 AI 识别。" },
+        { "title": "ZeroGPT", "url": "https://www.zerogpt.com", "desc": "简洁免费识别。优点：界面直观，适合快速、大批量的文本原创性检测。" },
+        { "title": "AI or Not", "url": "https://www.aiornot.com", "desc": "图片生成检测。优点：识别图片是由 AI（如 Midjourney）生成还是真实拍摄。" },
+        { "title": "Winston AI", "url": "https://gowinston.ai", "desc": "高准确率检测。优点：声称对最新一代大型语言模型具有极高的识别率。" },
+        { "title": "Sapling AI Detector", "url": "https://sapling.ai/ai-content-detector", "desc": "实时检测工具。优点：提供浏览器插件，可在撰写时实时查看 AI 生成比例。" },
+        { "title": "Undetectable AI", "url": "https://undetectable.ai", "desc": "AI 拟人化与检测。优点：检测 AI 痕迹并提供重写功能以增加文本的人类感。" },
+        { "title": "Content at Scale", "url": "https://contentatscale.ai/ai-content-detector", "desc": "长文分析。优点：针对长篇博客或论文进行深度采样检测，稳定性强。" },
+        { "title": "Scribbr AI Detector", "url": "https://www.scribbr.com/ai-detector", "desc": "学术友好。优点：专为学生和研究人员设计，注重正式文档的检测逻辑。" }
+      ]
+    }
+  ]
+},
+
+
+{
+  "id": 6,
+  "name": "营销与运营实战全库",
+  "categories": [
+    {
+      "categoryName": "营销策略与增长黑客",
+      "description": "涵盖内容营销、增长实验、SEO 趋势及跨平台增长工具",
+      "icon": "🚀",
+      "links": [
+        { "title": "Content Marketing Institute", "url": "https://contentmarketinginstitute.com", "desc": "内容营销圣经。优点：2026 年最新的 AI 内容创作趋势与案例；缺点：深度报告多为英文。" },
+        { "title": "GrowthHackers", "url": "https://growthhackers.com", "desc": "增长社区。优点：全球最顶尖的实验方法论与 A/B 测试案例；缺点：社区讨论门槛较高。" },
+        { "title": "Think with Google", "url": "https://www.thinkwithgoogle.com", "desc": "官方洞察。优点：谷歌出品的全球消费趋势与大数据报告；缺点：部分数据有时效滞后。" },
+        { "title": "HubSpot Academy", "url": "https://academy.hubspot.com", "desc": "系统课程。优点：提供免费且权威的入站营销(Inbound)认证；缺点：课程内容偏向其自家工具。" },
+        { "title": "Refonte Learning", "url": "https://www.refontelearning.com/blog/", "desc": "新锐增长。优点：专注 2026 年短视频与社交商业的增长逻辑；缺点：中文资料相对较少。" },
+        { "title": "Make / Zapier", "url": "https://www.make.com", "desc": "自动化营销。优点：连接上千个 App 实现无人值守营销流；缺点：逻辑复杂时调试较难。" },
+        { "title": "SlickText", "url": "https://www.slicktext.com/blog/", "desc": "私域运营。优点：深度解析 2026 年短信与即时通讯营销转化；缺点：主要针对海外市场。" },
+        { "title": "Backlinko", "url": "https://backlinko.com", "desc": "SEO 实战。优点：Brian Dean 出品，专注高权重外链与内容策略；缺点：更新频率不算极高。" },
+        { "title": "Copyhackers", "url": "https://copyhackers.com", "desc": "文案秘籍。优点：教你如何写出高转化率、直击痛点的营销文案；缺点：需具备一定英语语感。" },
+        { "title": "AdAge / Adweek", "url": "https://adage.com", "desc": "行业风向。优点：全球创意广告与品牌动态的第一手资讯；缺点：部分深度内容需订阅付费。" }
+      ]
+    },
+    {
+      "categoryName": "各平台运营与社交媒体",
+      "description": "针对主流平台（TikTok、Instagram、LinkedIn、Red）的运营技巧",
+      "icon": "📱",
+      "links": [
+        { "title": "Social Media Examiner", "url": "https://www.socialmediaexaminer.com", "desc": "社媒百科。优点：针对各平台算法变化提供极其详细的实操指南；缺点：广告稍多。" },
+        { "title": "Later Blog", "url": "https://later.com/blog/", "desc": "视觉运营。优点：Instagram 与 Pinterest 审美与排版运营的领头羊；缺点：侧重视觉类平台。" },
+        { "title": "InfluenceFlow", "url": "https://influenceflow.io/resources/", "desc": "红人营销。优点：2026 年全球网红营销趋势与避坑指南；缺点：数据查询功能需付费。" },
+        { "title": "Hootsuite / Buffer", "url": "https://blog.hootsuite.com", "desc": "多账号管理。优点：提供详尽的发布节奏与跨平台协调方案；缺点：免费版功能有限。" },
+        { "title": "Little Red Book (小红书运营)", "url": "https://panying.xiaohongshu.com", "desc": "种草逻辑。优点：中文市场最高效的消费心理运营阵地；缺点：算法变动极快。" },
+        { "title": "TikTok for Business", "url": "https://www.tiktok.com/business/", "desc": "短视频趋势。优点：实时查看全球最火的背景音乐与创意模版；缺点：竞争极其激烈。" },
+        { "title": "LinkedIn Marketing Solutions", "url": "https://business.linkedin.com/marketing-solutions", "desc": "B2B 运营。优点：高净值人群与企业决策者的运营策略；缺点：广告投放成本高。" },
+        { "title": "Discord / Telegram 运营", "url": "https://discord.com/servers", "desc": "社群运营。优点：私域流量池与高度忠诚社区的构建方式；缺点：管理成本极高。" }
+      ]
+    },
+    {
+      "categoryName": "活动策划与项目管理",
+      "description": "提供创意脑暴、活动执行、时间线管理及协作工具",
+      "icon": "🎊",
+      "links": [
+        { "title": "Miro / Mural", "url": "https://miro.com", "desc": "创意脑暴。优点：无限画布，支持团队实时在线策划活动流程；缺点：大图加载稍慢。" },
+        { "title": "Eventbrite Blog", "url": "https://www.eventbrite.com/blog/", "desc": "活动指南。优点：从小型聚会到大型峰会的全流程策划建议；缺点：更偏向线下活动。" },
+        { "title": "Teamwork.com", "url": "https://www.teamwork.com/blog/", "desc": "项目协同。优点：专为营销代理商设计的任务追踪与工时管理；缺点：上手需一定学习成本。" },
+        { "title": "Kanbanchi", "url": "https://www.kanbanchi.com", "desc": "看板策划。优点：与 Google Workspace 完美集成，适合 Mac 用户；缺点：功能较垂直。" },
+        { "title": "Monday.com", "url": "https://monday.com", "desc": "运营中枢。优点：可视化程度极高，可定制各种营销看板；缺点：价格偏贵。" },
+        { "title": "Notion Template Gallery", "url": "https://www.notion.so/templates", "desc": "全能手册。优点：海量现成的活动策划、SOP 模版可直接套用；缺点：自由度过高导致配置累。" },
+        { "title": "Canva / Adobe Express", "url": "https://www.canva.com", "desc": "视觉物料。优点：数分钟内产出专业级的海报、活动主视觉；缺点：版权字体需留意。" },
+        { "title": "Trello", "url": "https://trello.com", "desc": "轻量执行。优点：简单直观的卡片流，适合小型活动执行监控；缺点：深度功能不足。" }
+      ]
+    },
+    {
+      "categoryName": "用户心理与行为分析",
+      "description": "通过数据与心理学洞察用户行为，优化转化路径",
+      "icon": "🧠",
+      "links": [
+        { "title": "Nir and Far (Nir Eyal)", "url": "https://www.nirandfar.com/blog/", "desc": "上瘾模型。优点：《上瘾》作者分享如何设计让人欲罢不能的产品；缺点：更偏产品逻辑。" },
+        { "title": "Behavioral Scientist", "url": "https://behavioralscientist.org", "desc": "行为科学。优点：将心理学应用于营销、设计与决策的最前沿文章；缺点：学术气息较重。" },
+        { "title": "Contentsquare / Amplitude", "url": "https://contentsquare.com", "desc": "行为数据。优点：可视化展示用户在网页上的“怒点”与转化点；缺点：企业级价格。" },
+        { "title": "Hotjar / Microsoft Clarity", "url": "https://www.hotjar.com", "desc": "热图分析。优点：免费版即可看用户录屏，发现转化瓶颈；缺点：影响页面加载速度。" },
+        { "title": "Revuze", "url": "https://www.revuze.it", "desc": "消费者洞察。优点：2026 年顶尖的 AI 评论情绪分析工具；缺点：针对大品牌数据多。" },
+        { "title": "CXL (Conversion XL)", "url": "https://cxl.com/blog/", "desc": "转化率优化。优点：极其硬核的 CRO 实验数据与心理学分析；缺点：高级课程非常贵。" },
+        { "title": "Choice Hacking", "url": "https://www.choicehacking.com", "desc": "选择心理。优点：用案例拆解用户做决定背后的心理学动因；缺点：更新频率中等。" },
+        { "title": "SurveyMonkey / Typeform", "url": "https://www.typeform.com", "desc": "反馈收集。优点：设计精美，用户完成率高，能收集第一手心智数据；缺点：免费额度紧。" }
+      ]
+    }
+  ]
+}
+]
