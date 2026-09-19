@@ -1,0 +1,4974 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>语林 · 语法学习系统</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { height: 100%; font-family: 'PingFang SC', sans-serif; background: #f8fafc; overflow: hidden; }
+        .app-container { display: flex; flex-direction: column; height: 100%; }
+
+        /* 顶部导航 */
+        .top-nav { height: 65px; background: #fff; border-bottom: 1px solid #e2e8f0; display: flex; align-items: center; padding: 0 20px; gap: 10px; overflow-x: auto; flex-shrink: 0; }
+        .lang-btn { padding: 8px 16px; border-radius: 20px; border: 1px solid #cbd5e1; background: #fff; cursor: pointer; white-space: nowrap; font-size: 0.9rem; transition: 0.2s; }
+        .lang-btn.active { background: #3b82f6; color: #fff; border-color: #3b82f6; }
+
+        /* 主体布局 */
+        .main-body { display: flex; flex: 1; overflow: hidden; }
+        .sidebar-toc { width: 260px; border-right: 1px solid #e2e8f0; padding: 25px; overflow-y: auto; background: #fff; display: block; }
+        .content-area { flex: 1; overflow-y: auto; padding: 40px; }
+
+        /* 首页网格布局 */
+        .home-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; padding: 20px; }
+        .nav-card { padding: 30px; background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; text-align: center; cursor: pointer; transition: 0.3s; }
+        .nav-card:hover { border-color: #3b82f6; box-shadow: 0 4px 12px rgba(59,130,246,0.1); }
+        
+        .toc-link { display: block; padding: 6px 0; color: #475569; text-decoration: none; font-size: 0.9rem; }
+
+/* 1. 优化Markdown内容区域，增加书写感 */
+.content-area {
+    line-height: 1.8;
+    color: #334155;
+    background: #f8fafc;
+}
+
+/* 2. Markdown内容卡片化 */
+.markdown-preview {
+    background: white;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* 3. 标题样式优化 */
+.markdown-preview h2 {
+    color: #0f172a;
+    border-left: 4px solid #3b82f6;
+    padding-left: 12px;
+    margin: 2rem 0 1rem;
+}
+
+/* 4. 引用块（好看的笔记栏） */
+blockquote {
+    border-left: 4px solid #94a3b8;
+    background: #f1f5f9;
+    padding: 15px 20px;
+    border-radius: 0 8px 8px 0;
+    font-style: italic;
+    color: #475569;
+    margin: 1.5rem 0;
+}
+
+/* 5. 代码块优化 */
+pre {
+    background: #1e293b !important;
+    color: #f8fafc;
+    padding: 20px;
+    border-radius: 12px;
+    overflow-x: auto;
+}
+
+code {
+    background: #e2e8f0;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: 'Fira Code', monospace;
+}
+
+
+/* 确保 Markdown 容器内的表格样式 */
+#markdownContent table {
+    border-collapse: collapse !important;
+    width: 100% !important;
+    margin: 20px 0 !important;
+    border: 2px solid #cbd5e1 !important; /* 外边框 */
+}
+
+#markdownContent th, 
+#markdownContent td {
+    border: 1px solid #cbd5e1 !important; /* 内边框 */
+    padding: 5px 25px !important;       /* 增加间距 */
+    text-align: left !important;         /* 对齐 */
+}
+
+#markdownContent th {
+    background-color: #f1f5f9 !important;
+    font-weight: bold !important;
+}
+
+/* 强制让标题居中 */
+#markdownContent h1, 
+#markdownContent h2 {
+    text-align: center !important;
+    margin-top: 2rem !important;
+    margin-bottom: 1.5rem !important;
+    width: 100% !important; /* 确保标题占满宽度，居中才有效 */
+}
+
+/* 如果你也想让 h3 一起居中，可以加上下面这行 */
+/* #markdownContent h3 { text-align: center !important; } */
+
+
+/* 优化 h3 标题的间距 */
+#markdownContent h3 {
+    margin-top: 2.5rem !important;    /* 增大上方与前一段的间距 */
+    margin-bottom: 1.2rem !important; /* 增大下方与正文的间距 */
+    line-height: 1.4 !important;      /* 增大标题自身的行高 */
+    font-size: 1.25rem !important;    /* 可选：适当调整字号让视觉更平衡 */
+    color: #334155 !important;        /* 建议颜色：深灰，比黑色稍柔和 */
+}
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <nav class="top-nav" id="langNav">
+        <button class="lang-btn" onclick="renderHome()" id="btn-home">🏠 首页</button>
+    </nav>
+    <div class="main-body">
+        <aside class="sidebar-toc" id="sidebar">
+            <h4 style="margin-bottom: 15px; color: #1e293b;">📌 本页目录</h4>
+            <div id="tocLinks"></div>
+        </aside>
+        <main class="content-area" id="markdownContent"></main>
+    </div>
+</div>
+
+<script>
+    const grammarLibrary = {
+        chinese: { name: "🇨🇳 中文语法", 
+                    markdown: `# 📜 现代中文语法要点
+
+## 1. 语序
+中文是 **SVO**（主-谓-宾）语言，语序非常固定。
+- **基本结构**：主语 + 谓语 + 宾语  
+  >例：我 爱 你。
+- **定语**：放在名词前 
+
+  >例：美丽的 花。
+- **状语**：放在动词/形容词前  
+  >例：很快地 跑。
+- **补语**：放在动词/形容词后  
+  >例：跑得 很快。
+
+## 2. 词类
+
+### 2.1 名词
+- 可受数量词、指示代词修饰，一般不受副词修饰。
+- 无性、数、格变化（复数可用“们”表示，限于人称代词和少量名词）。
+  - >例：同学们、我们
+- 方位名词：上、下、里、外、前、后、左、右、东、西等。
+
+### 2.2 动词
+- 可受“不、没、很”等修饰，可带“了、着、过”。
+- 特殊动词：
+  - 判断动词：是
+  - 能愿动词：能、会、可以、应该、愿意、敢等
+  - 趋向动词：来、去、上、下、进、出、回、过等
+
+### 2.3 形容词
+- 表示性质或状态，可受程度副词修饰（很、非常等）。
+- 可作谓语、定语、状语、补语。
+- 重叠形式：高高（的）、慢慢（地）、红红（的）
+
+### 2.4 数词
+- 基数、序数、概数（两、几、多、余）。
+- 量词必用：一个人、三本书、五匹马。
+
+### 2.5 量词
+- 个体量词：个、本、只、条、张、把
+- 度量衡量词：米、公斤、升
+- 临时量词：杯、盒、碗
+- 动量词：次、回、遍、趟、下
+
+### 2.6 代词
+- 人称代词：我、你、他/她/它、我们、你们、他们、自己、别人
+- 指示代词：这、那、这些、那些、这儿、那儿
+- 疑问代词：谁、什么、哪、怎么、怎样、多少、几
+
+### 2.7 副词
+- 程度：很、非常、极、太、特别、稍微
+- 范围：都、全、只、就、仅仅
+- 时间：已经、曾经、刚刚、正在、立刻、永远
+- 重复：又、再、还、也
+- 否定：不、没（有）、别、勿
+- 情态/语气：也许、大概、一定、居然、果然
+
+### 2.8 介词
+- 引出时间、地点、工具、原因、对象等。
+- 常见：在、从、到、对、对于、关于、比、用、以、为了、除了
+
+### 2.9 连词
+- 并列：和、跟、与、及、以及
+- 承接：于是、然后、接着
+- 转折：但是、可是、然而、不过
+- 因果：因为…所以…、既然…就…
+- 条件：如果…就…、只要…就…、只有…才…
+- 让步：即使…也…、尽管…还是…
+
+### 2.10 助词
+- 结构助词：的、地、得  
+  >例：美丽的风景（定语） | 慢慢地走（状语） | 跑得很快（补语）*
+- 动态助词：了（完成）、着（持续）、过（经历）
+- 语气助词：的、了、吗、呢、吧、啊、嘛、啦
+
+### 2.11 叹词与拟声词
+- 叹词：啊、哎呀、哦、喂（独立成句）
+- 拟声词：哗啦、轰隆、叽叽喳喳
+
+## 3. 句子成分
+
+| 成分 | 说明 | 例 |
+| :--- | :--- | :--- |
+| 主语 | 话题或动作发出者 | **他** 在看书 |
+| 谓语 | 对主语进行陈述 | 他 **在看** 书 |
+| 宾语 | 动作的承受者 | 他在看 **书** |
+| 定语 | 修饰名词 | **红色** 的苹果 |
+| 状语 | 修饰动词/形容词 | **很快** 地跑 |
+| 补语 | 补充说明动作或状态 | 跑 **得快** / 好 **极了** |
+
+## 4. 特殊句法结构
+
+### 4.1 “把”字句（处置式）
+- 结构：主语 + 把 + 宾语 + 动词 + 其他  
+  >例：我把书放在桌子上。
+
+### 4.2 “被”字句（被动句）
+- 结构：受事 + 被（+ 施事） + 动词 + 其他  
+  >例：书被他拿走了。
+
+### 4.3 连动句
+- 同一个主语连续发出两个或以上动作。  
+  >例：我去商店买东西。
+
+### 4.4 兼语句
+- 第一个动词的宾语是第二个动词的主语。  
+  >例：老师让我回答问题。
+
+### 4.5 存现句
+- 表示存在、出现、消失。  
+  >例：桌子上有一本书。  
+  >例：前面走来一个人。
+
+### 4.6 比较句
+- “比”字句：A比B + 形容词  
+  >例：他比我高。
+- 更/还：他比我更高/还高。
+- 不如/没有：我不如他努力。
+
+### 4.7 是…的 结构
+- 强调时间、地点、方式等。  
+  >例：我是昨天来的。  
+  >例：他是坐飞机去的。
+
+## 5. 疑问句形式
+
+| 类型 | 结构 | 例 |
+|------|------|----|
+| 是非问 | 陈述句 + 吗 | 你好吗？ |
+| 正反问 | V不V / A不A | 你去不去？ |
+| 特指问 | 疑问代词 | 你是谁？ |
+| 选择问 | 还是 | 你去还是我去？ |
+| 反问句 | 难道…吗？ / 怎么…呢？ | 难道你不知道吗？ |
+
+## 6. 时体表达
+
+中文无时态（tense），但通过**体（aspect）**和**时间词**表达。
+
+| 体 | 标记 | 例 |
+|----|------|----|
+| 完成体 | 了 | 我吃了饭。 |
+| 经历体 | 过 | 我去过北京。 |
+| 进行体 | 在 / 正 / 着 | 他在唱歌 / 门开着呢。 |
+| 持续体 | 着 | 他站着不动。 |
+| 将要发生 | 要…了 / 快…了 | 要下雨了。 |
+
+## 7. 复句类型
+
+- **并列**：既…又… / 一边…一边…
+- **承接**：首先…然后… / …接着…
+- **递进**：不但…而且…
+- **选择**：或者…或者… / 要么…要么…
+- **转折**：虽然…但是…
+- **因果**：因为…所以… / 既然…就…
+- **条件**：只要…就… / 只有…才…
+- **假设**：如果…就… / 要是…就…
+- **目的**：为了… / 以便…
+
+## 8. 常见语法错误（供学习参考）
+
+1. **语序错误**（受母语影响）：  
+   ❌ 我昨天去商店。  
+   ✅ 我昨天去了商店。（缺“了”表示完成）
+
+2. **遗漏量词**：  
+   ❌ 一人  
+   ✅ 一个人
+
+3. **“的 / 地 / 得”混用**：  
+   ❌ 跑的很快  
+   ✅ 跑得很快
+
+4. **“不”与“没”误用**：  
+   - “不”表主观否定或习惯  
+   - “没”表未发生或未完成  
+   ❌ 我昨天不吃饭。  
+   ✅ 我昨天没吃饭。
+
+5. **“是”的滥用**：  
+   ❌ 我是很高兴。  
+   ✅ 我很高兴。
+
+6. **动态助词“了”的位置不当**：  
+   ❌ 我吃饭了以后去。  
+   ✅ 我吃了饭以后去。
+   `
+        }, 
+
+
+
+        english: { name: "🇬🇧 英语语法", 
+
+ markdown: `# 📘 英语核心语法大全
+
+
+
+## 1. 语序（基本句型）
+
+英语是 **SVO（主语-谓语-宾语）** 语言，语序相对固定。
+
+- **陈述句**：主语 + 谓语 + 宾语  
+  >例：I love you.
+- **疑问句**：助动词/情态动词 + 主语 + 谓语  
+  >例：Do you like it?
+- **祈使句**：(You) + 动词原形  
+  >例：Sit down.
+- **感叹句**：What/How + 被强调部分  
+  >例：What a beautiful day!*
+
+## 2. 词类（10 大词性）
+
+### 2.1 名词
+- 可数 / 不可数
+- 单复数变化（book → books, child → children）
+- 所有格（'s / of）
+
+### 2.2 代词
+- 人称代词：I, you, he/she/it, we, they
+- 物主代词：my, your, his/her/its, our, their
+- 反身代词：myself, yourself, himself, itself, ourselves, themselves
+- 指示代词：this, that, these, those
+- 不定代词：some, any, no, every, all, each, both, either, neither
+
+### 2.3 动词
+- 实义动词（run, eat, think）
+- 助动词（be, do, have）
+- 情态动词（can, could, may, might, must, shall, should, will, would）
+- 系动词（be, become, seem, appear, look, feel, sound, taste, smell）
+- 及物 / 不及物
+
+### 2.4 形容词
+- 修饰名词，可作定语或表语
+- 比较级 / 最高级（tall → taller → tallest）
+- 形容词顺序（观点 → 尺寸 → 年龄 → 形状 → 颜色 → 来源 → 材料 → 用途）  
+  >例：a beautiful small old round red French wooden writing desk*
+
+### 2.5 副词
+- 修饰动词、形容词或其他副词
+- 类型：方式（quickly）、地点（here）、时间（now）、频率（often）、程度（very）
+- 副词位置：一般放在动词后或句首/句尾
+
+### 2.6 介词
+- 时间：at, on, in, before, after, during, since, until
+- 地点：at, on, in, above, below, beside, between, among
+- 其他：by, with, without, for, of, from, to, about
+
+### 2.7 连词
+- 并列连词（FANBOYS）：for, and, nor, but, or, yet, so
+- 从属连词：because, although, if, unless, when, while, since, as, until
+
+### 2.8 数词
+- 基数词（one, two, three）
+- 序数词（first, second, third）
+
+### 2.9 冠词
+- 不定冠词：a / an
+- 定冠词：the
+- 零冠词
+
+### 2.10 感叹词
+- oh, ah, wow, hey, ouch, well
+
+## 3. 时态（12 大时态）
+
+| 时态 | 结构 | 例 |
+|------|------|----|
+| 一般现在时 | do/does / am/is/are | I work. / He works. |
+| 现在进行时 | am/is/are + doing | I am working. |
+| 现在完成时 | have/has + done | I have worked. |
+| 现在完成进行时 | have/has + been + doing | I have been working. |
+| 一般过去时 | did / was/were | I worked. |
+| 过去进行时 | was/were + doing | I was working. |
+| 过去完成时 | had + done | I had worked. |
+| 过去完成进行时 | had + been + doing | I had been working. |
+| 一般将来时 | will/shall + do / am/is/are going to | I will work. |
+| 将来进行时 | will + be + doing | I will be working. |
+| 将来完成时 | will + have + done | I will have worked. |
+| 将来完成进行时 | will + have + been + doing | I will have been working. |
+
+## 4. 语态
+
+- **主动语态**：主语执行动作  
+  >例：The dog bit the man.
+- **被动语态**：be + 过去分词 + (by)  
+  >例：The man was bitten by the dog.*
+
+## 5. 语气
+
+- **陈述语气**：陈述事实
+- **祈使语气**：命令或请求
+- **虚拟语气**
+  - 与现在相反：If + 过去式 (were), ... would/could/might + 动词原形  
+    *If I were you, I would go.*
+  - 与过去相反：If + had done, ... would/could + have done  
+    *If I had known, I would have told you.*
+  - 与将来相反：If + should/were to, ... would + 动词原形
+  - 建议/命令/要求：动词 + that + (should) + 动词原形  
+    *I suggest that he (should) leave.*
+
+## 6. 非谓语动词
+
+- **不定式**：to + 动词原形  
+  *I want to go.
+- **动名词**：动词-ing（作名词）  
+  *Swimming is fun.
+- **现在分词**：动词-ing（主动/进行）  
+  *a crying baby
+- **过去分词**：动词-ed（被动/完成）  
+  *a broken window*
+
+## 7. 句子成分
+
+| 成分 | 说明 | 例 |
+|------|------|----|
+| 主语 | 动作或状态的主题 | **The cat** sleeps. |
+| 谓语 | 主语发出的动作或状态 | The cat **sleeps**. |
+| 宾语 | 动作的承受者 | I love **you**. |
+| 表语 | 系动词后的成分 | She is **beautiful**. |
+| 定语 | 修饰名词 | **red** apple |
+| 状语 | 修饰动词/形容词/副词 | He runs **fast**. |
+| 补足语 | 补充说明宾语或主语 | They elected him **president**. |
+
+## 8. 从句
+
+- **名词性从句**（主语/宾语/表语/同位语）  
+  *What he said is true.
+- **定语从句**（关系代词 who, whom, which, that, whose；关系副词 where, when, why）  
+  *The book that I bought is good.
+- **状语从句**（时间、原因、条件、让步、目的、结果、比较、地点、方式）  
+  *If it rains, we will stay home.*
+
+## 9. 特殊句型
+
+- **倒装句**
+  - 完全倒装：Here comes the bus.
+  - 部分倒装：Never have I seen such a thing.
+- **强调句**：It is/was + 被强调部分 + that/who + 其余部分  
+  *It was yesterday that I met him.
+- **there be 句型**：表示存在  
+  *There is a book on the table.*
+
+## 10. 主谓一致
+
+- 语法一致（主语单数则谓语单数）
+- 意义一致（集合名词 family, team 按意义）
+- 就近原则（either...or, neither...nor, not only...but also）  
+  *Either you or I am wrong.*
+
+## 11. 常见语法错误提示
+
+- ❌ 主谓不一致：He go to school.  
+  ✅ He goes to school.
+- ❌ 时态混用：I saw her yesterday and I meet her today.  
+  ✅ I saw her yesterday and I met her today.
+- ❌ 双宾语语序错误：She gave a book me.  
+  ✅ She gave me a book / She gave a book to me.
+- ❌ 形容词/副词误用：She runs quick.  
+  ✅ She runs quickly.
+- ❌ 介词遗漏：We discussed about the problem.（discuss 及物）  
+  ✅ We discussed the problem.
+- ❌ 悬垂修饰语：Walking to school, a car hit me.  
+  ✅ Walking to school, I was hit by a car.
+`
+        },
+
+
+
+        japanese: { name: "🇯🇵 日本語语法", 
+
+   markdown: `# 🍣 日本語文法精讲
+
+
+
+## 1. 语序（基本特征）
+
+日语是 **SOV（主语-宾语-谓语）** 语言，与汉语/英语语序不同。
+
+- **基本结构**：主语 + 宾语 + 谓语  
+  >例：私 は リンゴ を 食べる。（我吃苹果）
+- **修饰语在前**：定语、状语放在被修饰词之前
+- **谓语在句尾**：这是日语最固定的语法特征
+
+## 2. 十大词类（品詞）
+
+### 2.1 动词（動詞）
+- **五段动词（一类动词）**：以う段假名结尾，如 書く、話す、飲む
+- **一段动词（二类动词）**：以「る」结尾，前一个假名是い段或え段，如 見る、食べる
+- **サ変动词（三类动词）**：する（做）
+- **カ変动词（三类动词）**：来る（来）
+
+### 2.2 形容词（形容詞）
+- **イ形容词**：以「い」结尾，如 赤い、楽しい、高い  
+  活用变化：赤い → 赤くない（否定） → 赤かった（过去）
+- **ナ形容词（形容動詞）**：以「だ」为基本形，如 静かだ、綺麗だ  
+  作定语时加「な」：静かな場所
+
+### 2.3 名词（名詞）
+- 无性、数、格变化
+- 可加助词充当各种成分
+- 时间名词可接助词「に」表示时间点
+
+### 2.4 代词（代名詞）
+- 人称代词：私（我）、あなた（你）、彼（他）、彼女（她）、私たち（我们）
+- 指示代词：これ（这个）、それ（那个）、あれ（那个远处）、どれ（哪个）
+
+### 2.5 数词（数詞）
+- 基数词：一（いち）、二（に）、三（さん）...
+- 量词种类丰富（個、本、枚、匹、人、台、冊、杯、回等）
+- 数字+量词常有音变：一本（いっぽん）、三杯（さんばい）
+
+### 2.6 副词（副詞）
+- 修饰动词、形容词或其他副词
+- 类型：程度（とても、少し）、时间（すぐ、もう）、频率（よく、たまに）、情态（はっきり、ゆっくり）
+- 拟声拟态词：どんどん、きらきら、わくわく、ぐっすり
+
+### 2.7 连体词（連体詞）
+- 只能修饰名词，不能单独使用
+- 例：この（这个）、その（那个）、あの（那个）、どの（哪个）、大きな（大的）、小さな（小的）
+
+### 2.8 接续词（接続詞）
+- 连接句子或段落
+- 并列：そして、および
+- 转折：しかし、でも、けれども
+- 因果：だから、それで、そのため
+- 添加：それに、しかも
+
+### 2.9 感叹词（感動詞）
+- 独立使用，不参与句子结构
+- 例：ああ、おお、えっ、さあ、はい、いいえ、こんにちは
+
+### 2.10 助词（助詞）—— 日语核心
+- **格助词**：が（主格）、を（宾格）、に（方向/时间/目的）、へ（方向）、と（一起/引用）、から（起点）、まで（终点）、で（场所/手段）
+- **副助词**：は（主题）、も（也）、だけ（只）、しか（只，与否定连用）、ほど（程度）、くらい（大约）
+- **终助词**：か（疑问）、ね（确认/感叹）、よ（告知）、わ（女性语气）、ぞ（男性语气）
+- **接续助词**：て（连接）、ながら（一边）、ので（因为）、のに（虽然）
+
+## 3. 动词活用（基本形 → 连用形 → 未然形等）
+
+| 动词类型 | 基本形 | 连用形（ます形） | て形 | た形 | 否定形（ない形） | 假定形（ば形） | 意志形（よう形） |
+|----------|--------|-----------------|------|------|-----------------|---------------|-----------------|
+| 五段（書く） | 書く | 書き | 書いて | 書いた | 書かない | 書けば | 書こう |
+| 一段（食べる） | 食べる | 食べ | 食べて | 食べた | 食べない | 食べれば | 食べよう |
+| サ変（する） | する | し | して | した | しない | すれば | しよう |
+| カ変（来る） | くる | き | きて | きた | こない | くれば | こよう |
+
+## 4. 形容词活用
+
+| 类型 | 基本形 | 否定形 | 过去形 | て形 | 副词化 |
+|------|--------|--------|--------|------|--------|
+| イ形容词 | 楽しい | 楽しくない | 楽しかった | 楽しくて | 楽しく |
+| ナ形容词 | 静かだ | 静かではない | 静かだった | 静かで | 静かに |
+
+## 5. 助词详解（核心语法）
+
+### 5.1 が vs は
+- **が**：强调主语、新信息、客观描述  
+  >例：雨が降っている。（正在下雨）
+- **は**：强调主题、旧信息、对比  
+  >例：私は日本人です。（我是日本人）*
+
+### 5.2 に vs で
+- **に**：存在地点（いる/ある）、时间点、动作方向、目的  
+  >例：学校にいる。（在学校）| 3時に会う。（3点见面）
+- **で**：动作场所、手段、范围  
+  >例：教室で勉強する。（在教室学习）| バスで行く。（坐公交去）*
+
+### 5.3 を
+- 表示他动词的宾语  
+  >例：本を読む。（读书）*
+- 表示移动经过的场所  
+  >例：道を歩く。（在路上走）*
+
+## 6. 时态与体（テンス・アスペクト）
+
+| 形式 | 意义 | 例 |
+|------|------|----|
+| る形（非过去肯定） | 现在/将来 | 食べる（吃/将吃） |
+| た形（过去肯定） | 过去 | 食べた（吃了） |
+| ない形（非过去否定） | 现在/将来否定 | 食べない（不吃） |
+| なかった（过去否定） | 过去否定 | 食べなかった（没吃） |
+| ている | 进行/状态/习惯 | 食べている（正在吃） |
+| てしまう | 完成/遗憾 | 食べてしまった（吃完了/不该吃的吃了） |
+| ておく | 提前准备 | 食べておく（提前吃好） |
+| てみる | 尝试做 | 食べてみる（试着吃） |
+
+## 7. 敬语体系（敬語）—— 日语特色
+
+### 7.1 尊他语（尊敬語）
+- 抬高对方动作
+- 特殊动词：行く→いらっしゃる、言う→おっしゃる、する→なさる
+- 公式：お + 连用形 + になる  
+  >例：お読みになる（阅读）*
+
+### 7.2 自谦语（謙譲語）
+- 降低自己动作
+- 特殊动词：行く→参る、言う→申す、する→いたす
+- 公式：お + 连用形 + する  
+  >例：お届けする（为您送去）*
+
+### 7.3 郑重语（丁寧語）
+- 礼貌体：です・ます
+- 例：行きます（去）、食べます（吃）、綺麗です（漂亮）
+
+### 7.4 敬语对照表
+
+| 普通形 | ます形（郑重） | 尊他语 | 自谦语 |
+|--------|---------------|--------|--------|
+| 行く | 行きます | いらっしゃる | 参る |
+| 来る | 来ます | いらっしゃる | 参る |
+| いる | います | いらっしゃる | おる |
+| 言う | 言います | おっしゃる | 申す |
+| する | します | なさる | いたす |
+| 食べる | 食べます | お召し上がりになる | 頂く |
+| 見る | 見ます | ご覧になる | 拝見する |
+
+## 8. 句型结构
+
+### 8.1 判断句
+- A は B です。（A是B）  
+  >例：私は学生です。
+- A は B ではありません。（A不是B）
+
+### 8.2 存在句
+- 場所 に 物/人 が ある/いる。（某处有某物/某人）  
+  >例：部屋に机がある。
+- 物/人 は 場所 に ある/いる。（某物/某人在某处）  
+  >例：猫は庭にいる。
+
+### 8.3 描述句
+- 主语 は 形容词/形容动词 です。  
+  >例：花は美しい。
+
+### 8.4 比较句
+- A は B より + 形容词（A比B更...）  
+  >例：日本は中国より小さい。
+- A と B と どちらが + 形容词（A和B哪个更...）
+- A は B ほど + 否定（A不如B）  
+  >例：今日は昨日ほど暑くない。
+
+## 9. 条件表达
+
+| 形式 | 用法 | 例 |
+|------|------|----|
+| ば | 一般条件/恒常 | 春になれば花が咲く。 |
+| たら | 假定条件/特定情况 | 雨が降ったら行かない。 |
+| と | 必然结果/习惯 | ボタンを押すと電気がつく。 |
+| なら | 主题提示/建议前提 | 行くなら、早く起きなさい。 |
+
+## 10. 授受动词（やりもらい）
+
+| 方向 | 给予者视角 | 接受者视角 |
+|------|-----------|-----------|
+| 我 → 他人 | あげる | さしあげる（尊他） |
+| 他人 → 我 | くれる | くださる（尊他） |
+| 他人 → 他人 | やる（给下级/动植物） | あげる |
+
+>例：友達にプレゼントをあげた。（送给朋友礼物）*  
+>例：母がケーキをくれた。（妈妈给了我蛋糕）*
+
+## 11. 被动与使役
+
+### 11.1 被动（受身）
+- 结构：动词未然形 + れる/られる
+- 例：食べる → 食べられる（被吃）
+- 例：先生に褒められた。（被老师表扬了）
+
+### 11.2 使役（使役）
+- 结构：动词未然形 + せる/させる
+- 例：食べる → 食べさせる（让...吃）
+- 例：子供に宿題をさせた。（让孩子做作业）
+
+### 11.3 使役被动（使役受身）
+- 结构：使役形 + られる
+- 表示被迫做某事
+- 例：飲む → 飲まされる（被迫喝）
+
+## 12. 句子连接与接续
+
+### 12.1 て形连接
+- 并列、顺序、原因  
+  >例：起きて、顔を洗って、朝ごはんを食べた。（起床→洗脸→吃早饭）*
+
+### 12.2 连用形（ます形去ます）+ ながら
+- 一边...一边...  
+  >例：音楽を聴きながら走る。（边听歌边跑）*
+
+### 12.3 简体型 + ので / のに
+- ので：客观原因（因为）  
+- のに：转折（虽然...却...）  
+
+### 12.4 简体型 + から / けど
+- から：主观原因  
+- けど：转折/铺垫
+
+## 13. 常用终助词
+
+| 终助词 | 意义 | 例 |
+|--------|------|----|
+| か | 疑问 | 行くか？（去吗？） |
+| ね | 确认/感叹 | いい天気ですね。（天气真好呢） |
+| よ | 告知/强调 | 行くよ！（我去哦！） |
+| わ | 女性语气 | すてきだわ。（真美啊） |
+| ぞ | 男性强调 | 行くぞ！（走啦！） |
+| な | 禁止/感叹 | 触るな！（别碰！） / 困ったな。（真麻烦啊） |
+
+## 14. 常见语法错误提示
+
+- ❌ 助词混淆：私**は**リンゴ**に**食べる。  
+  ✅ 私**は**リンゴ**を**食べる。
+- ❌ 形容词时态错误：昨日は楽しい。  
+  ✅ 昨日は楽しかった。
+- ❌ 自动词他动词混淆：ドアを開く（开门，自动词误用）。  
+  ✅ ドア**を**開ける（他动词） / ドア**が**開く（自动词）。
+- ❌ 存在句场所助词误用：学校**を**本がある。  
+  ✅ 学校**に**本がある。
+- ❌ 授受动词方向错误：私が友達にプレゼントをくれた。  
+  ✅ 友達**が**私にプレゼントをくれた / 私**は**友達**に**プレゼントをあげた。
+
+## 15. 总结：日语语法核心要点
+
+1. **语序 SOV**：谓语在最后
+2. **助词决定语法关系**：が/を/に/で/は 是灵魂
+3. **活用系统**：动词、形容词有规律变化
+4. **敬语三分类**：尊他语、自谦语、郑重语
+5. **授受动词**：あげる・くれる・もらう 体现内外关系
+6. **简体与敬体**：日常对话用简体，正式场合用です・ます
+7. **テンス・アスペクト**：た・ている・てしまう 等体标记
+8. **条件表达四形式**：ば・たら・と・なら 各有用法
+
+            `
+        },
+
+
+
+        spanish: { name: "🇪🇸 Español语法", 
+
+ markdown: `# 💃 西班牙语核心语法
+
+# 西班牙语语法全面整理
+
+## 1. 语序（基本特征）
+
+西班牙语是 **SVO（主语-谓语-宾语）** 语言，但语序比英语灵活。
+
+- **基本结构**：主语 + 谓语 + 宾语  
+  *例：Yo como manzanas.（我吃苹果）*
+- **主语可省略**：因为动词变位已体现人称  
+  *例：Como manzanas.（我吃苹果）—— Yo 可省略*
+- **形容词后置**：一般放在名词之后  
+  *例：una casa grande（一个大房子）*
+- **疑问句**：主语与动词倒装或语调上升  
+  *例：¿Comes manzanas?（你吃苹果吗？）*
+
+## 2. 名词（Sustantivos）
+
+### 2.1 性（Género）
+- **阳性（masculino）**：以 -o 结尾居多  
+  *例：el niño（男孩）, el libro（书）*
+- **阴性（femenino）**：以 -a 结尾居多  
+  *例：la niña（女孩）, la mesa（桌子）*
+- **例外**：el día（天，阳性）, la mano（手，阴性）, el problema（问题，阳性）
+- **以 -ista / -ante 结尾**：阴阳同形，由冠词区分  
+  *例：el/la turista（游客）, el/la estudiante（学生）*
+
+### 2.2 数（Número）
+- **复数变化**：
+  - 元音结尾 + s：casa → casas
+  - 辅音结尾 + es：papel → papeles
+  - z 结尾：z → ces：luz → luces
+
+## 3. 冠词（Artículos）
+
+| 类型 | 阳性单数 | 阳性复数 | 阴性单数 | 阴性复数 |
+|------|----------|----------|----------|----------|
+| 定冠词（the） | el | los | la | las |
+| 不定冠词（a/an/some） | un | unos | una | unas |
+
+*例：el perro（那只狗）, un perro（一只狗）*
+
+## 4. 形容词（Adjetivos）
+
+### 4.1 性与数一致
+- 形容词必须与名词保持性、数一致  
+  *例：un niño alto（一个高个子男孩）*  
+  *例：unas niñas altas（几个高个子女孩）*
+
+### 4.2 位置规则
+- **一般后置**：描述分类  
+  *例：una película interesante（一部有趣的电影）*
+- **前置（改变含义或强调）**：  
+  *例：un gran hombre（一个伟大的人） vs un hombre grande（一个大个子男人）*
+
+### 4.3 比较级与最高级
+
+| 类型 | 结构 | 例 |
+|------|------|----|
+| 比较级（更高） | más + adj. + que | Juan es más alto que Luis. |
+| 比较级（更低） | menos + adj. + que | Juan es menos alto que Luis. |
+| 相等（同等） | tan + adj. + como | Juan es tan alto como Luis. |
+| 最高级 | el/la/los/las + más + adj. + de | Es la más inteligente de la clase. |
+| 绝对最高级 | ísimo 后缀 | guapísimo（非常帅） |
+
+### 4.4 特殊比较级（不规则）
+
+| 原级 | 比较级 | 最高级 |
+|------|--------|--------|
+| bueno（好） | mejor（更好） | óptimo / el mejor |
+| malo（坏） | peor（更坏） | pésimo / el peor |
+| grande（大） | mayor（更大/年长） | máximo / el mayor |
+| pequeño（小） | menor（更小/年轻） | mínimo / el menor |
+
+## 5. 代词（Pronombres）
+
+### 5.1 人称代词（主语）
+
+| 人称 | 单数 | 复数 |
+|------|------|------|
+| 1ª | yo（我） | nosotros（我们，男/混合）/ nosotras（我们，女） |
+| 2ª | tú（你，非正式） / usted（您，正式） | vosotros（你们，非正式，西班牙）/ ustedes（你们，正式/拉美） |
+| 3ª | él（他）, ella（她） | ellos（他们，男/混合）, ellas（她们） |
+
+### 5.2 直接宾语代词（宾格）
+
+| 人称 | 单数 | 复数 |
+|------|------|------|
+| 1ª | me | nos |
+| 2ª | te | os |
+| 3ª | lo（他/它，阳）, la（她/它，阴） | los（阳）, las（阴） |
+
+*例：Veo el libro → Lo veo.（我看见书 → 我看见它）*
+
+### 5.3 间接宾语代词（与格）
+
+| 人称 | 单数 | 复数 |
+|------|------|------|
+| 1ª | me | nos |
+| 2ª | te | os |
+| 3ª | le（他/她/您） | les（他们/她们/你们） |
+
+*例：Doy el libro a Juan → Le doy el libro.（我给胡安书 → 我给他书）*
+
+### 5.4 双重代词（间接 + 直接）
+- 顺序：间接宾语代词 → 直接宾语代词
+- le/les 与 lo/la/los/las 连用时变为 **se**  
+  *例：Le doy el libro → Se lo doy.（我把书给他）*
+
+### 5.5 反身代词
+
+| 人称 | 单数 | 复数 |
+|------|------|------|
+| 1ª | me | nos |
+| 2ª | te | os |
+| 3ª | se | se |
+
+*例：Me lavo.（我洗澡）*
+
+### 5.6 介词宾语代词（前置格）
+- mí（我）, ti（你）, sí（自己）, él, ella, ello, nosotros, vosotros, ellos, ellas
+- 特殊：con + mí → conmigo（和我）, con + ti → contigo（和你）, con + sí → consigo（和自己）
+
+## 6. 动词（Verbos）—— 核心语法
+
+### 6.1 动词变位概述
+西班牙语动词分为三类：**-ar, -er, -ir**，根据不同时态和人称进行变位。
+
+### 6.2 规则动词变位（以 hablar, comer, vivir 为例）
+
+#### 陈述式现在时（Presente de Indicativo）
+
+| 人称 | hablar（说） | comer（吃） | vivir（住） |
+|------|-------------|-------------|-------------|
+| yo | hablo | como | vivo |
+| tú | hablas | comes | vives |
+| él/ella/usted | habla | come | vive |
+| nosotros | hablamos | comemos | vivimos |
+| vosotros | habláis | coméis | vivís |
+| ellos/ellas/ustedes | hablan | comen | viven |
+
+#### 简单过去时（Pretérito Perfecto Simple）
+
+| 人称 | hablar | comer | vivir |
+|------|--------|-------|-------|
+| yo | hablé | comí | viví |
+| tú | hablaste | comiste | viviste |
+| él | habló | comió | vivió |
+| nosotros | hablamos | comimos | vivimos |
+| vosotros | hablasteis | comisteis | vivisteis |
+| ellos | hablaron | comieron | vivieron |
+
+#### 过去未完成时（Pretérito Imperfecto）
+
+| 人称 | hablar | comer | vivir |
+|------|--------|-------|-------|
+| yo | hablaba | comía | vivía |
+| tú | hablabas | comías | vivías |
+| él | hablaba | comía | vivía |
+| nosotros | hablábamos | comíamos | vivíamos |
+| vosotros | hablabais | comíais | vivíais |
+| ellos | hablaban | comían | vivían |
+
+#### 将来时（Futuro Simple）
+- 所有动词在词尾直接加：-é, -ás, -á, -emos, -éis, -án
+*例：hablar → hablaré（我将会说）*
+
+#### 现在完成时（Pretérito Perfecto Compuesto）
+- 结构：haber（现在时）+ 过去分词
+*例：he hablado（我说过）*
+
+### 6.3 重要不规则动词
+
+| 原形 | 现在时 yo | 简单过去时 yo | 过去分词 |
+|------|-----------|---------------|----------|
+| ser（是） | soy | fui | sido |
+| ir（去） | voy | fui | ido |
+| estar（在/状态） | estoy | estuve | estado |
+| tener（有） | tengo | tuve | tenido |
+| hacer（做） | hago | hice | hecho |
+| decir（说） | digo | dije | dicho |
+| venir（来） | vengo | vine | venido |
+| poder（能） | puedo | pude | podido |
+| poner（放） | pongo | puse | puesto |
+| saber（知道） | sé | supe | sabido |
+
+### 6.4 常用时态对照表
+
+| 时态 | 用法 | 例 |
+|------|------|----|
+| 现在时 | 现在动作/习惯/事实 | Hablo español. |
+| 简单过去时 | 过去完成的一次性动作 | Ayer comí pizza. |
+| 过去未完成时 | 过去习惯/背景描述 | Cuando era niño, jugaba fútbol. |
+| 现在完成时 | 与现在相关的过去动作 | Hoy he comido bien. |
+| 将来时 | 将来动作 | Mañana estudiaré. |
+| 近将来时 | ir a + 原形 | Voy a estudiar. |
+| 命令式 | 命令/请求 | ¡Habla más despacio! |
+
+### 6.5 虚拟式（Subjuntivo）—— 西语特色
+
+#### 虚拟式现在时（Presente de Subjuntivo）
+- 构成：以现在时 yo 形去 -o，加反义词尾
+- -ar 动词：-e, -es, -e, -emos, -éis, -en
+- -er/-ir 动词：-a, -as, -a, -amos, -áis, -an
+
+*例：hablar → hable, comamos, vivas*
+
+#### 虚拟式用法
+- **意愿/请求**：Quiero que vengas.（我想让你来）
+- **情感/惊讶**：Me alegra que estés bien.（很高兴你还好）
+- **否定/怀疑**：No creo que sea cierto.（我不相信是真的）
+- **目的/条件**：Te lo digo para que lo sepas.（我告诉你让你知道）
+
+## 7. 介词（Preposiciones）
+
+| 介词 | 主要用法 | 例 |
+|------|----------|----|
+| a | 方向、时间、人与格 | Voy a Madrid. / Veo a Juan. |
+| de | 所属、来源、材质 | La casa de María. / Vengo de China. |
+| en | 地点、方式、时间 | Estoy en casa. / en español |
+| con | 伴随、工具 | Voy con mi amigo. |
+| sin | 没有 | Un café sin leche. |
+| para | 目的、对象、期限 | Estudio para aprender. / para ti |
+| por | 原因、经过、交换 | Gracias por todo. / por la mañana |
+| desde | 起点（时间/空间） | Desde 1990 |
+| hasta | 终点（时间/空间） | Hasta mañana |
+
+## 8. 副词（Adverbios）
+
+### 8.1 常见副词
+- 方式：bien（好）, mal（坏）, rápido（快）
+- 时间：ahora（现在）, luego（然后）, siempre（总是）
+- 地点：aquí（这里）, allí（那里）, cerca（近）
+- 程度：muy（很）, bastante（相当）, poco（少）
+- 否定：no, nunca（从不）, tampoco（也不）
+
+### 8.2 副词构成（-mente）
+- 阴性单数形容词 + mente  
+  *例：fácil → fácilmente（容易地）*  
+  *例：rápido → rápidamente（快速地）*
+
+## 9. 句式结构
+
+### 9.1 否定句
+- 把 no 放在动词前
+*例：No como carne.（我不吃肉）*
+
+### 9.2 疑问句
+- 用 ¿...? 前后加问号
+- 语序可变为动词 + 主语
+*例：¿Hablas español?（你说西班牙语吗？）*
+
+### 9.3 感叹句
+- 用 ¡...! 前后加感叹号
+*例：¡Qué bonito!（真漂亮！）*
+
+### 9.4 比较句
+- 比较级：Más... que, menos... que
+- 最高级：el/la más... de
+
+## 10. 系动词 Ser 与 Estar（核心难点）
+
+| 特征 | Ser | Estar |
+|------|-----|-------|
+| 本质/永久性 | ✓ | — |
+| 状态/临时性 | — | ✓ |
+| 身份/职业 | Soy doctor.（我是医生） | — |
+| 位置 | — | Estoy en Madrid.（我在马德里） |
+| 特征 | La casa es grande.（房子大） | — |
+| 健康状况 | — | Estoy enfermo.（我病了） |
+| 时间/日期 | Son las tres.（三点） | — |
+| 感情/情绪 | — | Estoy feliz.（我开心） |
+| 事件地点 | El concierto es en Madrid.（演唱会在马德里） | — |
+
+### 口诀：**Ser 是本质，Estar 是状态**
+
+## 11. 特殊动词用法
+
+### 11.1 Gustar（使喜欢）
+- 结构：Me gusta el libro.（我喜欢书）—— 直译为“书使我喜欢”
+- 类似动词：encantar（使着迷）, interesar（使感兴趣）, doler（使疼痛）, faltar（缺少）
+
+| 代词 | 单数 | 复数 |
+|------|------|------|
+| a mí | me gusta | me gustan |
+| a ti | te gusta | te gustan |
+| a él/ella/usted | le gusta | le gustan |
+| a nosotros | nos gusta | nos gustan |
+| a vosotros | os gusta | os gustan |
+| a ellos/ellas/ustedes | les gusta | les gustan |
+
+### 11.2 反身动词
+- 动词 + 反身代词，表示动作回到主语自身
+*例：levantarse（起床）：Me levanto, te levantas, se levanta...*
+*例：llamarse（名叫）：Me llamo Juan.（我叫胡安）*
+
+### 11.3 使役结构
+- hacer + 原形：使某人做某事
+*例：Hago limpiar la casa.（我让人打扫房子）*
+
+## 12. 从句
+
+### 12.1 名词性从句
+- Que + 陈述式/虚拟式（取决于主句）
+*例：Creo que tienes razón.（我认为你对了）—— 陈述式*
+*例：Dudo que tengas razón.（我怀疑你对）—— 虚拟式*
+
+### 12.2 定语从句
+- 关系代词：que（人/物）, quien（人，仅限人）, el que, el cual（正式）
+*例：El libro que leí es bueno.（我读的那本书很好）*
+
+### 12.3 状语从句
+- **时间**：cuando（当...时）, mientras（而/当）
+- **原因**：porque（因为）, ya que（既然）
+- **条件**：si（如果）, con tal de que（只要）
+- **让步**：aunque（虽然/即使）
+- **目的**：para que（为了）, a fin de que
+
+## 13. 命令式（Imperativo）
+
+### 肯定命令式
+
+| 动词 | tú | usted | vosotros | ustedes |
+|------|----|-------|----------|---------|
+| hablar | habla | hable | hablad | hablen |
+| comer | come | coma | comed | coman |
+| vivir | vive | viva | vivid | vivan |
+
+### 不规则肯定命令式（tú）
+
+| 原形 | tú 命令式 |
+|------|-----------|
+| decir | di |
+| hacer | haz |
+| ir | ve |
+| poner | pon |
+| salir | sal |
+| ser | sé |
+| tener | ten |
+| venir | ven |
+
+### 否定命令式
+- 使用虚拟式，在动词前加 no
+*例：No hables.（不要说）*
+
+
+## 14. 常见语法错误提示
+
+- ❌ 双重否定混淆：No tengo nada. 已含否定，不再加 no
+  ✅ No tengo nada.（我什么都没有）—— 西语允许双重否定
+- ❌ 前置词 de 多余：Acabo de llegar 已是完成时，不用再加 de
+  ✅ Acabo de llegar.（我刚到）
+- ❌ 形容词比较级后不加 que 或 de：Juan es más alto Luis
+  ✅ Juan es más alto **que** Luis.
+- ❌ Hace 时间表达顺序错误：Tengo dos años que estudio español
+  ✅ **Hace** dos años que estudio español.（我学西语两年了）
+- ❌ 动词变位遗漏主语后又变位错误：Ella viven aquí
+  ✅ Ella **vive** aquí. / Ellas **viven** aquí.
+
+## 15. 常用不规则动词全表
+
+### 15.1 陈述式现在时（Presente）
+
+| 动词 | yo | tú | él/ella | nosotros | vosotros | ellos |
+|------|-----|-----|---------|----------|----------|-------|
+| ser（是） | soy | eres | es | somos | sois | son |
+| estar（在） | estoy | estás | está | estamos | estáis | están |
+| tener（有） | tengo | tienes | tiene | tenemos | tenéis | tienen |
+| hacer（做） | hago | haces | hace | hacemos | hacéis | hacen |
+| ir（去） | voy | vas | va | vamos | vais | van |
+| venir（来） | vengo | vienes | viene | venimos | venís | vienen |
+| poder（能） | puedo | puedes | puede | podemos | podéis | pueden |
+| decir（说） | digo | dices | dice | decimos | decís | dicen |
+| poner（放） | pongo | pones | pone | ponemos | ponéis | ponen |
+| saber（知道） | sé | sabes | sabe | sabemos | sabéis | saben |
+| querer（想要） | quiero | quieres | quiere | queremos | queréis | quieren |
+| ver（看见） | veo | ves | ve | vemos | veis | ven |
+| dar（给） | doy | das | da | damos | dais | dan |
+| conocer（认识） | conozco | conoces | conoce | conocemos | conocéis | conocen |
+| salir（离开） | salgo | sales | sale | salimos | salís | salen |
+
+### 15.2 简单过去时（Pretérito）
+
+| 动词 | yo | tú | él/ella | nosotros | vosotros | ellos |
+|------|-----|-----|---------|----------|----------|-------|
+| ser/ir | fui | fuiste | fue | fuimos | fuisteis | fueron |
+| estar | estuve | estuviste | estuvo | estuvimos | estuvisteis | estuvieron |
+| tener | tuve | tuviste | tuvo | tuvimos | tuvisteis | tuvieron |
+| hacer | hice | hiciste | hizo | hicimos | hicisteis | hicieron |
+| poder | pude | pudiste | pudo | pudimos | pudisteis | pudieron |
+| poner | puse | pusiste | puso | pusimos | pusisteis | pusieron |
+| decir | dije | dijiste | dijo | dijimos | dijisteis | dijeron |
+| venir | vine | viniste | vino | vinimos | vinisteis | vinieron |
+| querer | quise | quisiste | quiso | quisimos | quisisteis | quisieron |
+| saber | supe | supiste | supo | supimos | supisteis | supieron |
+
+### 15.3 过去未完成时（Imperfecto）不规则动词
+- 只有三个不规则动词：ser, ir, ver
+
+| 动词 | yo | tú | él/ella | nosotros | vosotros | ellos |
+|------|-----|-----|---------|----------|----------|-------|
+| ser | era | eras | era | éramos | erais | eran |
+| ir | iba | ibas | iba | íbamos | ibais | iban |
+| ver | veía | veías | veía | veíamos | veíais | veían |
+
+### 15.4 将来时（Futuro）不规则词根
+
+所有不规则将来时用同一套词尾：-é, -ás, -á, -emos, -éis, -án
+
+| 动词 | 词根 | 例（yo） |
+|------|------|----------|
+| decir | dir- | diré |
+| hacer | har- | haré |
+| poder | podr- | podré |
+| poner | pondr- | pondré |
+| querer | querr- | querré |
+| saber | sabr- | sabré |
+| salir | saldr- | saldré |
+| tener | tendr- | tendré |
+| venir | vendr- | vendré |
+| haber | habr- | habrá（无人称） |
+
+### 15.5 条件式（Condicional）不规则词根
+- 词根与将来时相同，词尾：-ía, -ías, -ía, -íamos, -íais, -ían
+- 例：decir → diría（我将会说）
+
+## 16. 命令式完整变位（Imperativo）
+
+### 16.1 肯定命令式（Afirmativo）
+
+| 动词 | tú（非正式） | usted（正式） | vosotros（西班牙） | ustedes（拉美/正式） |
+|------|-------------|---------------|-------------------|---------------------|
+| hablar | habla | hable | hablad | hablen |
+| comer | come | coma | comed | coman |
+| vivir | vive | viva | vivid | vivan |
+| pensar | piensa | piense | pensad | piensen |
+| volver | vuelve | vuelva | volved | vuelvan |
+| pedir | pide | pida | pedid | pidan |
+| decir | **di** | diga | decid | digan |
+| hacer | **haz** | haga | haced | hagan |
+| ir | **ve** | vaya | id | vayan |
+| poner | **pon** | ponga | poned | pongan |
+| salir | **sal** | salga | salid | salgan |
+| ser | **sé** | sea | sed | sean |
+| tener | **ten** | tenga | tened | tengan |
+| venir | **ven** | venga | venid | vengan |
+| oír | **oye** | oiga | oíd | oigan |
+
+### 16.2 否定命令式（Negativo）
+- 结构：no + 虚拟式现在时
+- 所有否定命令式都使用虚拟式
+
+| 动词 | tú | usted | vosotros | ustedes |
+|------|----|-------|----------|---------|
+| hablar | no hables | no hable | no habléis | no hablen |
+| comer | no comas | no coma | no comáis | no coman |
+| vivir | no vivas | no viva | no viváis | no vivan |
+| decir | no digas | no diga | no digáis | no digan |
+| hacer | no hagas | no haga | no hagáis | no hagan |
+| ir | no vayas | no vaya | no vayáis | no vayan |
+
+## 17. 虚拟式（Subjuntivo）完整时态
+
+### 17.1 虚拟式现在时（Presente de Subjuntivo）
+- 构成：以陈述式现在时 yo 形去 -o，加反义词尾
+
+**规则变位**
+
+| 动词类型 | yo | tú | él/ella | nosotros | vosotros | ellos |
+|----------|-----|-----|---------|----------|----------|-------|
+| -ar（hablar） | hable | hables | hable | hablemos | habléis | hablen |
+| -er（comer） | coma | comas | coma | comamos | comáis | coman |
+| -ir（vivir） | viva | vivas | viva | vivamos | viváis | vivan |
+
+**常用不规则虚拟式**
+
+| 动词 | yo | tú | él/ella | nosotros | vosotros | ellos |
+|------|-----|-----|---------|----------|----------|-------|
+| ser | sea | seas | sea | seamos | seáis | sean |
+| estar | esté | estés | esté | estemos | estéis | estén |
+| ir | vaya | vayas | vaya | vayamos | vayáis | vayan |
+| saber | sepa | sepas | sepa | sepamos | sepáis | sepan |
+| haber | haya | hayas | haya | hayamos | hayáis | hayan |
+| dar | dé | des | dé | demos | deis | den |
+
+### 17.2 虚拟式用法总结
+
+| 用法 | 结构 | 例 |
+|------|------|----|
+| 意愿/请求 | Querer que + Subj. | Quiero que **vengas**. |
+| 情感 | Alegrarse de que + Subj. | Me alegro de que **estés** bien. |
+| 否定/怀疑 | No creer que + Subj. | No creo que **sea** cierto. |
+| 目的 | Para que + Subj. | Te lo digo para que **lo sepas**. |
+| 让步 | Aunque + Subj.（不确定） | Aunque **llueva**, iré. |
+| 条件 | Si + Subj. 不成立 | Si **viniera**, ... |
+| 推荐/建议 | Recomendar que + Subj. | Recomiendo que **lo hagas**. |
+| 可能/评价 | Es posible que + Subj. | Es posible que **llegue** tarde. |
+
+### 17.3 虚拟式过去时（Pretérito Imperfecto de Subjuntivo）
+
+**构成**：以简单过去时 ellos 形去 -ron，加以下词尾
+- -ra, -ras, -ra, -ramos, -rais, -ran（更常用）
+- -se, -ses, -se, -semos, -seis, -sen（正式/书面）
+
+| 动词 | yo（-ra形） | 例 |
+|------|------------|----|
+| hablar | hablara | Si hablara más despacio... |
+| comer | comiera | Si comiera menos... |
+| vivir | viviera | Si viviera en Madrid... |
+
+**不规则例子**：
+- ser/ir → fuera / fuese
+- estar → estuviera / estuviese
+- tener → tuviera / tuviese
+- hacer → hiciera / hiciese
+
+**用法**：
+- 与条件式搭配表示非现实条件（类似英语 if I were...）
+  *例：Si **tuviera** dinero, **viajaría** a España.*
+- 表达与现在事实相反的愿望
+  *例：Ojalá **estuviera** aquí.*
+
+### 17.4 虚拟式现在完成时（Pretérito Perfecto de Subjuntivo）
+- 结构：haya + 过去分词
+- 用法：虚拟语境中强调已完成
+  *例：No creo que **haya llegado**.（我不相信他已经到了）*
+
+### 17.5 虚拟式过去完成时（Pluscuamperfecto de Subjuntivo）
+- 结构：hubiera + 过去分词
+- 用法：与过去事实相反的条件
+  *例：Si **hubiera sabido**, **habría venido**.（如果我早知道，我就来了）*
+
+## 18. 祈使句与否定祈使句总结
+
+| 类型 | tú | usted | vosotros | ustedes |
+|------|----|-------|----------|---------|
+| 肯定 | 命令式特殊形（或规则） | 虚拟式 | 原形去 -r + d | 虚拟式 |
+| 否定 | no + 虚拟式 | no + 虚拟式 | no + 虚拟式 | no + 虚拟式 |
+
+*例：Come.（吃吧）→ No comas.（别吃）*
+*例：Venga.（请来）→ No venga.（请别来）*
+
+## 19. 代词式动词（Verbos Pronominales）
+
+### 19.1 常见代词式动词
+- **llamarse**（名叫）：Me llamo Juan.
+- **levantarse**（起床）：Me levanto a las 7.
+- **ducharse**（洗澡）：Me ducho por la mañana.
+- **sentarse**（坐下）：Siéntate, por favor.
+- **vestirse**（穿衣）：Me visto rápidamente.
+- **acostarse**（睡觉）：Me acuesto tarde.
+- **arrepentirse**（后悔）：Me arrepiento de haberlo hecho.
+
+### 19.2 变位规则
+- 反身代词置于变位动词之前，或附着于原形/命令式之后
+- *例：Me lavo. / Voy a lavarme. / ¡Lávate!*
+
+## 20. 被动语态（Voz Pasiva）
+
+### 20.1 被动结构
+- 结构：**ser + 过去分词 + por**（被某人）
+- 过去分词与主语保持性数一致
+
+*例：La carta **fue escrita** por María.（信被玛丽亚写了）*
+*例：Las casas **son construidas** por la empresa.（房子被公司建造）*
+
+### 20.2 Se 被动（Pasiva Refleja）
+- 更常用，强调动作而非施动者
+- 结构：se + 动词（第三人称）+ 受事主语
+
+*例：**Se venden** casas.（房屋出售）*
+*例：**Se habla** español.（说西班牙语）*
+
+### 20.3 Se 无人称（Impersonal）
+- 结构：se + 动词第三人称单数（不指定主语）
+
+*例：**Se vive** bien aquí.（这里生活很好）*
+*例：**Se trabaja** mucho en este país.（这个国家人们工作很多）*
+
+## 21. 感叹句（Oraciones Exclamativas）
+
+| 结构 | 例 |
+|------|----|
+| ¡Qué + 形容词/副词！ | ¡Qué bonito！（真漂亮！）|
+| ¡Qué + 名词 (+ tan)！ | ¡Qué casa tan grande！（好大的房子！）|
+| ¡Cuánto + 动词！ | ¡Cuánto te quiero！（我多爱你！）|
+| ¡Cómo + 动词！ | ¡Cómo llueve！（雨下得多大！）|
+| ¡Qué + tan + 形容词！ | ¡Qué tan inteligente eres！（你真聪明！）|
+
+## 22. 感叹词（Interjecciones）
+
+| 词 | 含义 | 用法 |
+|----|------|------|
+| ¡Ay! | 哎哟 | 疼痛或惊讶 |
+| ¡Oye! / ¡Oiga! | 喂 | 引起注意 |
+| ¡Vaya! | 哇/哎呀 | 惊讶、赞叹或不满 |
+| ¡Ojalá! | 但愿 | 表达希望 |
+| ¡Cuidado! | 小心 | 警告 |
+| ¡Basta! | 够了 | 制止 |
+| ¡Felicidades! | 恭喜 | 祝贺 |
+| ¡Salud! | 干杯/保重 | 祝福 |
+
+## 23. 构词法（Formación de Palabras）
+
+### 23.1 常见后缀
+
+| 后缀 | 含义 | 例 |
+|------|------|----|
+| -ción / -sión | 名词化 | información, decisión |
+| -dad / -tad | 名词化（性质） | felicidad, libertad |
+| -ero / -era | 职业或容器 | panadero, cafetera |
+| -ista | 从事者 | periodista, turista |
+| -dor / -dora | 人或工具 | trabajador, lavadora |
+| -mente | 副词化 | rápidamente |
+| -ísimo / -ísima | 最高级 | guapísimo |
+| -ito / -ita | 指小词 | perrito, casita |
+| -ón / -ona | 指大词 | solterón, puerta grandota |
+
+### 23.2 常见前缀
+
+| 前缀 | 含义 | 例 |
+|------|------|----|
+| pre- | 前 | prehistoria, predecir |
+| re- | 再次 | repetir, rehacer |
+| anti- | 反对 | antivirus, antiaéreo |
+| sub- | 下 | subtítulo, subterráneo |
+| super- | 超 | supermercado, superhéroe |
+| des- | 否定/取消 | deshacer, desagradable |
+| in- / im- | 不 | imposible, inútil |
+
+## 24. 标点符号（Signos de Puntuación）
+
+| 符号 | 名称 | 特殊用法 |
+|------|------|----------|
+| ¿ ? | 倒问号/问号 | 疑问句前后必须成对使用 |
+| ¡ ! | 倒感叹号/感叹号 | 感叹句前后必须成对使用 |
+| « » | 角引号 | 西班牙语标准引号，也可用 “ ” |
+| — | 破折号 | 用于对话（取代引号） |
+
+*例：¿Cómo estás?（你好吗？）*
+*例：¡Qué sorpresa!（好惊讶！）*
+*例：—Hola —dijo él.（“你好”，他说。）*
+
+## 25. 书写规则（Ortografía）
+
+### 25.1 重音符号规则（Acentuación）
+1. **agudas**（最后一音节重读）：以 n, s, 元音结尾不加重音，否则加
+   *例：canción（加）, Madrid（不加）*
+2. **llanas**（倒数第二音节重读）：不以 n, s, 元音结尾不加，否则加
+   *例：árbol（加）, casa（不加）*
+3. **esdrújulas**（倒数第三音节重读）：**必须加重音**
+   *例：página, público*
+4. **sobresdrújulas**（倒数第四音节）：**必须加重音**
+   *例：dígamelo*
+
+### 25.2 字母大小写
+- 语言名称、星期、月份**小写**：español, lunes, enero
+- 专有名词、书名、文章标题首字母大写
+
+## 26. 时间与日期表达
+
+| 问法 | 表达 |
+|------|------|
+| ¿Qué hora es? | Son las tres.（三点） / Es la una.（一点） |
+| 分钟表达 | y（过）/ menos（差） |
+| *例*：2:10 → Son las dos y diez. |
+| *例*：2:45 → Son las tres menos cuarto. / Son las dos y cuarenta y cinco. |
+| 日期 | 4 de julio de 2025 |
+| ¿Qué fecha es hoy? | Hoy es 23 de mayo. |
+
+## 27. 数量与度量
+
+| 概念 | 表达 |
+|------|------|
+| 数字 0-30 | cero, uno, dos, tres, ..., treinta |
+| 101 | ciento uno |
+| 200 | doscientos |
+| 1000 | mil |
+| 一百万 | un millón |
+| 序数词（常见） | primero（第一）, segundo（第二）, tercero（第三）, cuarto（第四）, quinto（第五） |
+
+## 28. 总结：西班牙语语法全貌
+
+| 模块 | 核心内容 |
+|------|----------|
+| **词法** | 名词性数、动词变位（规则/不规则）、代词系统 |
+| **句法** | SVO 语序，主语可省，形容词后置 |
+| **动词核心** | 14 种时态，虚拟式与陈述式对立 |
+| **特殊结构** | 双重代词、被动 se、无人称 se、gustar 类动词 |
+| **语序灵活性** | 倒装用于疑问句、感叹句、强调结构 |
+| **语音基础** | 5 个纯元音，拼读极规则，重音规则明确 |
+| **书写规范** | 重音符号、倒问号倒感叹号、角引号 |
+
+## 附录：学习资源与记忆技巧
+
+1. **动词变位**：按模式分组记忆（如 tener→tener类）
+2. **虚拟式触发词**：记忆 WEIRDO 原则
+   - W（Wishes）：querer, desear
+   - E（Emotions）：alegrarse, temer
+   - I（Impersonal expressions）：es importante que
+   - R（Recommendations）：aconsejar
+   - D（Doubt/Denial）：dudar, negar
+   - O（Ojalá）
+3. **区分 ser/estar**：本质 vs 状态
+4. **区分 por/para**：原因 vs 目的
+5. **区分 pretérito/imperfecto**：事件 vs 背景
+           `
+        },
+
+
+
+        cantonese: { name: "🇭🇰 粤语", 
+
+   markdown: `# 🥐 粤语语法精要
+
+
+# 学习粤语需要掌握的核心知识
+
+## 一、学习粤语的必备认知
+
+### 1.1 粤语的基本定位
+
+| 项目 | 说明 |
+|------|------|
+| 通称 | 粤语、广东话、广府话、白话 |
+| 代表方言 | 广州话（广州市区方言）|
+| 使用地区 | 广东、广西、香港、澳门、海外华人社区 |
+| 使用人数 | 约8500万 |
+| 与普通话关系 | 同属汉语，但语音、词汇、语法均有差异 |
+
+### 1.2 学习粤语的实用价值
+
+- **文化层面**：粤语保留了大量古汉语特征，学习有助于理解古诗词和传统文化
+- **地域融入**：在粤港澳地区生活、工作、学习的必备沟通工具
+- **娱乐消费**：欣赏粤语歌曲、影视剧、脱口秀等原汁原味的内容
+- **商务沟通**：与粤港澳地区及海外华人社区进行商业交流
+
+### 1.3 学习心态准备
+
+| 心态 | 说明 |
+|------|------|
+| 接受差异 | 粤语不是普通话的"变体"，是独立的汉语方言 |
+| 不怕犯错 | 发音声调是最大难点，需要反复练习 |
+| 多听多说 | 语言是技能，需要沉浸式练习 |
+| 循序渐进 | 先掌握发音，再积累词汇，最后学习句型 |
+
+## 二、粤语拼音系统
+
+### 2.1 主要拼音方案
+
+| 方案名称 | 简称 | 主要使用者 | 特点 |
+|----------|------|-----------|------|
+| 香港语言学学会粤语拼音方案 | 粤拼（Jyutping）| 学术界、教材 | 科学规范，键盘输入方便[citation:5] |
+| 广州话拼音方案 | 广拼 | 内地教材 | 1960年公布，内地常用 |
+| 耶鲁拼音 | Yale | 海外教学 | 英语母语者较易上手 |
+| 黄锡凌式 | 黄式 | 传统教材 | 使用数字标调（7-9调）|
+
+**建议**：初学者推荐学习**粤拼（Jyutping）**，它是目前学术界和教学界的事实标准，支持手机和电脑输入[citation:5][citation:10]。
+
+### 2.2 声母（Initials）
+
+粤语共有**20个声母**（包括零声母）[citation:7]：
+
+| 发音部位 | 不送气 | 送气 | 鼻音 | 擦音/其他 |
+|----------|--------|------|------|----------|
+| 双唇音 | b [p] | p [pʰ] | m [m] | — |
+| 唇齿音 | — | — | — | f [f] |
+| 舌尖音 | d [t] | t [tʰ] | n [n] | l [l] |
+| 舌叶音 | z [ts] | c [tsʰ] | — | s [s] |
+| 舌根音 | g [k] | k [kʰ] | ng [ŋ] | h [h] |
+| 圆唇舌根音 | gw [kʷ] | kw [kʷʰ] | — | w [w] |
+| 硬腭近音 | — | — | — | j [j] |
+
+**特别注意事项**：
+
+| 易混淆声母 | 区分要点 | 例词 |
+|-----------|----------|------|
+| **n- vs l-** | n 要鼻音出气，l 是边音 | 你（nei5）vs 李（lei5）[citation:2] |
+| **g- vs gw-** | gw 是圆唇音，嘴唇收圆 | 角（gok3）vs 国（gwok3）[citation:2] |
+| **k- vs kw-** | kw 是圆唇送气音 | 抗（kong3）vs 矿（kwong3）[citation:2] |
+| **零声母 vs ng-** | ng 要发鼻音 | 压（aat3）vs 牙（ngaa4）[citation:2] |
+
+### 2.3 韵母（Finals）
+
+粤语共有**53个韵母**[citation:7]，由韵腹（主元音）和韵尾组成：
+
+#### 元音韵母
+
+| 类型 | 韵母 | 例字 |
+|------|------|------|
+| 单韵母 | aa, e, oe, o, i, u, yu | 阿、爹、靴、柯、衣、乌、于 |
+
+#### 复韵母
+
+| 类型 | 韵母 | 例字 |
+|------|------|------|
+| i/u 尾 | aai, ai, ei, eoi, oi, ui, aau, au, ou, iu | 挨、矮、地、居、哀、灰、交、收、澳、腰 |
+
+#### 鼻音韵母
+
+| 韵尾 | 韵母 | 例字 |
+|------|------|------|
+| -m | aam, am, im | 监、金、淹 |
+| -n | aan, an, eon, on, in, un, yun | 晏、新、敦、安、烟、官、渊 |
+| -ng | aang, ang, eng, oeng, ong, ing, ung | 硬、莺、镜、香、肮、英、公 |
+
+#### 塞音韵母（入声）
+
+| 韵尾 | 韵母 | 例字 |
+|------|------|------|
+| -p | aap, ap, ip | 鸭、急、叶 |
+| -t | aat, at, eot, ot, it, ut, yut | 压、吉、卒、喝、热、活、月 |
+| -k | aak, ak, ek, oek, ok, ik, uk | 额、北、吃、约、恶、益、屋 |
+
+**特别韵母**：m（唔）、ng（吴）—— 不需要元音自成音节[citation:7]
+
+### 2.4 声调（Tones）
+
+粤语有**6个声调调值**，传统声调学称为"九声六调"[citation:7]：
+
+| 声调 | 名称 | 调值 | 例字 | 发音特点 |
+|------|------|------|------|----------|
+| 1 | 阴平 | 55/53 | 分（fan1）| 高而平 |
+| 2 | 阴上 | 35 | 粉（fan2）| 中升 |
+| 3 | 阴去 | 33 | 训（fan3）| 中平 |
+| 4 | 阳平 | 21/11 | 焚（fan4）| 低平 |
+| 5 | 阳上 | 23/13 | 奋（fan5）| 低升 |
+| 6 | 阳去 | 22 | 份（fan6）| 中低平 |
+
+**入声字的处理**：
+
+以 -p、-t、-k 结尾的字称为"入声字"，传统单独列为7、8、9调，但调值与1、3、6调相同，粤拼统一用1、3、6标注[citation:2][citation:7]。
+
+| 传统调号 | 粤拼调号 | 例字 | 韵尾 |
+|----------|----------|------|------|
+| 7（阴入）| 1 | 色（sik1）| -k |
+| 8（中入）| 3 | 锡（sik3）| -k |
+| 9（阳入）| 6 | 食（sik6）| -k |
+
+**声调记忆口诀**（用数字1-6代表调值高低）：
+
+> **三碗半牛腩面** / **番茄酱牛腩面**
+> 
+> 三（saam1 - 调1）碗（wun2 - 调2）半（bun3 - 调3）
+> 牛（ngau4 - 调4）腩（naam5 - 调5）面（min6 - 调6）
+
+## 三、粤语语音难点攻克
+
+### 3.1 声母难点
+
+| 难点 | 普通话对照 | 发音要点 | 练习例词 |
+|------|-----------|----------|----------|
+| **n/l 不分** | 普通话有区分 | n 要鼻音出气，l 舌尖弹开 | 你（nei5）vs 黎（lai4）|
+| **ng 声母** | 普通话无 | 舌根抬起抵软腭发鼻音 | 我（ngo5）、牙（ngaa4）|
+| **gw/kw 圆唇音** | 普通话 g/k 无圆唇 | 发 g/k 的同时嘴唇收圆 | 国（gwok3）、矿（kwong3）|
+| **闭口韵尾 -m** | 普通话无 | 发完元音后双唇闭合 | 心（sam1）、三（saam1）|
+
+### 3.2 韵母难点
+
+| 难点 | 说明 | 练习例词 |
+|------|------|----------|
+| **闭口 -m 尾** | 与 -n 发音部位不同 | 心（sam1）vs 新（san1）|
+| **入声 -p/-t/-k** | 无声除阻，只做口型不爆破 | 十（sap6）、一（jat1）、百（baak3）|
+| **oe/eo 系列** | 粤语特有元音 | 靴（hoe1）、去（heoi3）|
+| **yu 元音** | 类似普通话 ü | 于（jyu1）、月（jyut6）|
+
+### 3.3 声调难点
+
+| 难点 | 说明 | 练习方法 |
+|------|------|----------|
+| **调2（35）vs 调5（23）** | 调2起点更高 | 史（si2）vs 市（si5）|
+| **调3（33）vs 调6（22）** | 调3更高更平 | 试（si3）vs 事（si6）|
+| **调1（55）vs 调4（21）** | 一高一低 | 诗（si1）vs 时（si4）|
+
+**声调训练方法**：
+1. 用母语五度标记法感受音高变化
+2. 先听辨后模仿，录音对比
+3. 利用同音字表进行系统训练
+4. 每日朗读带调拼音的句子
+
+## 四、粤语词汇系统
+
+### 4.1 与普通话的词汇差异
+
+| 类别 | 粤语 | 粤拼 | 普通话 |
+|------|------|------|----------|
+| 日常用语 | 唔该 | m4 goi1 | 谢谢 |
+| | 早晨 | zou2 san4 | 早上好 |
+| | 食咗饭未 | sik6 zo2 faan6 mei6 | 吃饭了吗 |
+| 人称代词 | 我哋 | ngo5 dei6 | 我们 |
+| | 佢 | keoi5 | 他/她 |
+| | 你哋 | nei5 dei6 | 你们 |
+| 指示代词 | 呢个 | ni1 go3 | 这个 |
+| | 嗰个 | go2 go3 | 那个 |
+| 疑问代词 | 边个 | bin1 go3 | 谁 |
+| | 乜嘢 | mat1 je5 | 什么 |
+| | 点解 | dim2 gaai2 | 为什么 |
+
+### 4.2 常用语气助词
+
+粤语语气助词丰富，是表达情感的重要手段：
+
+| 语气词 | 粤拼 | 用法 | 示例 |
+|--------|------|------|------|
+| 啦 | laa1 | 建议、催促 | 去啦（去吧）|
+| 嘅 | ge3 | 的、表示确认 | 系嘅（是的）|
+| 啫 | ze1 | 而已、罢了 | 少少啫（一点点而已）|
+| 呀 | aa3 | 啊 | 好呀（好啊）|
+| 啰 | lo1 | 表示理所当然 | 系咁啰（就这样吧）|
+| 咩 | me1 | 反问 | 你话咩（你说什么？）|
+
+### 4.3 特色词汇分类
+
+**时间词**：
+
+| 粤语 | 粤拼 | 普通话 |
+|------|------|----------|
+| 琴日 | kam4 jat6 | 昨天 |
+| 今日 | gam1 jat6 | 今天 |
+| 听日 | ting1 jat6 | 明天 |
+| 前日 | cin4 jat6 | 前天 |
+| 后日 | hau6 jat6 | 后天 |
+| 上个月 | soeng6 go3 jyut6 | 上个月 |
+| 下个月 | haa6 go3 jyut6 | 下个月 |
+
+**称呼词**：
+
+| 粤语 | 粤拼 | 普通话 |
+|------|------|----------|
+| 爸爸 | baa1 baa1 | 爸爸 |
+| 妈妈 | maa1 maa1 | 妈妈 |
+| 哥哥 | go1 go1 | 哥哥 |
+| 姐姐 | ze2 ze2 | 姐姐 |
+| 先生 | sin1 saang1 | 先生 |
+| 小姐 | siu2 ze2 | 小姐 |
+| 阿婆 | aa3 po4 | 老奶奶 |
+| 阿伯 | aa3 baak3 | 老爷爷 |
+
+### 4.4 英语借词
+
+香港粤语有大量英语借词：
+
+| 粤语 | 粤拼 | 来源 | 普通话 |
+|------|------|------|----------|
+| 巴士 | baa1 si2 | bus | 公交车 |
+| 的士 | dik1 si2 | taxi | 出租车 |
+| 士多 | si6 do1 | store | 小商店 |
+| 多士 | do1 si6 | toast | 吐司 |
+| 朱古力 | zyu1 gu1 lik1 | chocolate | 巧克力 |
+| 呔 | taai1 | tie | 领带 |
+
+## 五、粤语语法特点
+
+### 5.1 语序差异
+
+| 对比项 | 粤语 | 普通话 | 示例（粤语） |
+|--------|------|--------|-------------|
+| 状语后置 | 动词 + 先 | 先 + 动词 | 你走先（你先走）[citation:3] |
+| 双宾语顺序 | 直接宾语 + 间接宾语 | 间接宾语 + 直接宾语 | 俾支笔我（给我一支笔）[citation:3] |
+| 比较句 | A + 形容词 + 过 + B | A + 比 + B + 形容词 | 我大过佢（我比他大）|
+| 双音节 | 附加成分多 | 更精炼 | 关门（关门）vs 闩门 |
+
+### 5.2 特色句法结构
+
+**"有"字句**：
+- 粤语：我有食饭（我吃过饭了）
+- 普通话：我吃过饭了
+
+**"添"的用法**：
+- 粤语：买支添就够（再买一支就够了）[citation:3]
+- 普通话：再买一支就够了
+
+**"过"的比较用法**：
+- 粤语：佢高过我（他比我高）
+- 普通话：他比我高
+
+### 5.3 量词的特殊用法
+
+粤语量词可以单独使用，不需要数词[citation:3]：
+
+| 粤语 | 粤拼 | 普通话 |
+|------|------|----------|
+| 支笔 | zi1 bat1 | 这支笔 |
+| 本书 | bun2 syu1 | 这本书 |
+| 个人 | go3 jan4 | 这个人 |
+
+## 六、学习资源推荐
+
+### 6.1 教材推荐
+
+| 书名 | 作者/出版社 | 特点 |
+|------|------------|------|
+| 《粤语（香港话）教程》 | 郑定欧（三联书店）| 经典教材，系统全面[citation:4] |
+| 《粤语会话宝典》 | 郑定欧（三联书店）| 情景功能教学，400例会话[citation:4] |
+| 《超简单粤语入门》 | 蒙丽莎、冯绍劲（中国宇航出版社）| 含视频+音频，入门友好[citation:1] |
+| 《20天学会粤语》 | 广东人民出版社 | 速成手册，按场景分类[citation:6] |
+| Cantonese Step by Step | 慧祈出版 | 专为英语母语者设计，采用粤拼[citation:5][citation:10] |
+
+### 6.2 拼音学习资源
+
+| 资源 | 说明 |
+|------|------|
+| 香港语言学学会粤拼网站 | 官方拼音方案说明 |
+| 香港理工大学"粤语拼音"网页 | 拼音互动教学[citation:7] |
+| 粤拼输入法 | 手机/电脑可安装粤拼键盘 |
+
+### 6.3 多媒体学习资源
+
+| 类型 | 资源推荐 |
+|------|----------|
+| 影视剧 | TVB剧集、香港电影（带字幕）|
+| 音乐 | 粤语流行曲（陈奕迅、容祖儿等）|
+| 播客 | 粤语学习类播客 |
+| App | 多邻国（Duolingo）粤语课程、粤语U学院 |
+| 词典 | 粤典（words.hk）、Open Cantonese |
+
+### 6.4 网站与社区
+
+| 资源 | 网址/说明 |
+|------|----------|
+| 粤典 | words.hk — 粤语自由词典 |
+| 粵語審音配詞字庫 | humanum.arts.cuhk.edu.hk/Lexis/lexi-can/ |
+| 香港语言学会 | 粤拼标准制定者 |
+| Reddit r/Cantonese | 粤语学习社区 |
+
+## 七、学习路线图
+
+### 第一阶段：发音入门（1-2周）
+
+- [ ] 掌握20个声母发音
+- [ ] 掌握53个韵母发音
+- [ ] 理解6个声调调值
+- [ ] 能够准确读出不带字的拼音
+- [ ] 能够跟读带拼音的短句
+
+**推荐方法**：
+1. 每日练习15分钟声母韵母
+2. 用"三碗半牛腩面"口诀记忆声调顺序
+3. 录音对比标准发音
+
+### 第二阶段：基础词汇（3-4周）
+
+- [ ] 掌握100个最常用词汇
+- [ ] 学会1-100的数字表达
+- [ ] 掌握基本代词和量词
+- [ ] 学会问候、自我介绍、感谢、道歉
+
+**推荐方法**：
+1. 按场景分类记忆（家庭、食物、交通等）
+2. 制作闪卡反复复习
+3. 每日完成一个生活场景词汇表
+
+### 第三阶段：句型学习（5-8周）
+
+- [ ] 掌握基本SVO句式
+- [ ] 学会疑问句和否定句
+- [ ] 掌握比较句和双宾语句式
+- [ ] 学会使用常用语气助词
+- [ ] 能够进行简单对话
+
+**推荐方法**：
+1. 从教材学基本句型
+2. 模仿影视剧中的对话
+3. 进行角色扮演练习
+
+### 第四阶段：沉浸实践（长期）
+
+- [ ] 多看TVB剧集（先看字幕→后关字幕）
+- [ ] 听粤语歌曲并跟唱
+- [ ] 找语言交换伙伴
+- [ ] 实际使用（购物、点餐等）
+- [ ] 了解香港/广东文化背景
+
+## 八、常见学习误区与应对
+
+| 误区 | 正确认识 | 应对方法 |
+|------|----------|----------|
+| 以为粤语只是普通话变调 | 粤语是独立语言体系 | 重新建立认知框架 |
+| 用普通话近似音记发音 | 音调不准会改变词义 | 用拼音系统科学学习 |
+| 只重视词汇不重视语法 | 语序差异导致沟通障碍 | 系统学习语法规则 |
+| 怕开口说 | 语言需要犯错才能进步 | 找友善的语伴练习 |
+| 只"看"不"听" | 声调需要听觉训练 | 多听多模仿 |
+
+## 九、实用表达速查
+
+### 打招呼
+
+| 粤语 | 粤拼 | 普通话 |
+|------|------|----------|
+| 你好 | nei5 hou2 | 你好 |
+| 早晨 | zou2 san4 | 早上好 |
+| 午安 | ng5 on1 | 下午好 |
+| 晚安 | maan5 on1 | 晚安 |
+| 你好吗 | nei5 hou2 maa3 | 你好吗 |
+
+### 感谢与道歉
+
+| 粤语 | 粤拼 | 普通话 |
+|------|------|----------|
+| 唔该 | m4 goi1 | 谢谢（服务后）|
+| 多谢 | do1 ze6 | 谢谢（收礼物后）|
+| 唔好意思 | m4 hou2 ji3 si1 | 不好意思、抱歉 |
+| 对唔住 | deoi3 m4 zyu6 | 对不起 |
+
+### 常用疑问
+
+| 粤语 | 粤拼 | 普通话 |
+|------|------|----------|
+| 你叫咩名 | nei5 giu3 me1 meng2 | 你叫什么名字 |
+| 你系边度人 | nei5 hai6 bin1 dou6 jan4 | 你是哪里人 |
+| 几多钱 | gei2 do1 cin2 | 多少钱 |
+| 几点钟 | gei2 dim2 zung1 | 几点钟 |
+| 点解 | dim2 gaai2 | 为什么 |
+
+### 日常回应
+
+| 粤语 | 粤拼 | 普通话 |
+|------|------|----------|
+| 系 | hai6 | 是 |
+| 唔系 | m4 hai6 | 不是 |
+| 好 | hou2 | 好 |
+| 唔好 | m4 hou2 | 不好 |
+| 知道 | zi1 dou6 | 知道 |
+| 唔知道 | m4 zi1 dou6 | 不知道 |
+| 得 | dak1 | 可以 |
+| 唔得 | m4 dak1 | 不可以 |
+
+## 十、总结
+
+### 学习粤语的核心要点
+
+| 领域 | 核心内容 | 关键点 |
+|------|----------|--------|
+| **语音** | 20声母 + 53韵母 + 6声调 | 九声六调、入声韵尾、圆唇音 |
+| **拼音** | 粤拼（Jyutping）| 科学规范，支持输入 |
+| **词汇** | 与普通话差异大 | 积累地道表达、语气助词 |
+| **语法** | 语序与普通话不同 | 状语后置、双宾语顺序 |
+| **文化** | 粤港澳文化背景 | 理解语境、俗语、典故 |
+
+**最重要的建议**：
+> 粤语是一门"听"和"说"的语言。与其死记硬背，不如多听、多模仿、多开口。每天15分钟，坚持3个月，你一定可以学会基本的粤语交流。
+
+`
+        },
+
+
+        pronounce: { name: "🗣️ 口语发音", 
+
+ markdown: `# 发音基础
+
+
+
+
+
+
+
+## 1. 英语（English）
+
+### 1.1 字母表（26个）
+
+| 字母 | 字母名称 | 常见音标（IPA） |
+|------|----------|-----------------|
+| A a | /eɪ/ | /æ/, /eɪ/, /ɑː/, /ə/ |
+| B b | /biː/ | /b/ |
+| C c | /siː/ | /k/, /s/ |
+| D d | /diː/ | /d/ |
+| E e | /iː/ | /e/, /iː/, /ɪ/, /ə/ |
+| F f | /ef/ | /f/ |
+| G g | /dʒiː/ | /g/, /dʒ/ |
+| H h | /eɪtʃ/ | /h/（有时不发音）|
+| I i | /aɪ/ | /ɪ/, /aɪ/, /iː/ |
+| J j | /dʒeɪ/ | /dʒ/ |
+| K k | /keɪ/ | /k/ |
+| L l | /el/ | /l/ |
+| M m | /em/ | /m/ |
+| N n | /en/ | /n/, /ŋ/ |
+| O o | /oʊ/ | /ɒ/, /oʊ/, /ʌ/, /ə/ |
+| P p | /piː/ | /p/ |
+| Q q | /kjuː/ | /k/（后跟 u）|
+| R r | /ɑːr/ | /r/, /ɜː/ |
+| S s | /es/ | /s/, /z/ |
+| T t | /tiː/ | /t/ |
+| U u | /juː/ | /ʌ/, /ʊ/, /uː/, /juː/ |
+| V v | /viː/ | /v/ |
+| W w | /ˈdʌbəl juː/ | /w/ |
+| X x | /eks/ | /ks/, /gz/ |
+| Y y | /waɪ/ | /j/, /ɪ/, /aɪ/ |
+| Z z | /ziː/（美）/zɛd/（英）| /z/ |
+
+### 1.2 元音音标（20个）
+
+**单元音（12个）**
+| 音标 | 例词 | 发音要点 |
+|------|------|----------|
+| /iː/ | see, bee | 长音，舌位高前 |
+| /ɪ/ | sit, big | 短音，舌位稍低 |
+| /e/ | bed, head | 短音，口腔半开 |
+| /æ/ | cat, bad | 短音，嘴张大 |
+| /ɑː/ | car, father | 长音，舌位低后 |
+| /ɒ/ | hot, dog | 短音，圆唇 |
+| /ɔː/ | saw, door | 长音，圆唇 |
+| /ʊ/ | book, put | 短音，舌位高后 |
+| /uː/ | too, blue | 长音，圆唇 |
+| /ʌ/ | cup, love | 短音，舌位中 |
+| /ɜː/ | bird, turn | 长音，舌位中 |
+| /ə/ | about, sofa | 弱读，中央元音 |
+
+**双元音（8个）**
+| 音标 | 例词 | 发音要点 |
+|------|------|----------|
+| /eɪ/ | say, day | 从/e/滑向/ɪ/ |
+| /aɪ/ | my, eye | 从/a/滑向/ɪ/ |
+| /ɔɪ/ | boy, toy | 从/ɔ/滑向/ɪ/ |
+| /aʊ/ | now, out | 从/a/滑向/ʊ/ |
+| /əʊ/ | go, no | 从/ə/滑向/ʊ/ |
+| /ɪə/ | hear, near | 从/ɪ/滑向/ə/ |
+| /eə/ | hair, where | 从/e/滑向/ə/ |
+| /ʊə/ | poor, sure | 从/ʊ/滑向/ə/ |
+
+### 1.3 辅音音标（24个）
+
+| 音标 | 例词 | 清/浊 | 发音要点 |
+|------|------|-------|----------|
+| /p/ | pen, top | 清 | 双唇爆破 |
+| /b/ | boy, web | 浊 | 双唇爆破 |
+| /t/ | two, cat | 清 | 舌尖上齿龈 |
+| /d/ | do, bad | 浊 | 舌尖上齿龈 |
+| /k/ | cat, back | 清 | 舌根软腭 |
+| /g/ | go, bag | 浊 | 舌根软腭 |
+| /f/ | fish, off | 清 | 唇齿摩擦 |
+| /v/ | very, of | 浊 | 唇齿摩擦 |
+| /θ/ | think, both | 清 | 舌尖齿间 |
+| /ð/ | this, father | 浊 | 舌尖齿间 |
+| /s/ | see, bus | 清 | 齿龈擦音 |
+| /z/ | zoo, has | 浊 | 齿龈擦音 |
+| /ʃ/ | she, push | 清 | 龈腭擦音 |
+| /ʒ/ | vision, genre | 浊 | 龈腭擦音 |
+| /tʃ/ | child, catch | 清 | 塞擦音 |
+| /dʒ/ | jump, bridge | 浊 | 塞擦音 |
+| /m/ | man, ham | 浊 | 双唇鼻音 |
+| /n/ | no, ten | 浊 | 齿龈鼻音 |
+| /ŋ/ | sing, long | 浊 | 软腭鼻音 |
+| /l/ | leg, ball | 浊 | 边音 |
+| /r/ | red, run | 浊 | 齿龈近音 |
+| /j/ | yes, you | 浊 | 硬腭近音 |
+| /w/ | we, water | 浊 | 双唇软腭近音 |
+| /h/ | hat, hello | 清 | 喉擦音 |
+
+### 1.4 发音规则要点
+
+- **弱读**：介词、助词常弱化为 /ə/（to /tə/, for /fə/）
+- **连读**：辅音 + 元音连读（not at all /nɒtætɔːl/）
+- **清辅音浊化**：/s/ + /p/t/k/ 在重读音节中变为 /b/d/g/（sport /sbɔːt/）
+- **-ed 结尾**：清辅音后读 /t/（walked），浊辅音后读 /d/（played），t/d 后读 /ɪd/（wanted）
+
+## 2. 日语（Japanese / 日本語）
+
+### 2.1 五十音图（清音）
+
+**元音（母音）：5个**
+
+| 段 | あ段 /a/ | い段 /i/ | う段 /u/ | え段 /e/ | お段 /o/ |
+|----|----------|----------|----------|----------|----------|
+| あ行 | あ /a/ | い /i/ | う /u/ | え /e/ | お /o/ |
+| か行 | か /ka/ | き /ki/ | く /ku/ | け /ke/ | こ /ko/ |
+| さ行 | さ /sa/ | し /ɕi/ | す /su/ | せ /se/ | そ /so/ |
+| た行 | た /ta/ | ち /tɕi/ | つ /tsu/ | て /te/ | と /to/ |
+| な行 | な /na/ | に /ɲi/ | ぬ /nu/ | ね /ne/ | の /no/ |
+| は行 | は /ha/ | ひ /çi/ | ふ /ɸu/ | へ /he/ | ほ /ho/ |
+| ま行 | ま /ma/ | み /mi/ | む /mu/ | め /me/ | も /mo/ |
+| や行 | や /ja/ | — | ゆ /ju/ | — | よ /jo/ |
+| ら行 | ら /ɾa/ | り /ɾi/ | る /ɾu/ | れ /ɾe/ | ろ /ɾo/ |
+| わ行 | わ /wa/ | — | — | — | を /wo/（仅作助词读/o/）|
+| ん | ん /n/（或 /m/, /ŋ/, /ɴ/） |
+
+### 2.2 浊音（だくおん / Dakuon）
+
+| 行 | あ段 | い段 | う段 | え段 | お段 |
+|----|------|------|------|------|------|
+| が行 | が /ga/ | ぎ /gi/ | ぐ /gu/ | げ /ge/ | ご /go/ |
+| ざ行 | ざ /za/ | じ /ʑi/ | ず /zu/ | ぜ /ze/ | ぞ /zo/ |
+| だ行 | だ /da/ | ぢ /ʑi/ | づ /zu/ | で /de/ | ど /do/ |
+| ば行 | ば /ba/ | び /bi/ | ぶ /bu/ | べ /be/ | ぼ /bo/ |
+
+### 2.3 半浊音（はんだくおん / Handakuon）
+
+| 行 | あ段 | い段 | う段 | え段 | お段 |
+|----|------|------|------|------|------|
+| ぱ行 | ぱ /pa/ | ぴ /pi/ | ぷ /pu/ | ぺ /pe/ | ぽ /po/ |
+
+### 2.4 拗音（ようおん / Yōon）
+
+|  | ゃ /ja/ | ゅ /ju/ | ょ /jo/ |
+|--|---------|---------|---------|
+| き | きゃ /kja/ | きゅ /kju/ | きょ /kjo/ |
+| ぎ | ぎゃ /gja/ | ぎゅ /gju/ | ぎょ /gjo/ |
+| し | しゃ /ɕa/ | しゅ /ɕu/ | しょ /ɕo/ |
+| じ | じゃ /ʑa/ | じゅ /ʑu/ | じょ /ʑo/ |
+| ち | ちゃ /tɕa/ | ちゅ /tɕu/ | ちょ /tɕo/ |
+| に | にゃ /ɲa/ | にゅ /ɲu/ | にょ /ɲo/ |
+| ひ | ひゃ /ça/ | ひゅ /çu/ | ひょ /ço/ |
+| び | びゃ /bja/ | びゅ /bju/ | びょ /bjo/ |
+| ぴ | ぴゃ /pja/ | ぴゅ /pju/ | ぴょ /pjo/ |
+| み | みゃ /mja/ | みゅ /mju/ | みょ /mjo/ |
+| り | りゃ /ɾja/ | りゅ /ɾju/ | りょ /ɾjo/ |
+
+### 2.5 特殊发音规则
+
+| 规则 | 标记 | 发音 | 例 |
+|------|------|------|----|
+| 促音 | っ（小写つ） | 停顿一拍 | がっこう /gakːoː/ |
+| 长音 | 元音延长 | 延长一拍 | おかあさん /okaːsan/ |
+| 拨音 | ん | /n/, /m/, /ŋ/ | にほん /nihoɴ/ |
+
+### 2.6 声调（Pitch Accent）
+
+- 日语不是重音语言，而是音高重音
+- 平板型：第一音节低，后续高（はし ⤵）
+- 头高型：第一音节高，后续低（⤵はし）
+- 中高型：中间音节高后降低
+- 尾高型：最后音节高
+
+*例：はし（箸 /haꜜɕi/ 筷子）vs はし（橋 /haɕiꜜ/ 桥）*
+
+## 3. 西班牙语（Spanish / Español）
+
+### 3.1 字母表（27个）
+
+| 字母 | 名称 | 音标 | 发音要点 |
+|------|------|------|----------|
+| A a | a | /a/ | 开口元音，类似汉语“啊” |
+| B b | be | /b/（词首/m后）/β/（其他）| 双唇塞音或擦音 |
+| C c | ce | /k/（a/o/u前），/θ/或/s/（e/i前）| 硬腭或齿间音 |
+| D d | de | /d/（词首/n/l后）/ð/（其他）| 舌尖齿音 |
+| E e | e | /e/ | 半闭前元音 |
+| F f | efe | /f/ | 唇齿擦音 |
+| G g | ge | /g/（a/o/u前），/x/（e/i前）| 软腭音或喉音 |
+| H h | hache | 不发音 | — |
+| I i | i | /i/ | 闭前元音 |
+| J j | jota | /x/ | 喉擦音，类似汉语“h” |
+| K k | ka | /k/ | 主要用于外来词 |
+| L l | ele | /l/ | 齿龈边音 |
+| M m | eme | /m/ | 双唇鼻音 |
+| N n | ene | /n/ | 齿龈鼻音 |
+| Ñ ñ | eñe | /ɲ/ | 腭鼻音，类似“ny” |
+| O o | o | /o/ | 半闭后元音 |
+| P p | pe | /p/ | 双唇塞音（不送气）|
+| Q q | cu | /k/ | 后跟 u（不发音）|
+| R r | erre | /r/（词首/rr），/ɾ/（其他）| 颤音或闪音 |
+| S s | ese | /s/ | 齿龈擦音 |
+| T t | te | /t/ | 舌尖齿音（不送气）|
+| U u | u | /u/ | 闭后圆唇元音 |
+| V v | uve | /b/（同B）| 与 B 同音 |
+| W w | uve doble | /w/ /b/ | 主要用于外来词 |
+| X x | equis | /ks/ /gs/ /s/ | 视位置变化 |
+| Y y | ye | /j/ /ʝ/ /i/ | 半元音或擦音 |
+| Z z | zeta | /θ/（西班牙）/s/（拉美）| 齿间音或齿龈音 |
+
+### 3.2 元音（5个）—— 纯正清晰，不弱化
+
+| 音标 | 例词 | 发音要点 |
+|------|------|----------|
+| /a/ | casa, mano | 舌位低，开口大 |
+| /e/ | mesa, perro | 舌位中前，半闭 |
+| /i/ | vino, sí | 舌位高前，展唇 |
+| /o/ | rojo, como | 舌位中后，圆唇 |
+| /u/ | luna, tú | 舌位高后，圆唇 |
+
+### 3.3 双元音（14个）
+
+| 组合 | 例词 | 发音 |
+|------|------|------|
+| ia | diagonal | /ja/ |
+| ie | bien | /je/ |
+| io | canción | /jo/ |
+| iu | ciudad | /ju/ |
+| ua | agua | /wa/ |
+| ue | bueno | /we/ |
+| ui | muy | /wi/ |
+| uo | cuota | /wo/ |
+| ai | aire | /aj/ |
+| ei | peine | /ej/ |
+| oi | oigo | /oj/ |
+| au | causa | /aw/ |
+| eu | Europa | /ew/ |
+| ou | bou | /ow/ |
+
+### 3.4 重音规则
+
+1. 以 **元音、n、s** 结尾 → 重音在**倒数第二音节**  
+   *hablo /ˈa.blo/, joven /ˈxo.ben/*
+2. 以 **其他辅音** 结尾 → 重音在**最后一音节**  
+   *hablar /ab.ˈlar/, ciudad /θju.ˈðad/*
+3. 带重音符号（á, é, í, ó, ú）→ 重音落在该音节  
+   *canción /kan.ˈθjon/*
+
+## 4. 法语（French / Français）
+
+### 4.1 字母表（26个）+ 变音符号
+
+| 字母 | 名称 | 常见发音 |
+|------|------|----------|
+| A a | /a/ | /a/, /ɑ/ |
+| B b | /be/ | /b/ |
+| C c | /se/ | /k/, /s/（e/i前），ç→/s/ |
+| D d | /de/ | /d/ |
+| E e | /ə/ | /ə/, /e/, /ɛ/ |
+| F f | /ɛf/ | /f/ |
+| G g | /ʒe/ | /g/（a/o/u前），/ʒ/（e/i前）|
+| H h | /aʃ/ | 不发音（哑音h）|
+| I i | /i/ | /i/, /j/ |
+| J j | /ʒi/ | /ʒ/ |
+| K k | /ka/ | /k/（外来词）|
+| L l | /ɛl/ | /l/ |
+| M m | /ɛm/ | /m/ |
+| N n | /ɛn/ | /n/ |
+| O o | /o/ | /o/, /ɔ/ |
+| P p | /pe/ | /p/ |
+| Q q | /ky/ | /k/（后跟 u）|
+| R r | /ɛʁ/ | /ʁ/（小舌擦音）|
+| S s | /ɛs/ | /s/, /z/（两元音间）|
+| T t | /te/ | /t/ |
+| U u | /y/ | /y/（圆唇前元音）|
+| V v | /ve/ | /v/ |
+| W w | /dublə ve/ | /v/, /w/ |
+| X x | /iks/ | /ks/, /gz/, /s/, /z/ |
+| Y y | /igʁɛk/ | /i/, /j/ |
+| Z z | /zɛd/ | /z/ |
+
+### 4.2 变音符号（Accents）
+
+| 符号 | 名称 | 影响字母 | 发音 |
+|------|------|----------|------|
+| ´ | accent aigu | é | /e/ |
+| 、 | accent grave | è, à, ù | /ɛ/, /a/, /y/ |
+| ^ | accent circonflexe | â, ê, î, ô, û | 延长或历史音变 |
+| ¨ | tréma | ë, ï, ü | 单独发音（非二合元音）|
+| ¸ | cédille | ç | /s/ |
+
+### 4.3 元音（16个口元音 + 4个鼻化元音）
+
+**口元音（Voyelles orales）**
+
+| 音标 | 例词 | 发音要点 |
+|------|------|----------|
+| /a/ | chat, là | 前低 |
+| /ɑ/ | pâte, âge | 后低（逐渐弱化）|
+| /e/ | été, parler | 半闭前 |
+| /ɛ/ | belle, père | 半开前 |
+| /i/ | si, vie | 闭前 |
+| /o/ | eau, beau | 半闭后圆唇 |
+| /ɔ/ | porte, sort | 半开后圆唇 |
+| /u/ | vous, où | 闭后圆唇 |
+| /y/ | tu, sur | 闭前圆唇 |
+| /ø/ | deux, feu | 半闭前圆唇 |
+| /œ/ | peur, cœur | 半开前圆唇 |
+| /ə/ | le, fenêtre | 中央元音 |
+
+**鼻化元音（Voyelles nasales）**
+
+| 拼写 | 音标 | 例词 |
+|------|------|------|
+| an, am, en, em | /ɑ̃/ | enfant, temps |
+| in, im, ain, ein | /ɛ̃/ | vin, pain, plein |
+| on, om | /ɔ̃/ | bon, nom |
+| un, um | /œ̃/ | un, parfum（逐渐弱化）|
+
+### 4.4 辅音（Consonnes）
+
+| 音标 | 例词 | 清/浊 | 发音要点 |
+|------|------|-------|----------|
+| /p/ | père, porte | 清 | 不送气 |
+| /b/ | beau, bon | 浊 | — |
+| /t/ | temps, tout | 清 | 不送气 |
+| /d/ | deux, dire | 浊 | — |
+| /k/ | car, que | 清 | 不送气 |
+| /g/ | gare, goût | 浊 | — |
+| /f/ | faire, feu | 清 | — |
+| /v/ | voir, vous | 浊 | — |
+| /s/ | sac, ça | 清 | — |
+| /z/ | zéro, rose | 浊 | 两元音间的 s |
+| /ʃ/ | chien, acheter | 清 | 类似英语 sh |
+| /ʒ/ | jour, manger | 浊 | 类似英语 s in measure |
+| /m/ | mère, aimer | 浊 | — |
+| /n/ | père, noir | 浊 | — |
+| /ɲ/ | montagne, vigne | 浊 | 腭鼻音 |
+| /l/ | lac, aller | 浊 | — |
+| /ʁ/ | rue, parler | 浊 | 小舌擦音 |
+| /j/ | lieu, paille | 浊 | 半元音，类似英语 y |
+
+### 4.5 发音规则要点
+
+- **联诵（Liaison）**：词尾不发音辅音 + 后词元音 → 发音  
+  *les amis /le‿zaˈmi/*
+- **连读（Enchaînement）**：词尾辅音移入下一词开头  
+  *un petit ami /œ̃ pəti‿taˈmi/*
+- **省音（Élision）**：单音节词（je, me, te, le, la, de, ne, que）+ 元音开头 → 省略元音  
+  *je + aime → j'aime*
+- **词尾辅音**：通常不发音（c, r, f, l 有时发音）
+
+## 5. 德语（German / Deutsch）
+
+### 5.1 字母表（30个 = 26拉丁字母 + 4个变音/特殊字母）
+
+| 字母 | 名称 | 音标 | 发音要点 |
+|------|------|------|----------|
+| A a | /aː/ | /a/, /aː/ | 低元音 |
+| B b | /beː/ | /b/, /p/（词尾）| — |
+| C c | /tseː/ | /k/, /ts/ | 多在复合音中 |
+| D d | /deː/ | /d/, /t/（词尾）| — |
+| E e | /eː/ | /ɛ/, /eː/, /ə/ | — |
+| F f | /ɛf/ | /f/ | — |
+| G g | /geː/ | /g/, /k/（词尾），/ç/（-ig结尾）| — |
+| H h | /haː/ | /h/（词首），元音后延长记号 | — |
+| I i | /iː/ | /ɪ/, /iː/ | — |
+| J j | /jɔt/ | /j/ | 类似英语 y |
+| K k | /kaː/ | /k/ | 强烈送气 |
+| L l | /ɛl/ | /l/ | — |
+| M m | /ɛm/ | /m/ | — |
+| N n | /ɛn/ | /n/, /ŋ/（-ng）| — |
+| O o | /oː/ | /ɔ/, /oː/ | — |
+| P p | /peː/ | /p/ | 强烈送气 |
+| Q q | /kuː/ | /kv/ | 后跟 u |
+| R r | /ɛʁ/ | /ʁ/, /r/, /ɐ/ | 小舌音或颤音 |
+| S s | /ɛs/ | /z/（元音前），/s/, /ʃ/（sp, st）| — |
+| T t | /teː/ | /t/ | 强烈送气 |
+| U u | /uː/ | /ʊ/, /uː/ | — |
+| V v | /faʊ/ | /f/（大多数），/v/（外来词）| — |
+| W w | /veː/ | /v/ | 浊唇齿音 |
+| X x | /ɪks/ | /ks/ | — |
+| Y y | /ˈʏpsilɔn/ | /ʏ/, /yː/, /j/ | — |
+| Z z | /tsɛt/ | /ts/ | 塞擦音 |
+| Ä ä | /ɛː/ | /ɛ/, /ɛː/ | 变音 a |
+| Ö ö | /øː/ | /œ/, /øː/ | 变音 o，圆唇 |
+| Ü ü | /yː/ | /ʏ/, /yː/ | 变音 u，圆唇前元音 |
+| ß | /ɛsˈtsɛt/ | /s/ | 双 s，用于长元音后 |
+
+### 5.2 元音（长短对立清晰）
+
+**短元音（7个）**
+
+| 音标 | 例词 | 发音要点 |
+|------|------|----------|
+| /a/ | Mann, Kamm | 短低 |
+| /ɛ/ | Bett, Geld | 半开前 |
+| /ɪ/ | bitte, Fisch | 短闭前 |
+| /ɔ/ | Gott, kommt | 半开后圆唇 |
+| /ʊ/ | Mund, und | 短闭后圆唇 |
+| /œ/ | Löffel, öffnen | 半开前圆唇 |
+| /ʏ/ | Mütter, fünf | 短闭前圆唇 |
+
+**长元音（7个）**
+
+| 音标 | 例词 | 发音要点 |
+|------|------|----------|
+| /aː/ | Bahn, Vater | 长低 |
+| /eː/ | See, gehen | 长闭前 |
+| /iː/ | nie, Liebe | 长闭前 |
+| /oː/ | Boot, wo | 长闭后圆唇 |
+| /uː/ | Kuh, gut | 长闭后圆唇 |
+| /øː/ | schön, hören | 长闭前圆唇 |
+| /yː/ | Tür, üben | 长闭前圆唇 |
+
+### 5.3 辅音（Konsonanten）
+
+| 音标 | 例词 | 清/浊 | 说明 |
+|------|------|-------|------|
+| /p/ | Pass, Pein | 清 | 强烈送气 |
+| /b/ | Bett, aber | 浊 | — |
+| /t/ | Tag, alt | 清 | 强烈送气 |
+| /d/ | da, und | 浊 | — |
+| /k/ | Kind, backen | 清 | 强烈送气 |
+| /g/ | gut, sagen | 浊 | — |
+| /f/ | Fass, Schiff | 清 | — |
+| /v/ | Vase, was | 浊 | — |
+| /s/ | Haus, dass | 清 | — |
+| /z/ | sie, See | 浊 | 元音前 s |
+| /ʃ/ | schon, Fisch | 清 | 类似英语 sh |
+| /ç/ | ich, Milch | 清 | ich-Laut（腭擦音）|
+| /x/ | Nacht, Buch | 清 | ach-Laut（软腭擦音）|
+| /h/ | Haus, haben | 清 | — |
+| /m/ | Mann, am | 浊 | — |
+| /n/ | Name, dann | 浊 | — |
+| /ŋ/ | lang, Ding | 浊 | -ng 结尾 |
+| /l/ | Lampe, Wald | 浊 | — |
+| /ʁ/ | Rot, Bruder | 浊 | 小舌擦音 |
+| /r/ | rot（方言）| 浊 | 舌尖颤音 |
+| /j/ | ja, Jahr | 浊 | — |
+| /pf/ | Pferd, Apfel | 清 | 塞擦音 |
+| /ts/ | Zeit, Katze | 清 | 塞擦音 |
+| /kv/ | Qual, Quelle | — | qu 组合 |
+
+### 5.4 发音规则要点
+
+- **词尾清化**：浊辅音在词尾变为清辅音  
+  *Hund /hʊnt/, Tag /taːk/*
+- **送气**：/p/, /t/, /k/ 在词首或重读音节强烈送气
+- **ch 发音**：a/o/u 后读 /x/（ach-Laut），e/i/ä/ö/ü 后读 /ç/（ich-Laut）
+- **sp/st 词首**：读 /ʃp/, /ʃt/
+- **-ig 结尾**：标准德语读 /ɪç/，南部读 /ɪk/
+- **元音长短规则**：
+  - 元音后跟双辅音 → 短元音
+  - 元音后跟 h → 长元音（h 不发音）
+  - 双写元音 → 长元音
+
+## 6. 韩语（Korean / 한국어）
+
+### 6.1 字母总览（40个：19辅音 + 21元音）
+
+### 6.2 辅音（자음 / Consonants）- 19个
+
+**基本辅音（10个）**
+
+| 字母 | 名称 | 罗马音 | IPA | 发音要点 |
+|------|------|--------|-----|----------|
+| ㄱ | 기역 | g/k | /k/ | 不送气，类似 sk 中的 k |
+| ㄴ | 니은 | n | /n/ | 舌尖齿龈鼻音 |
+| ㄷ | 디귿 | d/t | /t/ | 不送气，类似 st 中的 t |
+| ㄹ | 리을 | r/l | /ɾ/ /l/ | 闪音（初声）/边音（终声）|
+| ㅁ | 미음 | m | /m/ | 双唇鼻音 |
+| ㅂ | 비읍 | b/p | /p/ | 不送气，类似 sp 中的 p |
+| ㅅ | 시옷 | s | /s/ | 齿龈擦音，后跟 i 变为 /ɕ/ |
+| ㅇ | 이응 | -/ng | ∅/ŋ/ | 初声不发音，终声 /ŋ/ |
+| ㅈ | 지읒 | j | /tɕ/ | 不送气塞擦音 |
+| ㅎ | 히읗 | h | /h/ | 喉擦音 |
+
+**送气辅音（4个）**
+
+| 字母 | 名称 | 罗马音 | IPA | 发音要点 |
+|------|------|--------|-----|----------|
+| ㅋ | 키읔 | k | /kʰ/ | 强烈送气，类似 k |
+| ㅌ | 티읕 | t | /tʰ/ | 强烈送气，类似 t |
+| ㅍ | 피읖 | p | /pʰ/ | 强烈送气，类似 p |
+| ㅊ | 치읓 | ch | /tɕʰ/ | 强烈送气塞擦音 |
+
+**紧音（5个）**
+
+| 字母 | 名称 | 罗马音 | IPA | 发音要点 |
+|------|------|--------|-----|----------|
+| ㄲ | 쌍기역 | kk | /k͈/ | 声带紧张，不送气 |
+| ㄸ | 쌍디귿 | tt | /t͈/ | 声带紧张，不送气 |
+| ㅃ | 쌍비읍 | pp | /p͈/ | 声带紧张，不送气 |
+| ㅆ | 쌍시옷 | ss | /s͈/ | 声带紧张，强擦音 |
+| ㅉ | 쌍지읒 | jj | /tɕ͈/ | 声带紧张，不送气 |
+
+### 6.3 元音（모음 / Vowels）- 21个
+
+**单元音（10个）**
+
+| 字母 | 名称 | 罗马音 | IPA | 舌位 |
+|------|------|--------|-----|------|
+| ㅏ | 아 | a | /a/ | 后低 |
+| ㅓ | 어 | eo | /ʌ/ | 后中 |
+| ㅗ | 오 | o | /o/ | 后中圆唇 |
+| ㅜ | 우 | u | /u/ | 后高圆唇 |
+| ㅡ | 으 | eu | /ɯ/ | 后高不圆唇 |
+| ㅣ | 이 | i | /i/ | 前高 |
+| ㅐ | 애 | ae | /ɛ/ | 前中 |
+| ㅔ | 에 | e | /e/ | 前中（与ㅐ趋同）|
+| ㅚ | 외 | oe | /ø/ 或 /we/ | 前圆唇 |
+| ㅟ | 위 | wi | /y/ 或 /wi/ | 前高圆唇 |
+
+**复合元音（11个）**
+
+| 字母 | 组合 | 罗马音 | IPA |
+|------|------|--------|-----|
+| ㅑ | ㅣ+ㅏ | ya | /ja/ |
+| ㅕ | ㅣ+ㅓ | yeo | /jʌ/ |
+| ㅛ | ㅣ+ㅗ | yo | /jo/ |
+| ㅠ | 
+         
+
+## 7. 中文(Chinese)
+### 1. 汉语拼音是什么
+
+汉语拼音（Hànyǔ Pīnyīn）是现代汉语普通话的标准注音系统。
+
+主要作用：
+
+- 标注汉字读音
+- 学习普通话
+- 输入法打字
+- 字典查阅
+- 对外汉语教学
+
+例如：
+
+| 汉字 | 拼音 | 声调 |
+|---|---|---|
+| 你 | nǐ | 第三声 |
+| 好 | hǎo | 第三声 |
+| 中国 | zhōng guó | 第一声、第二声 |
+
+### 2. 拼音结构
+
+一个完整拼音通常由：
+
+
+声母 + 韵母 + 声调
+
+
+例如：
+
+
+mā = m + a + 第一声
+
+
+### 3. 声母（类似辅音）
+
+#### 3.1 声母总表
+
+| 声母 | 发音近似 | 示例 |
+|---|---|---|
+| b | 类似“玻” | bā 八 |
+| p | 送气更强 | pā 趴 |
+| m | 鼻音 | mā 妈 |
+| f | 类似英文f | fā 发 |
+| d | 类似“的” | dā 搭 |
+| t | 送气 | tā 他 |
+| n | 鼻音 | nā 拿 |
+| l | 类似“了” | lā 拉 |
+| g | 类似“哥” | gā 嘎 |
+| k | 送气 | kā 卡 |
+| h | 类似“喝” | hā 哈 |
+| j | 舌面音 | jī 鸡 |
+| q | 送气 | qī 七 |
+| x | 类似“西” | xī 西 |
+| zh | 卷舌音 | zhī 知 |
+| ch | 卷舌送气 | chī 吃 |
+| sh | 卷舌音 | shī 师 |
+| r | 类似日语r | rì 日 |
+| z | 平舌音 | zī 字 |
+| c | 平舌送气 | cì 刺 |
+| s | 平舌音 | sī 丝 |
+| y | 半元音 | yī 一 |
+| w | 半元音 | wū 屋 |
+
+#### 3.2 平舌音与卷舌音
+
+##### 平舌音
+
+
+z c s
+
+
+##### 卷舌音
+
+
+zh ch sh r
+
+
+例如：
+
+| 平舌 | 卷舌 |
+|---|---|
+| zā | zhā |
+| cī | chī |
+| sī | shī |
+
+### 4. 韵母（类似元音）
+
+#### 4.1 单韵母
+
+| 韵母 | 发音 |
+|---|---|
+| a | 啊 |
+| o | 喔 |
+| e | 鹅 |
+| i | 衣 |
+| u | 乌 |
+| ü | 鱼 |
+
+#### 4.2 复韵母
+
+| 韵母 | 示例 |
+|---|---|
+| ai | 爱 ài |
+| ei | 黑 hēi |
+| ao | 好 hǎo |
+| ou | 口 kǒu |
+| ia | 家 jiā |
+| ie | 写 xiě |
+| ua | 花 huā |
+| uo | 国 guó |
+| üe | 学 xué |
+
+#### 4.3 鼻韵母
+
+##### 前鼻音
+
+
+an en in un ün
+
+
+##### 后鼻音
+
+
+ang eng ing ong
+
+
+例如：
+
+| 拼音 | 示例 |
+|---|---|
+| an | 安 ān |
+| ang | 长 cháng |
+| in | 新 xīn |
+| ing | 明 míng |
+
+### 5. 四声（声调）
+
+普通话有四个主要声调和轻声。
+
+| 声调 | 符号 | 发音变化 | 示例 |
+|---|---|---|---|
+| 第一声 | ˉ | 高平 | mā 妈 |
+| 第二声 | ˊ | 上扬 | má 麻 |
+| 第三声 | ˇ | 先降后升 | mǎ 马 |
+| 第四声 | ˋ | 下降 | mà 骂 |
+| 轻声 | 无 | 轻短 | ma 吗 |
+
+#### 5.1 声调口诀
+
+
+一声平，二声扬，
+三声拐弯，四声降。
+
+
+### 6. 拼音与国际音标 IPA
+
+#### 6.1 IPA 简介
+
+IPA（International Phonetic Alphabet）即国际音标。
+
+是一套国际通用的发音记录系统。
+
+#### 6.2 拼音与 IPA 对照
+
+| 拼音 | IPA | 说明 |
+|---|---|---|
+| b | p | 不送气 |
+| p | pʰ | 送气 |
+| d | t | 不送气 |
+| t | tʰ | 送气 |
+| g | k | 不送气 |
+| k | kʰ | 送气 |
+| j | tɕ | 舌面音 |
+| q | tɕʰ | 送气 |
+| x | ɕ | 类似“西” |
+| zh | ʈʂ | 卷舌 |
+| ch | ʈʂʰ | 卷舌送气 |
+| sh | ʂ | 卷舌 |
+| r | ʐ | 卷舌浊音 |
+
+### 7. 拼音书写规则
+
+#### 7.1 声调标注规则
+
+口诀：
+
+
+有a不放过，
+没a找o、e，
+i、u并列标后者。
+
+
+例如：
+
+| 正确 | 错误 |
+|---|---|
+| hǎo | haǒ |
+| liú | lǐu |
+
+#### 7.2 ü 的规则
+
+j、q、x、y 后面的 ü 两点省略：
+
+| 实际发音 | 拼写 |
+|---|---|
+| jü | ju |
+| qü | qu |
+| xü | xu |
+
+### 8. 轻声与变调
+
+#### 8.1 轻声
+
+| 词语 | 拼音 |
+|---|---|
+| 妈妈 | mā ma |
+| 我们 | wǒ men |
+| 知道 | zhī dao |
+
+#### 8.2 “一”的变调
+
+| 情况 | 发音 |
+|---|---|
+| 单独使用 | yī |
+| 四声前 | yí |
+| 非四声前 | yì |
+
+例如：
+
+| 汉字 | 拼音 |
+|---|---|
+| 一个 | yí gè |
+| 一天 | yì tiān |
+
+#### 8.3 “不”的变调
+
+| 情况 | 发音 |
+|---|---|
+| 四声前 | bú |
+| 其他情况 | bù |
+
+例如：
+
+| 汉字 | 拼音 |
+|---|---|
+| 不对 | bú duì |
+| 不行 | bù xíng |
+
+### 9. 中文拼音与英语发音区别
+
+| 拼音 | 英语误区 | 正确理解 |
+|---|---|---|
+| q | 不是“ku” | 类似“七” |
+| x | 不是 ks | 类似“西” |
+| c | 不是 k | tsʰ |
+| zh | 不是 z+h | 卷舌整体音 |
+| r | 不同于英文 r | 中文卷舌音 |
+
+### 10. 整体认读音节
+
+
+zhi chi shi ri
+zi ci si
+yi wu yu
+ye yue yuan yin yun ying
+
+
+### 11. 拼音输入法
+
+#### 全拼
+
+
+zhongguo
+
+
+输出：
+
+
+中国
+
+
+#### 双拼
+
+常见方案：
+
+- 小鹤双拼
+- 微软双拼
+- 搜狗双拼
+
+优点：
+
+- 输入更快
+- 减少按键次数
+
+### 12. 发音练习技巧
+
+#### 重点训练
+
+- 平舌 / 卷舌
+- 前鼻音 / 后鼻音
+- 四声
+- 送气 / 不送气
+
+#### 最小对立练习
+
+
+zā — zhā
+cī — chī
+sī — shī
+
+
+### 13. 儿化音
+
+| 普通 | 儿化 |
+|---|---|
+| 花 | 花儿 huār |
+| 门 | 门儿 ménr |
+| 玩 | 玩儿 wánr |
+
+### 14. 普通话音节结构
+
+
+声母 + 韵母 + 声调
+
+
+例如：
+
+| 音节 | 拆分 |
+|---|---|
+| mā | m + a |
+| zhōng | zh + ong |
+| xué | x + üe |
+
+### 15. 中文发音常见难点
+
+#### 常见问题
+
+##### 1. 四声不准
+
+容易全部读成平调。
+
+##### 2. zh/ch/sh 与 z/c/s 不分
+
+卷舌不到位。
+
+##### 3. n/l 不分
+
+
+nán → lán
+
+
+##### 4. 前后鼻音混淆
+
+
+an ↔ ang
+in ↔ ing
+
+
+### 16. 中文拼音速查表
+
+#### 声母表
+
+
+b p m f
+d t n l
+g k h
+j q x
+zh ch sh r
+z c s
+y w
+
+
+#### 单韵母表
+
+
+a o e i u ü
+
+
+#### 四声表
+
+
+ā á ǎ à
+ō ó ǒ ò
+ē é ě è
+ī í ǐ ì
+ū ú ǔ ù
+ǖ ǘ ǚ ǜ
+
+
+### 17. 中文拼音与英语音标区别
+
+| 项目 | 汉语拼音 | 英语音标 |
+|---|---|---|
+| 用途 | 标注汉字 | 标注英语 |
+| 是否有声调 | 有 | 一般无 |
+| 发音重点 | 声调+送气 | 重音+长短音 |
+
+### 18. 学习路线建议
+
+#### 初级
+
+- 学声母
+- 学韵母
+- 学四声
+- 学拼读
+
+#### 中级
+
+- 练习变调
+- 练习连读
+- 练习儿化
+
+#### 高级
+
+- 语流节奏
+- 情感语调
+- 地区口音辨别
+
+### 19. 常用学习资源
+
+#### 在线词典
+
+- 汉典
+- 百度汉语
+- Wiktionary
+
+#### 发音练习
+
+- Forvo
+- YouTube 普通话频道
+- 中文播客
+
+### 20. 一句话总结
+
+
+中文拼音 = 声母 + 韵母 + 声调
+
+
+重点掌握：
+
+- 声调
+- 卷舌音
+- 鼻音
+- 送气
+
+即可明显提升普通话发音准确度。
+
+`
+      
+      
+          }, 
+
+
+        number: { name: "🔢 数字", 
+
+            markdown: `# 🏰 六语种数字知识汇总
+
+
+
+## 1. 中文数字概览
+
+中文数字系统与日语、韩语汉字词高度同源，每 10⁴（万）进位。
+
+### 1.1 特点
+- 数字读写规则相对简单，无性数变化
+- 有大小写两套写法（用于财务防篡改）
+- 数词后需用量词
+- 小数点读作“点”，百分数读作“百分之”
+
+## 2. 基本数字（0-10）
+
+| 数字 | 小写 | 大写（财务）| 拼音 | 发音要点 |
+|------|------|------------|------|----------|
+| 0 | 〇 / 零 | 零 | líng | 舌尖中音，后鼻音 |
+| 1 | 一 | 壹 | yī | 高平调（55）|
+| 2 | 二 | 贰 | èr | 去声（51），卷舌 |
+| 3 | 三 | 叁 | sān | 高平调，平舌 |
+| 4 | 四 | 肆 | sì | 去声，平舌 |
+| 5 | 五 | 伍 | wǔ | 上声（214）|
+| 6 | 六 | 陆 | liù | 去声 |
+| 7 | 七 | 柒 | qī | 高平调 |
+| 8 | 八 | 捌 | bā | 高平调 |
+| 9 | 九 | 玖 | jiǔ | 上声 |
+| 10 | 十 | 拾 | shí | 阳平（35）|
+
+**注意**：
+- “二”和“两”的区别见下文
+- “零”在口语中常说成“〇”，尤其在读数字串时
+
+## 3. 二 vs 两（重要区分）
+
+| 使用场景 | 用“二” | 用“两” |
+|----------|--------|--------|
+| 数字本身 | 二、十二、二十 | — |
+| 百位以上 | 二百（也可用两百）| 两百（口语更常用）|
+| 量词前 | 二个（少用）| **两个**（标准）|
+| 重量单位（斤/两）| 二两（重量单位）| — |
+| 表示“几”的意思 | — | 两三个、两天 |
+| 序数 | 第二 | — |
+| 小数/分数 | 零点二、二分之一 | — |
+| 成对事物 | — | 两双、两口子 |
+
+**总结**：计数和量词前多用“两”，数字本身和序数用“二”。
+
+## 4. 11-99（十位组合）
+
+### 4.1 11-19
+| 数字 | 中文 | 拼音 | 结构 |
+|------|------|------|------|
+| 11 | 十一 | shí yī | 10 + 1 |
+| 12 | 十二 | shí èr | 10 + 2 |
+| 13 | 十三 | shí sān | 10 + 3 |
+| 14 | 十四 | shí sì | 10 + 4 |
+| 15 | 十五 | shí wǔ | 10 + 5 |
+| 16 | 十六 | shí liù | 10 + 6 |
+| 17 | 十七 | shí qī | 10 + 7 |
+| 18 | 十八 | shí bā | 10 + 8 |
+| 19 | 十九 | shí jiǔ | 10 + 9 |
+
+### 4.2 20-99
+| 数字 | 中文 | 拼音 | 结构 |
+|------|------|------|------|
+| 20 | 二十 | èr shí | 2 × 10 |
+| 21 | 二十一 | èr shí yī | 2×10 + 1 |
+| 22 | 二十二 | èr shí èr | 2×10 + 2 |
+| 30 | 三十 | sān shí | 3 × 10 |
+| 45 | 四十五 | sì shí wǔ | 4×10 + 5 |
+| 99 | 九十九 | jiǔ shí jiǔ | 9×10 + 9 |
+
+## 5. 100以上（位级系统）
+**注意**：中文每 10⁴（万）进位，与英语的 thousand（10³）/ million（10⁶）不同。
+
+| 数字 | 中文 | 英文 | 数值 |
+| :--- | :--- | :--- | :--- |
+| 100 | 一百 | One hundred | 10² |
+| 1,000 | 一千 | One thousand | 10³ |
+| 10,000 | 一万 | Ten thousand | 10⁴ |
+| 100,000 | 十万 | One hundred thousand | 10⁵ |
+| 1,000,000 | 一百万 | One million | 10⁶ |
+| 10,000,000 | 一千万 | Ten million | 10⁷ |
+| 100,000,000 | 一亿 | One hundred million | 10⁸ |
+| 1,000,000,000 | 十亿 | One billion | 10⁹ |
+| 10,000,000,000 | 一百亿 | Ten billion | 10¹⁰ |
+| 100,000,000,000 | 一千亿 | One hundred billion | 10¹¹ |
+| 1,000,000,000,000 | 一兆 / 一万亿 | One trillion | 10¹² |
+
+
+
+### 5.1 大数读法示例
+
+<div align="center">
+
+| 数字 | 中文读法 | 英文读法 |
+| :--- | :--- | :--- |
+| 101 | 一百零一 | One hundred and one |
+| 110 | 一百一十 | One hundred and ten |
+| 115 | 一百一十五 | One hundred and fifteen |
+| 1,234 | 一千二百三十四 | One thousand, two hundred and thirty-four |
+| 12,345 | 一万二千三百四十五 | Twelve thousand, three hundred and forty-five |
+| 123,456 | 十二万三千四百五十六 | One hundred and twenty-three thousand, four hundred and fifty-six |
+| 1,234,567 | 一百二十三万四千五百六十七 | One million, two hundred and thirty-four thousand, five hundred and sixty-seven |
+| 12,345,678 | 一千二百三十四万五千六百七十八 | Twelve million, three hundred and forty-five thousand, six hundred and seventy-eight |
+| 123,456,789 | 一亿二千三百四十五万六千七百八十九 | One hundred and twenty-three million, four hundred and fifty-six thousand, seven hundred and eighty-nine |
+| 1,234,567,899 | 十二亿三千四百五十六万七千八百九十九元 | One billion, two hundred (and) thirty-four million, five hundred (and) sixty-seven thousand, eight hundred (and) ninety-nine yuan.| 
+</div>
+
+### 5.2 数字中间“零”的使用规则
+
+- 中间有连续 0 时，只读一个“零”
+- 末尾 0 不读
+- 万/亿位为 0 时不读，但中间 0 需读
+
+| 数字 | 读法 | 说明 |
+|------|------|------|
+| 101 | 一百零一 | 中间一个零 |
+| 1001 | 一千零一 | 中间一个零 |
+| 10001 | 一万零一 | 中间一个零 |
+| 10050 | 一万零五十 | 非末尾零需读 |
+| 10500 | 一万零五百 | — |
+| 1000001 | 一百万零一 | 万级/个级衔接处 |
+| 100000000 | 一亿 | 全零不读 |
+
+## 6. 大写数字（财务防篡改）
+
+在支票、合同、发票等正式文件中使用，防止数字被篡改。
+
+| 小写 | 大写 | 小写 | 大写 |
+|------|------|------|------|
+| 0 | 零 | 5 | 伍 |
+| 1 | 壹 | 6 | 陆 |
+| 2 | 贰 | 7 | 柒 |
+| 3 | 叁 | 8 | 捌 |
+| 4 | 肆 | 9 | 玖 |
+| 10 | 拾 | 100 | 佰 |
+| 1,000 | 仟 | 10,000 | 万（不变）|
+| 100,000,000 | 亿（不变）| — | — |
+
+**大写金额示例**：
+- 123.45元 → 壹佰贰拾叁元肆角伍分
+- 1,000元 → 壹仟元整
+
+## 7. 序数词
+
+| 表达 | 中文 | 拼音 | 说明 |
+|------|------|------|------|
+| 第一 | 第一 | dì yī | 最常用 |
+| 第二 | 第二 | dì èr | — |
+| 第三 | 第三 | dì sān | — |
+| 第十 | 第十 | dì shí | — |
+| 第一百 | 第一百 | dì yī bǎi | — |
+| 一号 | 一号 / 第一号 | yī hào | 编号用 |
+| 首/头 | 首位 / 头名 | shǒu wèi | 文言/书面 |
+
+**注意事项**：
+- 序数词一般用“第 + 数字”
+- 日期、楼层、编号可直接用数字（不用“第”）
+  - 三楼，五号，第十页
+
+## 8. 量词（量词 / Measure Words）
+
+中文数字**不能**直接修饰名词，必须用量词。
+
+### 8.1 常用量词
+
+| 量词 | 拼音 | 使用对象 | 例 |
+|------|------|----------|-----|
+| 个 | gè | 通用，人/物品 | 一个人、一个苹果 |
+| 只 | zhī | 动物、手套、脚 | 一只猫、一只鞋 |
+| 条 | tiáo | 长形物、鱼、裤子 | 一条鱼、一条河 |
+| 张 | zhāng | 平面物、纸、桌子 | 一张纸、一张桌子 |
+| 本 | běn | 书、册子 | 一本书 |
+| 把 | bǎ | 有柄物、椅子 | 一把刀、一把椅子 |
+| 辆 | liàng | 车辆 | 一辆车 |
+| 台 | tái | 机器、电器 | 一台电脑 |
+| 件 | jiàn | 衣服、事情 | 一件衣服、一件事 |
+| 双 | shuāng | 成对物品 | 一双鞋、一双筷子 |
+| 对 | duì | 成对（人或物）| 一对夫妻 |
+| 套 | tào | 成套物品 | 一套房子、一套书 |
+| 位 | wèi | 人（敬称）| 一位老师 |
+| 口 | kǒu | 家人 | 一口人 |
+| 匹 | pǐ | 马、布料 | 一匹马 |
+| 头 | tóu | 大型动物 | 一头牛 |
+| 朵 | duǒ | 花、云 | 一朵花 |
+| 棵 | kē | 植物 | 一棵树 |
+| 粒 | lì | 颗粒状 | 一粒米 |
+| 滴 | dī | 液体滴状 | 一滴水 |
+| 阵 | zhèn | 一阵风、雨 | 一阵风 |
+
+### 8.2 量词与数字搭配规则
+
+| 数字 | 用量词时的形式 | 例 |
+|------|---------------|-----|
+| 1 | 一 + 量词 | 一个、一只、一条 |
+| 2 | 两 + 量词（**不用二**）| 两个、两只、两条 |
+| 3-9 | 数字 + 量词 | 三个、五只 |
+| 10 | 十 + 量词 | 十个 |
+| 100 | 一百 + 量词 | 一百个 |
+
+## 9. 分数
+
+### 9.1 分数读法
+
+**公式**：分母 + 分之 + 分子
+
+| 分数 | 中文 | 拼音 |
+|------|------|------|
+| 1/2 | 二分之一 | èr fēn zhī yī |
+| 1/3 | 三分之一 | sān fēn zhī yī |
+| 2/3 | 三分之二 | sān fēn zhī èr |
+| 3/4 | 四分之三 | sì fēn zhī sān |
+| 1/10 | 十分之一 | shí fēn zhī yī |
+| 1/100 | 百分之一 | bǎi fēn zhī yī |
+
+### 9.2 特殊分数
+
+| 分数 | 常用表达 | 说明 |
+|------|----------|------|
+| 1/2 | 一半 / 半数 | 口语常用 |
+| 1/4 | 四分之一 / 一刻（时间）| 一刻=15分钟 |
+| 3/4 | 四分之三 / 三刻 | — |
+
+## 10. 小数
+
+### 10.1 小数读法
+
+- 小数点读作 **点（diǎn）**
+- 小数点后逐位读数（不读位级）
+
+| 数字 | 中文读法 |
+|------|----------|
+| 0.5 | 零点五 |
+| 1.2 | 一点二 |
+| 3.14 | 三点一四 |
+| 0.75 | 零点七五 |
+| 10.01 | 十点零一 |
+| 99.99 | 九十九点九九 |
+
+### 10.2 循环小数
+
+| 表达 | 中文 |
+|------|------|
+| 0.333... | 零点三，三循环 |
+| 1.666... | 一点六，六循环 |
+
+## 11. 百分数
+
+### 11.1 百分数读法
+
+- 结构：数字 + 百分之 + 数字
+- 读作 **百分之 X（bǎi fēn zhī X）**
+
+| 数字 | 中文 |
+|------|------|
+| 1% | 百分之一 |
+| 25% | 百分之二十五 |
+| 50% | 百分之五十 |
+| 100% | 百分之一百 |
+| 0.5% | 百分之零点五 |
+| 150% | 百分之一百五十 |
+
+## 12. 千分数 / 万分数
+
+| 符号 | 中文 | 读法 |
+|------|------|------|
+| ‰ | 千分号 | 千分之 X |
+| ‱ | 万分号 | 万分之 X |
+
+**例**：
+- 1‰ → 千分之一
+- 25‰ → 千分之二十五
+
+## 13. 倍数
+
+| 表达 | 中文 | 说明 |
+|------|------|------|
+| 2倍 | 两倍 / 二倍 | 两倍更常用 |
+| 3倍 | 三倍 | — |
+| 10倍 | 十倍 | — |
+| 增加一倍 | 翻一番 | 变为原来的2倍 |
+| 增加到三倍 | 翻两番 | 变为原来的4倍 |
+
+## 14. 概数表达
+
+| 表达 | 中文 | 例 |
+|------|------|-----|
+| 大约 | 大约 X、大概 X | 大约十个人 |
+| 左右 | X 左右 | 十个人左右 |
+| 上下 | X 上下 | 五十岁上下 |
+| 来 | X 来 | 十来个（约10个）|
+| 多 | X 多 | 十多个人（10-19）|
+| 几 | 几 | 几个人（2-9）|
+| 相邻数字 | 一两个、三五天 | 三五天表示3-5天 |
+| 连续范围 | X 到 Y | 十到十五个 |
+| 以上/以下 | X 以上、X 以下 | 十人以上 |
+
+## 15. 日期与时间
+
+### 15.1 年
+
+| 年份 | 中文读法 | 说明 |
+|------|----------|------|
+| 1999 | 一九九九年 | 逐位读 |
+| 2000 | 二〇〇〇年 / 两千年 | 两种读法 |
+| 2024 | 二零二四年 | 逐位读 |
+
+### 15.2 月
+
+- 读作 **X月（yuè）**
+- 一月、二月、三月...十二月
+
+### 15.3 日（日期）
+
+- 1号 → 一号 / 一日
+- 常用“号”口语，“日”书面
+
+| 日期 | 读法 |
+|------|------|
+| 1号 | 一号 / 一日 |
+| 15号 | 十五号 |
+| 31号 | 三十一号 |
+
+### 15.4 星期
+
+| 星期 | 中文 |
+|------|------|
+| 星期一 | 周一 |
+| 星期二 | 周二 |
+| ... | ... |
+| 星期日 / 星期天 | 周日 |
+
+### 15.5 时间
+
+| 时间 | 中文读法 | 说明 |
+|------|----------|------|
+| 8:00 | 八点 / 八点钟 | 整点 |
+| 8:05 | 八点零五分 | 分钟≤9加零 |
+| 8:15 | 八点十五分 / 八点一刻 | 一刻=15分钟 |
+| 8:30 | 八点半 / 八点三十分 | 半点 |
+| 8:45 | 八点四十五分 / 九点差一刻 | 差一刻 |
+| 8:55 | 八点五十五分 / 九点差五分 | 差几分 |
+| 1:00 | 下午一点 / 十三点 | 24小时制多用于正式 |
+
+## 16. 数字的日常使用
+
+### 16.1 电话号码
+
+- 逐位读，1 读“幺（yāo）”（避免与 7 混淆）
+- 0 读“零”或“洞（dòng）”
+
+| 示例 | 读法 |
+|------|------|
+| 139-1234-5678 | 幺三九，幺二三四，五六七八 |
+| 110 | 幺幺零 |
+| 10086 | 幺零零八六 |
+
+### 16.2 门牌/房间号
+
+- 直接读数字
+- 301 → 三零一号 / 三〇一
+
+### 16.3 楼层
+
+- 一般读数字 + 楼
+- 地下楼层：负一层（-1）、地下一层
+- B1 → 负一楼
+
+### 16.4 金额
+
+| 金额 | 中文 |
+|------|------|
+| 1.5元 | 一块五 |
+| 10元 | 十块（口语）/十元 |
+| 100元 | 一百块 / 一百元 |
+| 12.34元 | 十二块三毛四 / 十二元三角四分 |
+
+### 16.5 年龄
+
+| 年龄 | 中文 |
+|------|------|
+| 1岁 | 一岁 |
+| 10岁 | 十岁 |
+| 20岁 | 二十岁（不用“两十岁”）|
+| 30多岁 | 三十多岁 |
+| 年过花甲 | 60岁以上（文学表达）|
+
+### 16.6 百分数日常用法
+
+| 表达 | 含义 |
+|------|------|
+| 对折 / 五折 | 50% off |
+| 八折 | 20% off（付80%）|
+| 打九折 | 10% off（付90%）|
+| 翻一番 | 增加100% |
+| 翻两番 | 增加300%（4倍）|
+
+## 17. 数字文化禁忌与吉祥数字
+
+### 17.1 吉祥数字
+
+| 数字 | 含义 | 原因 |
+|------|------|------|
+| 6 | 顺利 | 六六大顺 |
+| 8 | 发财 | 谐音“发” |
+| 9 | 长久 | 谐音“久”，天长地久 |
+| 168 | 一路发 | 组合吉祥 |
+| 520 | 我爱你 | 数字谐音 |
+| 1314 | 一生一世 | 谐音 |
+
+### 17.2 数字禁忌
+
+| 数字 | 原因 | 规避方式 |
+|------|------|----------|
+| 4 | 谐音“死” | 楼层、门牌回避（4→3A）|
+| 14 | 谐音“要死” | 避免使用 |
+| 7 | 七月为鬼月（民间）| 偶有回避 |
+| 250 | 半吊子、傻瓜 | 避免称呼 |
+
+### 17.3 电话号码吉祥组合
+
+- 888 → 发发发
+- 666 → 顺顺顺
+- 168 → 一路发
+
+## 18. 数学符号读法
+
+| 符号 | 中文 | 拼音 |
+|------|------|------|
+| + | 加 | jiā |
+| - | 减 | jiǎn |
+| × | 乘以 | chéng yǐ |
+| ÷ | 除以 | chú yǐ |
+| = | 等于 | děng yú |
+| > | 大于 | dà yú |
+| < | 小于 | xiǎo yú |
+| ≥ | 大于等于 | dà yú děng yú |
+| ≤ | 小于等于 | xiǎo yú děng yú |
+| % | 百分之 | bǎi fēn zhī |
+| √ | 根号 | gēn hào |
+| ² | 平方 | píng fāng |
+| ³ | 立方 | lì fāng |
+| n | 次方 | cì fāng |
+| ( ) | 括号 | kuò hào |
+| ∑ | 求和 | qiú hé |
+| ∞ | 无穷大 | wú qióng dà |
+| π | 圆周率 | yuán zhōu lǜ |
+
+## 19. 中文数字与六语种对照
+
+### 19.1 1-10 对照表
+
+| 数字 | 中文 | 英语 | 日语 | 西班牙语 | 法语 | 德语 | 韩语（固有）| 韩语（汉字）|
+|------|------|------|------|----------|------|------|------------|------------|
+| 1 | 一 | one | いち | uno | un | eins | 하나 | 일 |
+| 2 | 二 | two | に | dos | deux | zwei | 둘 | 이 |
+| 3 | 三 | three | さん | tres | trois | drei | 셋 | 삼 |
+| 4 | 四 | four | よん/し | cuatro | quatre | vier | 넷 | 사 |
+| 5 | 五 | five | ご | cinco | cinq | fünf | 다섯 | 오 |
+| 6 | 六 | six | ろく | seis | six | sechs | 여섯 | 육 |
+| 7 | 七 | seven | なな/しち | siete | sept | sieben | 일곱 | 칠 |
+| 8 | 八 | eight | はち | ocho | huit | acht | 여덟 | 팔 |
+| 9 | 九 | nine | きゅう/く | nueve | neuf | neun | 아홉 | 구 |
+| 10 | 十 | ten | じゅう | diez | dix | zehn | 열 | 십 |
+
+### 19.2 大数位级对比
+
+| 数值 | 中文 | 英语 | 日语 | 韩语（汉字）|
+|------|------|------|------|------------|
+| 10² | 百 | hundred | 百 | 백 |
+| 10³ | 千 | thousand | 千 | 천 |
+| 10⁴ | 万 | ten thousand | 万 | 만 |
+| 10⁵ | 十万 | hundred thousand | 十万 | 십만 |
+| 10⁶ | 百万 | million | 百万 | 백만 |
+| 10⁸ | 亿 | — | 億 | 억 |
+| 10¹² | 兆 | trillion | 兆 | 조 |
+
+## 20. 学习要点总结
+
+| 模块 | 核心内容 |
+|------|----------|
+| **基本数字** | 0-10 读写，注意“一”的变调 |
+| **二 vs 两** | 量词前用“两”，数字本身用“二” |
+| **万进位** | 每 10⁴ 进位，与英语不同 |
+| **量词** | 数字必须加量词才能修饰名词 |
+| **分数** | 分母 + 分之 + 分子 |
+| **小数** | 点 + 逐位读 |
+| **百分数** | 百分之 X |
+| **序数** | 第 + 数字 |
+| **日期时间** | 年逐位读，月日数字直接读 |
+| **电话号码** | 1 读“幺”，0 读“零” |
+| **大写数字** | 财务防篡改专用 |
+| **文化禁忌** | 4 避讳，8/6/9 吉祥 |
+
+## 1. 英语（English）
+
+### 1.1 基数词（Cardinal Numbers）
+
+| 数字 | 英文 | 数字 | 英文 |
+|------|------|------|------|
+| 0 | zero | 10 | ten |
+| 1 | one | 11 | eleven |
+| 2 | two | 12 | twelve |
+| 3 | three | 13 | thirteen |
+| 4 | four | 14 | fourteen |
+| 5 | five | 15 | fifteen |
+| 6 | six | 16 | sixteen |
+| 7 | seven | 17 | seventeen |
+| 8 | eight | 18 | eighteen |
+| 9 | nine | 19 | nineteen |
+| 20 | twenty | 30 | thirty |
+| 21 | twenty-one | 40 | forty |
+| 22 | twenty-two | 50 | fifty |
+| 23 | twenty-three | 60 | sixty |
+| 24 | twenty-four | 70 | seventy |
+| 25 | twenty-five | 80 | eighty |
+| 26 | twenty-six | 90 | ninety |
+| 27 | twenty-seven | 100 | one hundred |
+| 28 | twenty-eight | 1,000 | one thousand |
+| 29 | twenty-nine | 1,000,000 | one million |
+
+### 1.2 序数词（Ordinal Numbers）
+
+| 数字 | 序数词 | 缩写 |
+|------|--------|------|
+| 1st | first | 1st |
+| 2nd | second | 2nd |
+| 3rd | third | 3rd |
+| 4th | fourth | 4th |
+| 5th | fifth | 5th |
+| 6th | sixth | 6th |
+| 7th | seventh | 7th |
+| 8th | eighth | 8th |
+| 9th | ninth | 9th |
+| 10th | tenth | 10th |
+| 11th | eleventh | 11th |
+| 12th | twelfth | 12th |
+| 13th | thirteenth | 13th |
+| 20th | twentieth | 20th |
+| 21st | twenty-first | 21st |
+| 22nd | twenty-second | 22nd |
+| 23rd | twenty-third | 23rd |
+| 30th | thirtieth | 30th |
+| 100th | hundredth | 100th |
+| 1000th | thousandth | 1000th |
+
+### 1.3 数字读法规则
+
+- **百位数**：X hundred + and + Y
+  - 101：one hundred **and** one
+  - 235：two hundred and thirty-five
+- **千位数**：X thousand + 百位
+  - 1,234：one thousand two hundred and thirty-four
+  - 10,456：ten thousand four hundred and fifty-six
+- **万/十万**：无单独词汇，用 thousand 组合
+  - 10,000：ten thousand
+  - 100,000：one hundred thousand
+- **百万**：million
+  - 1,500,000：one million five hundred thousand
+- **十亿**：billion（美式）/ thousand million（英式旧）
+
+### 1.4 分数（Fractions）
+
+| 分数 | 读法 | 说明 |
+|------|------|------|
+| 1/2 | one half / a half | 特殊 |
+| 1/3 | one third | — |
+| 2/3 | two thirds | 分子用基数，分母用序数复数 |
+| 1/4 | one quarter / one fourth | — |
+| 3/4 | three quarters | — |
+| 1/5 | one fifth | — |
+| 1/10 | one tenth | — |
+| 1/100 | one hundredth | — |
+
+### 1.5 小数（Decimals）
+
+- 小数点读作 **point**
+- 0.5 → zero point five / point five
+- 3.14 → three point one four（逐位读）
+- 0.75 → zero point seven five
+
+### 1.6 百分数（Percentages）
+
+- 读作 **percent**（美）/ per cent（英）
+- 25% → twenty-five percent
+- 100% → one hundred percent
+
+### 1.7 年份读法
+
+| 年份 | 读法 |
+|------|------|
+| 1999 | nineteen ninety-nine |
+| 2000 | two thousand |
+| 2001 | two thousand one / twenty oh one |
+| 2010 | twenty ten / two thousand ten |
+| 2024 | twenty twenty-four |
+
+### 1.8 电话号码读法
+
+- 逐位数字朗读，0 读作 **oh** 或 **zero**
+- 555-1234 → five five five, one two three four
+- 连续相同数字可读作 **double** / **triple**
+  - 555 → triple five / five five five
+
+### 1.9 数学符号
+
+| 符号 | 读法 |
+|------|------|
+| + | plus |
+| - | minus |
+| × | times / multiplied by |
+| ÷ | divided by |
+| = | equals |
+| < | is less than |
+| > | is greater than |
+| ≤ | is less than or equal to |
+| ≥ | is greater than or equal to |
+| % | percent |
+| √ | square root |
+| ² | squared |
+| ³ | cubed |
+| n | to the nth power |
+
+## 2. 日语（Japanese / 日本語）
+
+### 2.1 基数词（0-10）
+
+| 数字 | 汉字 | 平假名 | 罗马音 | 发音要点 |
+|------|------|--------|--------|----------|
+| 0 | 零 / 〇 | れい / ゼロ | rei / zero | ゼロ更常用 |
+| 1 | 一 | いち | ichi | i-chi |
+| 2 | 二 | に | ni | — |
+| 3 | 三 | さん | san | — |
+| 4 | 四 | し / よん | shi / yon | よん更常用 |
+| 5 | 五 | ご | go | — |
+| 6 | 六 | ろく | roku | — |
+| 7 | 七 | しち / なな | shichi / nana | なな更常用 |
+| 8 | 八 | はち | hachi | — |
+| 9 | 九 | く / きゅう | ku / kyuu | きゅう更常用 |
+| 10 | 十 | じゅう | juu | — |
+
+### 2.2 11-99（十位组合）
+
+| 数字 | 日语 | 构成 |
+|------|------|------|
+| 11 | じゅういち | 10 + 1 |
+| 12 | じゅうに | 10 + 2 |
+| 20 | にじゅう | 2 × 10 |
+| 21 | にじゅういち | 2×10 + 1 |
+| 30 | さんじゅう | 3×10 |
+| 99 | きゅうじゅうきゅう | 9×10 + 9 |
+
+### 2.3 100以上（位级系统）
+
+| 数字 | 汉字 | 读法 | 数值 |
+|------|------|------|------|
+| 100 | 百 | ひゃく（hyaku） | 10² |
+| 1,000 | 千 | せん（sen） | 10³ |
+| 10,000 | 万 | まん（man） | 10⁴ |
+| 100,000 | 十万 | じゅうまん | 10⁵ |
+| 1,000,000 | 百万 | ひゃくまん | 10⁶ |
+| 10,000,000 | 千万 | せんまん | 10⁷ |
+| 100,000,000 | 億 | おく（oku） | 10⁸ |
+| 1,000,000,000,000 | 兆 | ちょう（chou） | 10¹² |
+
+**注意**：日语每 10⁴（万）进位，与英语的 thousand（10³）/ million（10⁶）不同。
+
+### 2.4 特殊音变（数え方）
+
+| 数字 | 百 | 三百 | 六百 | 八百 |
+|------|----|----|----|----|
+| 正常 | ひゃく | さんびゃく | ろっぴゃく | はっぴゃく |
+
+| 数字 | 千 | 三千 | 八千 |
+|------|----|----|----|
+| 正常 | せん | さんぜん | はっせん |
+
+| 数字 | 一万 | 八万 |
+|------|----|----|
+| 正常 | いちまん | はちまん |
+
+### 2.5 序数词
+
+| 表达 | 读法 | 说明 |
+|------|------|------|
+| 第一 | だいいち | 第 + 数字 |
+| 第二 | だいに | — |
+| 1番目 | いちばんめ | 数字 + 番目 |
+| 1つ目 | ひとつめ | 个数词 + 目 |
+| 1人目 | ひとりめ | 人数词 + 目 |
+
+### 2.6 量词（助数詞）
+
+| 对象 | 量词 | 读法 | 例（1个） |
+|------|------|------|----------|
+| 一般物品 | 個 | こ | いっこ |
+| 人 | 人 | にん | ひとり（1人）, ふたり（2人）|
+| 小型动物 | 匹 | ひき | いっぴき |
+| 大型动物 | 頭 | とう | いっとう |
+| 鸟 | 羽 | わ | いちわ |
+| 书本/册 | 冊 | さつ | いっさつ |
+| 扁平物品 | 枚 | まい | いちまい |
+| 杯 | 杯 | はい | いっぱい |
+| 细长物 | 本 | ほん | いっぽん |
+| 车辆/机器 | 台 | だい | いちだい |
+| 建筑物 | 軒 | けん | いっけん |
+| 层 | 階 | かい | いっかい |
+| 岁数 | 歳 | さい | いっさい |
+
+### 2.7 量词音变规律
+
+| 数字 | + 百 | + 本 | + 匹 | + 杯 | + 回 |
+|------|------|------|------|------|------|
+| 1 | いっぴゃく | いっぽん | いっぴき | いっぱい | いっかい |
+| 2 | にひゃく | にほん | にひき | にはい | にかい |
+| 3 | さんびゃく | さんぼん | さんびき | さんばい | さんかい |
+| 4 | よんひゃく | よんほん | よんひき | よんはい | よんかい |
+| 5 | ごひゃく | ごほん | ごひき | ごはい | ごかい |
+| 6 | ろっぴゃく | ろっぽん | ろっぴき | ろっぱい | ろっかい |
+| 7 | ななひゃく | ななほん | ななひき | ななはい | ななかい |
+| 8 | はっぴゃく | はっぽん | はっぴき | はっぱい | はっかい |
+| 9 | きゅうひゃく | きゅうほん | きゅうひき | きゅうはい | きゅうかい |
+| 10 | じゅっぴゃく | じゅっぽん | じゅっぴき | じゅっぱい | じゅっかい |
+
+### 2.8 分数
+
+| 分数 | 读法 |
+|------|------|
+| 1/2 | にぶんのいち |
+| 1/3 | さんぶんのいち |
+| 2/3 | さんぶんのに |
+| 3/4 | よんぶんのさん |
+
+**公式**：分母（分）+ ぶんの + 分子（数字）
+
+### 2.9 小数
+
+- 小数点读作 **てん**（ten）
+- 3.14 → さん てん いち よん
+- 0.5 → れい てん ご / ゼロ てん ご
+
+### 2.10 百分数
+
+- 读作 **パーセント**（paasento）
+- 25% → にじゅうご パーセント
+- 100% → ひゃく パーセント
+
+### 2.11 数字禁忌
+
+- **4**（し）与“死”同音 → 多用 **よん**
+- **9**（く）与“苦”同音 → 多用 **きゅう**
+- **42**（しに）类似“死に” → 避免使用
+
+### 2.12 数字读法速查表（1-20）
+
+| 数字 | 读法 | 数字 | 读法 |
+|------|------|------|------|
+| 1 | いち | 11 | じゅういち |
+| 2 | に | 12 | じゅうに |
+| 3 | さん | 13 | じゅうさん |
+| 4 | よん / し | 14 | じゅうよん / じゅうし |
+| 5 | ご | 15 | じゅうご |
+| 6 | ろく | 16 | じゅうろく |
+| 7 | なな / しち | 17 | じゅうなな / じゅうしち |
+| 8 | はち | 18 | じゅうはち |
+| 9 | きゅう / く | 19 | じゅうきゅう / じゅうく |
+| 10 | じゅう | 20 | にじゅう |
+
+## 3. 西班牙语（Spanish / Español）
+
+### 3.1 基数词（0-30）
+
+| 数字 | 西语 | 发音 | 数字 | 西语 |
+|------|------|------|------|------|
+| 0 | cero | /ˈθeɾo/ | 15 | quince |
+| 1 | uno | /ˈuno/ | 16 | dieciséis |
+| 2 | dos | /dos/ | 17 | diecisiete |
+| 3 | tres | /tɾes/ | 18 | dieciocho |
+| 4 | cuatro | /ˈkwatɾo/ | 19 | diecinueve |
+| 5 | cinco | /ˈθiŋko/ | 20 | veinte |
+| 6 | seis | /seis/ | 21 | veintiuno |
+| 7 | siete | /ˈsjete/ | 22 | veintidós |
+| 8 | ocho | /ˈotʃo/ | 23 | veintitrés |
+| 9 | nueve | /ˈnweβe/ | 24 | veinticuatro |
+| 10 | diez | /djeθ/ | 25 | veinticinco |
+| 11 | once | /ˈonθe/ | 26 | veintiséis |
+| 12 | doce | /ˈdoθe/ | 27 | veintisiete |
+| 13 | trece | /ˈtɾeθe/ | 28 | veintiocho |
+| 14 | catorce | /kaˈtoɾθe/ | 29 | veintinueve |
+| — | — | — | 30 | treinta |
+
+### 3.2 基数词（30-100）
+
+| 数字 | 西语 | 构成 |
+|------|------|------|
+| 30 | treinta | — |
+| 31 | treinta y uno | 30 + y + 1 |
+| 32 | treinta y dos | 30 + y + 2 |
+| 40 | cuarenta | — |
+| 50 | cincuenta | — |
+| 60 | sesenta | — |
+| 70 | setenta | — |
+| 80 | ochenta | — |
+| 90 | noventa | — |
+| 100 | cien / ciento | cien（单用），ciento（+ 其他数）|
+
+**规则**：31-99 使用 **y**（和）连接十位和个位  
+*例：42 → cuarenta y dos*
+
+### 3.3 100以上
+
+| 数字 | 西语 | 说明 |
+|------|------|------|
+| 100 | cien | 单独使用 |
+| 101 | ciento uno | cien 变为 ciento |
+| 102 | ciento dos | — |
+| 110 | ciento diez | — |
+| 120 | ciento veinte | — |
+| 200 | doscientos | 与名词性数一致 |
+| 300 | trescientos | — |
+| 400 | cuatrocientos | — |
+| 500 | quinientos | 特殊 |
+| 600 | seiscientos | — |
+| 700 | setecientos | 特殊 |
+| 800 | ochocientos | — |
+| 900 | novecientos | 特殊 |
+| 1,000 | mil | — |
+| 1,001 | mil uno | — |
+| 1,100 | mil cien | — |
+| 2,000 | dos mil | — |
+| 1,000,000 | un millón | 复数：millones |
+| 1,000,000,000 | mil millones | 十亿 |
+
+### 3.4 数词性数变化
+
+| 数词 | 阳性 | 阴性 | 例 |
+|------|------|------|----|
+| 1 | un | una | un libro / una casa |
+| 21 | veintiún | veintiuna | veintiún años / veintiuna chicas |
+| 200 | doscientos | doscientas | doscientos hombres / doscientas mujeres |
+| 1000 | mil | mil | mil libros / mil casas（不变）|
+
+### 3.5 序数词（1-10）
+
+| 数字 | 序数词（阳）| 序数词（阴）| 缩写 |
+|------|-------------|-------------|------|
+| 1st | primero | primera | 1º / 1ª |
+| 2nd | segundo | segunda | 2º / 2ª |
+| 3rd | tercero | tercera | 3º / 3ª |
+| 4th | cuarto | cuarta | 4º / 4ª |
+| 5th | quinto | quinta | 5º / 5ª |
+| 6th | sexto | sexta | 6º / 6ª |
+| 7th | séptimo | séptima | 7º / 7ª |
+| 8th | octavo | octava | 8º / 8ª |
+| 9th | noveno | novena | 9º / 9ª |
+| 10th | décimo | décima | 10º / 10ª |
+
+**注意**：primero / tercero 在单数阳性名词前省去末字母 -o  
+*例：el primer libro（第一本书）, el tercer año（第三年）*
+
+### 3.6 序数词（10-100）
+
+| 数字 | 序数词 |
+|------|--------|
+| 10th | décimo |
+| 11th | undécimo / décimo primero |
+| 20th | vigésimo |
+| 21st | vigésimo primero |
+| 30th | trigésimo |
+| 40th | cuadragésimo |
+| 50th | quincuagésimo |
+| 60th | sexagésimo |
+| 70th | septuagésimo |
+| 80th | octogésimo |
+| 90th | nonagésimo |
+| 100th | centésimo |
+
+### 3.7 分数（Fracciones）
+
+| 分数 | 西语 | 说明 |
+|------|------|------|
+| 1/2 | medio / media | 一半 |
+| 1/3 | tercio | — |
+| 2/3 | dos tercios | — |
+| 1/4 | cuarto | 四分之一 |
+| 3/4 | tres cuartos | — |
+| 1/5 | quinto | — |
+| 1/10 | décimo | — |
+| 1/100 | centésimo | — |
+
+### 3.8 小数
+
+- 小数点读作 **coma**
+- 3.14 → tres coma catorce / tres coma uno cuatro
+- 0.5 → cero coma cinco
+
+### 3.9 百分数
+
+- 读作 **por ciento**
+- 25% → veinticinco por ciento
+- 100% → cien por ciento
+
+### 3.10 年份读法
+
+| 年份 | 读法 |
+|------|------|
+| 1492 | mil cuatrocientos noventa y dos |
+| 2000 | dos mil |
+| 2024 | dos mil veinticuatro |
+
+### 3.11 数字速查表（1-20）
+
+| 数字 | 西语 | 数字 | 西语 |
+|------|------|------|------|
+| 1 | uno | 11 | once |
+| 2 | dos | 12 | doce |
+| 3 | tres | 13 | trece |
+| 4 | cuatro | 14 | catorce |
+| 5 | cinco | 15 | quince |
+| 6 | seis | 16 | dieciséis |
+| 7 | siete | 17 | diecisiete |
+| 8 | ocho | 18 | dieciocho |
+| 9 | nueve | 19 | diecinueve |
+| 10 | diez | 20 | veinte |
+
+## 4. 法语（French / Français）
+
+### 4.1 基数词（0-20）
+
+| 数字 | 法语 | 发音 | 数字 | 法语 |
+|------|------|------|------|------|
+| 0 | zéro | /zeʁo/ | 11 | onze |
+| 1 | un | /œ̃/ | 12 | douze |
+| 2 | deux | /dø/ | 13 | treize |
+| 3 | trois | /tʁwa/ | 14 | quatorze |
+| 4 | quatre | /katʁ/ | 15 | quinze |
+| 5 | cinq | /sɛ̃k/ | 16 | seize |
+| 6 | six | /sis/ | 17 | dix-sept |
+| 7 | sept | /sɛt/ | 18 | dix-huit |
+| 8 | huit | /ɥit/ | 19 | dix-neuf |
+| 9 | neuf | /nœf/ | 20 | vingt |
+| 10 | dix | /dis/ | — | — |
+
+### 4.2 基数词（20-69）
+
+| 数字 | 法语 | 构成 |
+|------|------|------|
+| 20 | vingt | — |
+| 21 | vingt et un | 20 + et + 1 |
+| 22 | vingt-deux | 20 + 2（加连字符）|
+| 30 | trente | — |
+| 31 | trente et un | — |
+| 32 | trente-deux | — |
+| 40 | quarante | — |
+| 50 | cinquante | — |
+| 60 | soixante | — |
+
+**规则**：
+- 21、31、41、51、61 → **X et un**（无连字符）
+- 其他 → **X 数字**（加连字符）
+
+### 4.3 基数词（70-99）—— 特殊
+
+| 数字 | 法语 | 直译含义 |
+|------|------|----------|
+| 70 | soixante-dix | 60 + 10 |
+| 71 | soixante et onze | 60 + 11 |
+| 72 | soixante-douze | 60 + 12 |
+| 80 | quatre-vingts | 4 × 20 |
+| 81 | quatre-vingt-un | 4×20 + 1 |
+| 82 | quatre-vingt-deux | 4×20 + 2 |
+| 90 | quatre-vingt-dix | 4×20 + 10 |
+| 91 | quatre-vingt-onze | 4×20 + 11 |
+| 92 | quatre-vingt-douze | 4×20 + 12 |
+| 99 | quatre-vingt-dix-neuf | 4×20 + 10 + 9 |
+
+### 4.4 基数词（100以上）
+
+| 数字 | 法语 | 说明 |
+|------|------|------|
+| 100 | cent | — |
+| 101 | cent un | — |
+| 110 | cent dix | — |
+| 200 | deux cents | cent 复数加 s |
+| 201 | deux cent un | 后面有数时 cent 不加 s |
+| 1,000 | mille | 永远不加 s |
+| 1,000,000 | un million | 复数加 s（millions）|
+| 1,000,000,000 | un milliard | 十亿 |
+
+### 4.5 数词性数变化
+
+| 数词 | 阳性 | 阴性 |
+|------|------|------|
+| 1 | un | une |
+| 21 | vingt et un | vingt et une |
+| 100 | cent | cent（不变）|
+
+### 4.6 序数词
+
+| 数字 | 序数词 | 缩写 |
+|------|--------|------|
+| 1st | premier / première | 1er / 1re |
+| 2nd | deuxième / seconde | 2e / 2de |
+| 3rd | troisième | 3e |
+| 4th | quatrième | 4e |
+| 5th | cinquième | 5e |
+| 6th | sixième | 6e |
+| 7th | septième | 7e |
+| 8th | huitième | 8e |
+| 9th | neuvième | 9e |
+| 10th | dixième | 10e |
+| 20th | vingtième | 20e |
+| 100th | centième | 100e |
+
+**注意**：premier / première 有不规则变化
+
+### 4.7 分数
+
+| 分数 | 法语 |
+|------|------|
+| 1/2 | un demi / une moitié |
+| 1/3 | un tiers |
+| 2/3 | deux tiers |
+| 1/4 | un quart |
+| 3/4 | trois quarts |
+| 1/5 | un cinquième |
+| 1/10 | un dixième |
+| 1/100 | un centième |
+
+### 4.8 小数
+
+- 小数点读作 **virgule**
+- 3.14 → trois virgule quatorze
+- 0.5 → zéro virgule cinq
+
+### 4.9 百分数
+
+- 读作 **pour cent**
+- 25% → vingt-cinq pour cent
+- 100% → cent pour cent
+
+### 4.10 年份读法
+
+| 年份 | 读法 |
+|------|------|
+| 1789 | mille sept cent quatre-vingt-neuf |
+| 2000 | deux mille |
+| 2024 | deux mille vingt-quatre |
+
+### 4.11 数字速查表（1-20）
+
+| 数字 | 法语 | 数字 | 法语 |
+|------|------|------|------|
+| 1 | un | 11 | onze |
+| 2 | deux | 12 | douze |
+| 3 | trois | 13 | treize |
+| 4 | quatre | 14 | quatorze |
+| 5 | cinq | 15 | quinze |
+| 6 | six | 16 | seize |
+| 7 | sept | 17 | dix-sept |
+| 8 | huit | 18 | dix-huit |
+| 9 | neuf | 19 | dix-neuf |
+| 10 | dix | 20 | vingt |
+
+## 5. 德语（German / Deutsch）
+
+### 5.1 基数词（0-20）
+
+| 数字 | 德语 | 发音 | 数字 | 德语 |
+|------|------|------|------|------|
+| 0 | null | /nʊl/ | 11 | elf |
+| 1 | eins | /aɪns/ | 12 | zwölf |
+| 2 | zwei | /tsvaɪ/ | 13 | dreizehn |
+| 3 | drei | /draɪ/ | 14 | vierzehn |
+| 4 | vier | /fiːɐ/ | 15 | fünfzehn |
+| 5 | fünf | /fʏnf/ | 16 | sechzehn |
+| 6 | sechs | /zɛks/ | 17 | siebzehn |
+| 7 | sieben | /ziːbən/ | 18 | achtzehn |
+| 8 | acht | /axt/ | 19 | neunzehn |
+| 9 | neun | /nɔʏn/ | 20 | zwanzig |
+| 10 | zehn | /tseːn/ | — | — |
+
+### 5.2 基数词（21-99）—— 个位在前
+
+| 数字 | 德语 | 构成（个位 + und + 十位）|
+|------|------|--------------------------|
+| 21 | einundzwanzig | 1 + und + 20 |
+| 22 | zweiundzwanzig | 2 + und + 20 |
+| 33 | dreiunddreißig | 3 + und + 30 |
+| 44 | vierundvierzig | 4 + und + 40 |
+| 55 | fünfundfünfzig | 5 + und + 50 |
+| 66 | sechsundsechzig | 6 + und + 60 |
+| 77 | siebenundsiebzig | 7 + und + 70 |
+| 88 | achtundachtzig | 8 + und + 80 |
+| 99 | neunundneunzig | 9 + und + 90 |
+
+### 5.3 整十数（20-100）
+
+| 数字 | 德语 | 数字 | 德语 |
+|------|------|------|------|
+| 20 | zwanzig | 70 | siebzig |
+| 30 | dreißig | 80 | achtzig |
+| 40 | vierzig | 90 | neunzig |
+| 50 | fünfzig | 100 | hundert |
+| 60 | sechzig | — | — |
+
+**注意**：30 为 dreißig（非 dreizig）  
+60 为 sechzig（非 sechs+zig，省略 s）  
+70 为 siebzig（非 sieben+zig，省略 en）
+
+### 5.4 100以上
+
+| 数字 | 德语 | 说明 |
+|------|------|------|
+| 100 | (ein)hundert | — |
+| 101 | (ein)hunderteins | — |
+| 115 | (ein)hundertfünfzehn | — |
+| 200 | zweihundert | — |
+| 1,000 | (ein)tausend | — |
+| 1,001 | (ein)tausendeins | — |
+| 2,000 | zweitausend | — |
+| 1,000,000 | eine Million | 复数 Millionen |
+| 1,000,000,000 | eine Milliarde | 十亿 |
+
+### 5.5 读法顺序（大数字）
+
+**规则**：从高位到低位，先千百，再个十
+
+- 1,234 → **tausendzweihundertvierunddreißig**
+  - 1,000（tausend）+ 200（zweihundert）+ 34（vierunddreißig）
+- 123,456 → **hundertdreiundzwanzigtausendvierhundertsechsundfünfzig**
+
+### 5.6 序数词
+
+| 数字 | 序数词 | 规则 |
+|------|--------|------|
+| 1st | erste | — |
+| 2nd | zweite | — |
+| 3rd | dritte | 不规则 |
+| 4th | vierte | — |
+| 5th | fünfte | — |
+| 6th | sechste | — |
+| 7th | siebte | 不规则 |
+| 8th | achte | — |
+| 9th | neunte | — |
+| 10th | zehnte | — |
+| 11th | elfte | — |
+| 12th | zwölfte | — |
+| 20th | zwanzigste | — |
+| 21st | einundzwanzigste | — |
+| 100th | hundertste | — |
+
+**规则**：
+- 1-19 → 加 -te
+- 20+ → 加 -ste
+- 序数词与形容词一样变格
+
+### 5.7 分数（Brüche）
+
+| 分数 | 德语 | 规则 |
+|------|------|------|
+| 1/2 | ein halb / die Hälfte | 特殊 |
+| 1/3 | ein Drittel | — |
+| 2/3 | zwei Drittel | — |
+| 1/4 | ein Viertel | — |
+| 3/4 | drei Viertel | — |
+| 1/5 | ein Fünftel | 加 -tel |
+| 1/10 | ein Zehntel | — |
+| 1/100 | ein Hundertstel | — |
+
+**规则**：分母 + **-tel**（3 以上）
+
+### 5.8 小数
+
+- 小数点读作 **Komma**
+- 3.14 → drei Komma vierzehn
+- 0.5 → null Komma fünf
+
+### 5.9 百分数
+
+- 读作 **Prozent**
+- 25% → fünfundzwanzig Prozent
+- 100% → hundert Prozent
+
+### 5.10 年份读法
+
+| 年份 | 读法 |
+|------|------|
+| 1989 | neunzehnhundertneunundachtzig |
+| 2000 | zweitausend |
+| 2024 | zweitausendvierundzwanzig |
+
+### 5.11 数字速查表（1-20）
+
+| 数字 | 德语 | 数字 | 德语 |
+|------|------|------|------|
+| 1 | eins | 11 | elf |
+| 2 | zwei | 12 | zwölf |
+| 3 | drei | 13 | dreizehn |
+| 4 | vier | 14 | vierzehn |
+| 5 | fünf | 15 | fünfzehn |
+| 6 | sechs | 16 | sechzehn |
+| 7 | sieben | 17 | siebzehn |
+| 8 | acht | 18 | achtzehn |
+| 9 | neun | 19 | neunzehn |
+| 10 | zehn | 20 | zwanzig |
+
+## 6. 韩语（Korean / 한국어）
+
+### 6.1 数字系统——两套体系
+
+韩语有两种数字系统：**固有词** 和 **汉字词**
+
+
+### 6.2 固有词（고유어 / Native Korean）- 1-99
+
+| 数字 | 固有词 | 罗马音 | 数字 | 固有词 |
+|------|--------|--------|------|--------|
+| 1 | 하나 | hana | 10 | 열 | yeol |
+| 2 | 둘 | dul | 20 | 스물 | seumul |
+| 3 | 셋 | set | 30 | 서른 | seoreun |
+| 4 | 넷 | net | 40 | 마흔 | maheun |
+| 5 | 다섯 | daseot | 50 | 쉰 | swin |
+| 6 | 여섯 | yeoseot | 60 | 예순 | yesun |
+| 7 | 일곱 | ilgop | 70 | 일흔 | ilheun |
+| 8 | 여덟 | yeodeol | 80 | 여든 | yeodeun |
+| 9 | 아홉 | ahop | 90 | 아흔 | aheun |
+| 10 | 열 | yeol | 100 | — | — |
+
+**11-19 构成**：열（10）+ 个位数
+- 11：열하나（yeol hana）
+- 12：열둘（yeol dul）
+- 19：열아홉（yeol ahop）
+
+**21-99 构成**：十位 + 个位（中间无连词）
+- 21：스물하나（seumul hana）
+- 32：서른둘（seoreun dul）
+- 45：마흔다섯（maheun daseot）
+- 99：아흔아홉（aheun ahop）
+
+### 6.3 汉字词（한자어 / Sino-Korean）- 0-99
+
+| 数字 | 汉字词 | 罗马音 | 数字 | 汉字词 |
+|------|--------|--------|------|--------|
+| 0 | 영 / 공 | yeong / gong | 10 | 십 | sip |
+| 1 | 일 | il | 20 | 이십 | isip |
+| 2 | 이 | i | 30 | 삼십 | samsip |
+| 3 | 삼 | sam | 40 | 사십 | sasip |
+| 4 | 사 | sa | 50 | 오십 | osip |
+| 5 | 오 | o | 60 | 육십 | yuksip |
+| 6 | 육 | yuk | 70 | 칠십 | chilsip |
+| 7 | 칠 | chil | 80 | 팔십 | palsip |
+| 8 | 팔 | pal | 90 | 구십 | gusip |
+| 9 | 구 | gu | 100 | 백 | baek |
+
+**11-19 构成**：십（10）+ 个位
+- 11：십일（sip-il）
+- 12：십이（sip-i）
+- 19：십구（sip-gu）
+
+**21-99 构成**：十位 + 个位
+- 21：이십일（i-sip-il）
+- 32：삼십이（sam-sip-i）
+- 99：구십구（gu-sip-gu）
+
+### 6.4 100以上（汉字词专用）
+
+| 数字 | 汉字词 | 罗马音 | 数值 |
+|------|--------|--------|------|
+| 100 | 백 | baek | 10² |
+| 1,000 | 천 | cheon | 10³ |
+| 10,000 | 만 | man | 10⁴ |
+| 100,000 | 십만 | simman | 10⁵ |
+| 1,000,000 | 백만 | baengman | 10⁶ |
+| 10,000,000 | 천만 | cheonman | 10⁷ |
+| 100,000,000 | 억 | eok | 10⁸ |
+| 1,000,000,000,000 | 조 | jo | 10¹² |
+
+**注意**：韩语同日语、汉语一样，每 10⁴（만）进位，与英语不同。
+
+**读法示例**：
+- 123 → 백이십삼（baek i-sip-sam）
+- 1,234 → 천이백삼십사（cheon i-baek sam-sip-sa）
+- 12,345 → 만이천삼백사십오（man i-cheon sam-baek sa-sip-o）
+- 123,456 → 십이만삼천사백오십육（sip-i-man sam-cheon sa-baek o-sip-yuk）
+- 1,234,567 → 백이십삼만사천오백육십칠（baek i-sip-sam-man sa-cheon o-baek yuk-sip-chil）
+
+### 6.5 两套数字系统的使用场景
+
+| 使用场景 | 固有词 | 汉字词 |
+|----------|--------|--------|
+| 数量（1-99） | ✓ | — |
+| 年龄 | ✓ | 也可用（更正式）|
+| 小时 | ✓ | — |
+| 分钟 | — | ✓ |
+| 秒 | — | ✓ |
+| 月份（月） | — | ✓ |
+| 日期（日） | 可混用 | 可混用 |
+| 金钱 | — | ✓ |
+| 电话号码 | — | ✓ |
+| 楼层 | — | ✓ |
+| 房间号 | — | ✓ |
+| 数学计算 | — | ✓ |
+| 序号 | — | ✓ |
+| 100以上数字 | — | ✓ |
+
+### 6.6 量词搭配时的音变
+
+固有数字与量词搭配时，1-4 会发生音变：
+
+| 数字 | 原形 | 搭配量词时 | 例 |
+|------|------|-----------|-----|
+| 1 | 하나 | 한 | 한 개（1个）|
+| 2 | 둘 | 두 | 두 개（2个）|
+| 3 | 셋 | 세 | 세 개（3个）|
+| 4 | 넷 | 네 | 네 개（4个）|
+| 20 | 스물 | 스무 | 스무 개（20个）|
+
+### 6.7 常见量词
+
+| 量词 | 读法 | 对象 |
+|------|------|------|
+| 개 | gae | 一般物品 |
+| 명 | myeong | 人 |
+| 분 | bun | 人（尊称）|
+| 마리 | mari | 动物 |
+| 대 | dae | 车辆/机器 |
+| 권 | gwon | 书 |
+| 장 | jang | 纸张/扁平物 |
+| 병 | byeong | 瓶 |
+| 잔 | jan | 杯 |
+| 그릇 | geureut | 碗 |
+| 송이 | song-i | 花束 |
+| 알 | al | 颗粒状（药/蛋）|
+| 켤레 | kyeolle | 成对（鞋/袜子）|
+| 살 | sal | 岁数 |
+
+### 6.8 序数词
+
+**固有词序数**（用于顺序/第几个）
+| 数字 | 序数词 | 读法 |
+|------|--------|------|
+| 1st | 첫째 | cheotjjae |
+| 2nd | 둘째 | duljjae |
+| 3rd | 셋째 | setjjae |
+| 4th | 넷째 | netjjae |
+| 5th | 다섯째 | daseotjjae |
+
+**汉字词序数**（用于编号/第几号）
+- 使用 **제（je）** + 汉字词数字
+- 第一：제일（je-il）
+- 第二：제이（je-i）
+- 第十：제십（je-sip）
+
+### 6.9 分数
+
+| 分数 | 韩语 | 读法 |
+|------|------|------|
+| 1/2 | 2분의 1 | i-bun-ui il |
+| 1/3 | 3분의 1 | sam-bun-ui il |
+| 2/3 | 3분의 2 | sam-bun-ui i |
+| 3/4 | 4분의 3 | sa-bun-ui sam |
+
+**公式**：分母（汉字词）+ 분의 + 分子（汉字词）
+
+### 6.10 小数
+
+- 小数点读作 **점（jeom）**
+- 3.14 → 삼 점 일 사（sam jeom il sa）
+- 0.5 → 영 점 오（yeong jeom o） / 공 점 오（gong jeom o）
+
+### 6.11 百分数
+
+- 读作 **퍼센트（peosenteu）** 或 **프로（peuro）**
+- 25% → 이십오 퍼센트（i-sip-o peosenteu）
+- 100% → 백 퍼센트（baek peosenteu）
+
+### 6.12 数字速查表（1-20）
+
+| 数字 | 固有词 | 汉字词 | 数字 | 固有词 | 汉字词 |
+|------|--------|--------|------|--------|--------|
+| 1 | 하나 | 일 | 11 | 열하나 | 십일 |
+| 2 | 둘 | 이 | 12 | 열둘 | 십이 |
+| 3 | 셋 | 삼 | 13 | 열셋 | 십삼 |
+| 4 | 넷 | 사 | 14 | 열넷 | 십사 |
+| 5 | 다섯 | 오 | 15 | 열다섯 | 십오 |
+| 6 | 여섯 | 육 | 16 | 열여섯 | 십육 |
+| 7 | 일곱 | 칠 | 17 | 열일곱 | 십칠 |
+| 8 | 여덟 | 팔 | 18 | 열여덟 | 십팔 |
+| 9 | 아홉 | 구 | 19 | 열아홉 | 십구 |
+| 10 | 열 | 십 | 20 | 스물 | 이십 |
+
+### 6.13 年龄表达
+
+| 年龄 | 固有词 | 汉字词（正式）|
+|------|--------|---------------|
+| 1岁 | 한 살 | 일 세 |
+| 2岁 | 두 살 | 이 세 |
+| 10岁 | 열 살 | 십 세 |
+| 20岁 | 스무 살 | 이십 세 |
+
+**常见问法**：
+- 몇 살이에요?（几岁了？—— 固有词）
+- 나이가 어떻게 되세요?（年纪多少？—— 正式）
+
+## 7. 六语种数字对比汇总
+
+### 7.1 1-10 对照表
+
+| 数字 | 英语 | 日语 | 西班牙语 | 法语 | 德语 | 韩语（固有）| 韩语（汉字）|
+|------|------|------|----------|------|------|------------|------------|
+| 1 | one | いち | uno | un | eins | 하나 | 일 |
+| 2 | two | に | dos | deux | zwei | 둘 | 이 |
+| 3 | three | さん | tres | trois | drei | 셋 | 삼 |
+| 4 | four | よん/し | cuatro | quatre | vier | 넷 | 사 |
+| 5 | five | ご | cinco | cinq | fünf | 다섯 | 오 |
+| 6 | six | ろく | seis | six | sechs | 여섯 | 육 |
+| 7 | seven | なな/しち | siete | sept | sieben | 일곱 | 칠 |
+| 8 | eight | はち | ocho | huit | acht | 여덟 | 팔 |
+| 9 | nine | きゅう/く | nueve | neuf | neun | 아홉 | 구 |
+| 10 | ten | じゅう | diez | dix | zehn | 열 | 십 |
+
+### 7.2 整十数对照表
+
+| 数字 | 英语 | 日语 | 西班牙语 | 法语 | 德语 | 韩语（固有）| 韩语（汉字）|
+|------|------|------|----------|------|------|------------|------------|
+| 10 | ten | じゅう | diez | dix | zehn | 열 | 십 |
+| 20 | twenty | にじゅう | veinte | vingt | zwanzig | 스물 | 이십 |
+| 30 | thirty | さんじゅう | treinta | trente | dreißig | 서른 | 삼십 |
+| 40 | forty | よんじゅう | cuarenta | quarante | vierzig | 마흔 | 사십 |
+| 50 | fifty | ごじゅう | cincuenta | cinquante | fünfzig | 쉰 | 오십 |
+| 60 | sixty | ろくじゅう | sesenta | soixante | sechzig | 예순 | 육십 |
+| 70 | seventy | ななじゅう | setenta | soixante-dix | siebzig | 일흔 | 칠십 |
+| 80 | eighty | はちじゅう | ochenta | quatre-vingts | achtzig | 여든 | 팔십 |
+| 90 | ninety | きゅうじゅう | noventa | quatre-vingt-dix | neunzig | 아흔 | 구십 |
+| 100 | one hundred | ひゃく | cien | cent | hundert | — | 백 |
+
+### 7.3 大数位级对比
+
+| 数值 | 英语 | 日语 | 西班牙语 | 法语 | 德语 | 韩语（汉字）|
+|------|------|------|----------|------|------|------------|
+| 10² | hundred | 百 | cien | cent | hundert | 백 |
+| 10³ | thousand | 千 | mil | mille | tausend | 천 |
+| 10⁴ | ten thousand | 万 | diez mil | dix mille | zehntausend | 만 |
+| 10⁵ | hundred thousand | 十万 | cien mil | cent mille | hunderttausend | 십만 |
+| 10⁶ | million | 百万 | millón | million | Million | 백만 |
+| 10⁸ | — | 億 | cien millones | cent millions | hundert Millionen | 억 |
+| 10⁹ | billion | — | mil millones | milliard | Milliarde | — |
+| 10¹² | trillion | 兆 | billón | billion | Billion | 조 |
+
+### 7.4 数字读法特殊规则对比
+
+| 语种 | 特殊规则 |
+|------|----------|
+| 英语 | 百位后加 and；无“万”单位；年份分段读 |
+| 日语 | 每 10⁴ 进位；量词音变复杂；4/9 有禁忌读音 |
+| 西班牙语 | 31-99 用 y 连接；百位数有性数变化；16-19 是合写词 |
+| 法语 | 70、90 用加法；80 用乘法；21、31 等用 et |
+| 德语 | 21-99 个位在前 + und + 十位；30 为 dreißig |
+| 韩语 | 两套数字系统；固有词 1-4 与量词搭配时变音 |
+
+### 7.5 电话号码读法对比
+
+| 语种 | 读法特点 | 示例（555-1234）|
+|------|----------|-----------------|
+| 英语 | 逐位读，0 读 oh/zero | five five five, one two three four |
+| 日语 | 逐位读，用汉字词 | ご ご ご の いち に さん よん |
+| 西班牙语 | 逐位读，可成对 | cinco cinco cinco, uno dos tres cuatro |
+| 法语 | 逐位读，70/90 不变形 | cinq cinq cinq, un deux trois quatre |
+| 德语 | 逐位读 | fünf fünf fünf, eins zwei drei vier |
+| 韩语 | 逐位读，用汉字词 | 오 오 오 의 일 이 삼 사 |
+
+### 7.6 分数读法对比
+
+| 分数 | 英语 | 日语 | 西班牙语 | 法语 | 德语 | 韩语 |
+|------|------|------|----------|------|------|------|
+| 1/2 | one half | にぶんのいち | medio | un demi | ein halb | 2분의 1 |
+| 1/3 | one third | さんぶんのいち | tercio | un tiers | ein Drittel | 3분의 1 |
+| 2/3 | two thirds | さんぶんのに | dos tercios | deux tiers | zwei Drittel | 3분의 2 |
+| 1/4 | one quarter | よんぶんのいち | cuarto | un quart | ein Viertel | 4분의 1 |
+
+### 7.7 小数读法对比
+
+| 语种 | 小数点读法 | 示例（3.14）|
+|------|-----------|-------------|
+| 英语 | point | three point one four |
+| 日语 | てん | さん てん いち よん |
+| 西班牙语 | coma | tres coma catorce |
+| 法语 | virgule | trois virgule quatorze |
+| 德语 | Komma | drei Komma vierzehn |
+| 韩语 | 점 | 삼 점 일 사 |
+
+### 7.8 百分数读法对比
+
+| 语种 | 百分号读法 | 示例（25%）|
+|------|-----------|-----------|
+| 英语 | percent | twenty-five percent |
+| 日语 | パーセント | にじゅうご パーセント |
+| 西班牙语 | por ciento | veinticinco por ciento |
+| 法语 | pour cent | vingt-cinq pour cent |
+| 德语 | Prozent | fünfundzwanzig Prozent |
+| 韩语 | 퍼센트 | 이십오 퍼센트 |
+
+## 8. 学习建议
+
+### 8.1 各语种数字学习重点
+
+| 语种 | 重点难点 |
+|------|----------|
+| 英语 | 13-19 与 30-90 拼写区别；-teen 与 -ty 发音区分；序数词不规则变化 |
+| 日语 | 两套数词（和语/汉语）；量词音变；4/7/9 的两种读法；大数位（万/亿）|
+| 西班牙语 | 16-29 的合写与分写；cien/ciento 变化；百位数性数一致；序数词首位省音 |
+| 法语 | 70/80/90 的特殊构成；20/100 的复数变化；et 与连字符规则 |
+| 德语 | 21-99 的倒序读法（个位在前）；30（dreißig）特殊；大数字连写 |
+| 韩语 | 两套数字系统分工；固有词 1-4 的音变；量词搭配；年龄用固有词 |
+
+### 8.2 记忆技巧
+
+- **英语**：注意 eight/eighty 和 nine/ninety 的拼写变化
+- **日语**：记住「ひとつ、ふたつ、みっつ、よっつ、いつつ…」个数词顺口溜
+- **西班牙语**：16-19 可理解为 10+6（diez + seis = dieciséis）
+- **法语**：80 = 4×20（quatre-vingts），90 = 4×20+10（quatre-vingt-dix）
+- **德语**：21 = 1+20（ein+und+zwanzig），记住个位先说
+- **韩语**：日常数量用固有词（1-99），大数字/计算用汉字词
+
+
+
+
+`
+        }
+
+,
+
+
+
+        translation: { name: "🔄 中英翻译", 
+
+      markdown: `# 中英文翻译知识汇总
+
+## 1. 翻译基础概念
+
+### 1.1 翻译的定义
+翻译是将一种语言（源语言）的文本转换为另一种语言（目标语言）的过程，同时保持原意的准确性、风格的恰当性和文化的适应性。
+
+### 1.2 翻译的核心原则
+
+| 原则 | 说明 | 中英对照例 |
+|------|------|-----------|
+| **信（Faithfulness）** | 忠实于原文内容 | 不增不减，不曲解原意 |
+| **达（Expressiveness）** | 译文通顺流畅 | 符合目标语言表达习惯 |
+| **雅（Elegance）** | 译文文雅得体 | 保留原文风格和修辞 |
+
+### 1.3 翻译的类型
+
+| 类型 | 说明 | 特点 |
+|------|------|------|
+| 直译（Literal Translation） | 逐字逐句翻译 | 保留原文形式，可能生硬 |
+| 意译（Free Translation） | 传达意思为主 | 灵活自然，可能失去原味 |
+| 交际翻译（Communicative Translation） | 注重读者理解 | 适应目标文化 |
+| 语义翻译（Semantic Translation） | 注重原文语义 | 更贴近原文 |
+
+## 2. 中英文语言差异对比
+
+### 2.1 语序差异
+
+| 对比项 | 中文 | 英文 |
+|--------|------|------|
+| 基本语序 | SVO（主-谓-宾）| SVO（主-谓-宾）|
+| 定语位置 | 定语在前 | 定语从句在后 |
+| 状语位置 | 状语在前（时间、地点）| 状语可前可后 |
+
+**示例**：
+- 中文：我昨天在学校看到他了。
+- 英文：I saw him at school **yesterday**.
+
+### 2.2 形合 vs 意合
+
+| 语言 | 特点 | 说明 |
+|------|------|------|
+| 英文 | **形合（Hypotaxis）** | 多用连词、介词、关系词连接 |
+| 中文 | **意合（Parataxis）** | 靠语序和语境连接，少用连词 |
+
+**示例**：
+- 中文：他来，我走。
+- 英文：**If** he comes, **then** I will leave.
+
+### 2.3 静态 vs 动态
+
+| 语言 | 特点 | 倾向 |
+|------|------|------|
+| 英文 | **静态（Static）** | 多用名词、介词、形容词 |
+| 中文 | **动态（Dynamic）** | 多用动词 |
+
+**示例**：
+- 英文：He is a **good swimmer**.
+- 中文：他**游泳**很好。
+
+### 2.4 主动 vs 被动
+
+| 语言 | 倾向 | 说明 |
+|------|------|------|
+| 英文 | 被动语态使用频繁 | 客观、正式文体 |
+| 中文 | 主动语态为主 | 被动含负面意义时使用 |
+
+**示例**：
+- 英文：The meeting **was canceled**.
+- 中文：会议**取消了**。
+
+### 2.5 抽象 vs 具体
+
+| 语言 | 特点 | 说明 |
+|------|------|------|
+| 英文 | 多用抽象名词 | -tion, -ment, -ness 等后缀 |
+| 中文 | 多用具体词汇 | 动词、形象化表达 |
+
+**示例**：
+- 英文：the **development** of economy
+- 中文：经济的**发展**（直译）或 **发展**经济（转化）
+
+## 3. 词汇层面的翻译技巧
+
+### 3.1 词义选择
+
+**一词多义**：根据上下文确定词义
+
+| 英文词 | 中文译法 | 例句 |
+|--------|----------|------|
+| run | 跑 / 运营 / 流淌 / 竞选 | He runs fast. / He runs a company. |
+| 打 | hit / fight / make / buy | 打电话 / 打车 / 打人 |
+
+### 3.2 词性转换
+
+| 转换类型 | 中文 | 英文 |
+|----------|------|------|
+| 名词 → 动词 | 他的演讲很精彩 | He spoke wonderfully. |
+| 形容词 → 副词 | 认真工作 | work hard / work seriously |
+| 介词 → 动词 | by bus | 坐公交 |
+
+### 3.3 增减词
+
+**增词（Amplification）**：
+- 中文无主句补充主语
+  - 中文：下雨了。
+  - 英文：**It** is raining.
+- 补充连接词
+  - 中文：他病了，没来。
+  - 英文：He was ill, **so** he didn't come.
+
+**减词（Omission）**：
+- 省略范畴词
+  - 中文：采取一系列措施
+  - 英文：take measures（省略“一系列”）
+- 省略重复词
+  - 中文：他个子高，我也高。
+  - 英文：He is tall, and so am I.
+
+### 3.4 重复与替代
+
+| 语言 | 偏好 | 示例 |
+|------|------|------|
+| 中文 | 多用重复 | 他很聪明，聪明得让人佩服 |
+| 英文 | 多用替代（代词、同义词）| He is smart, **so** smart that people admire him |
+
+### 3.5 正反转换
+
+| 转换 | 中文 | 英文 |
+|------|------|------|
+| 肯定 ↔ 否定 | 直到...才 | not...until |
+| 肯定 → 否定 | 他很笨 | He is **not** smart. |
+| 否定 → 肯定 | 不可否认 | It is **true** that... |
+
+## 4. 句法层面的翻译技巧
+
+### 4.1 长句拆分
+
+中文多短句，英文多长句。英译中时常将长句拆分为多个短句。
+
+**英文长句**：
+> The company, which was founded in 1995 and has since grown to become one of the largest retailers in the country, announced yesterday that it would close 50 stores due to declining sales.
+
+**中文拆分**：
+> 这家公司成立于1995年，此后发展成为全国最大的零售商之一。该公司昨天宣布，由于销售额下滑，将关闭50家门店。
+
+### 4.2 语序调整
+
+| 调整类型 | 中文 | 英文 |
+|----------|------|------|
+| 定语从句 | 我昨天买的那本书 | the book **that I bought yesterday** |
+| 状语位置 | 他昨天在图书馆看书 | He read books **in the library yesterday** |
+| 时间顺序 | 他吃完饭就出去了 | He went out **after eating** |
+
+### 4.3 被动语态的处理
+
+| 处理方法 | 中文 | 英文 |
+|----------|------|------|
+| 保留被动（负面）| 被打、被杀 | was beaten / was killed |
+| 转为主动 | 问题已解决 | The problem has been solved |
+| 无主句 | 据说... | It is said that... |
+| 用“让/给/由/受” | 让他跑了 | was allowed to escape |
+
+### 4.4 否定转移
+
+英文中的否定有时会转移到从句中翻译。
+
+| 英文 | 直译（错误）| 正确翻译 |
+|------|-------------|----------|
+| I don't think he is right. | 我不认为他是对的 | 我认为他不对 |
+| He didn't come because he was ill. | 他不是因为生病才来的 | 他没来，因为他病了 |
+
+### 4.5 比较结构的翻译
+
+| 类型 | 中文 | 英文 |
+|------|------|------|
+| 等比 | 和...一样 | as...as |
+| 差比 | 比...更 | more...than |
+| 极比 | 最... | the most... |
+| 倍比 | 是...的三倍 | three times as...as |
+
+## 5. 文化层面的翻译策略
+
+### 5.1 文化负载词的处理
+
+| 策略 | 说明 | 示例 |
+|------|------|------|
+| 直译 | 保留原文意象 | 纸老虎 → paper tiger |
+| 意译 | 传递文化含义 | 红娘 → matchmaker |
+| 音译 | 保留读音 | 功夫 → kung fu |
+| 音译+解释 | 音译加注释 | 饺子 → jiaozi (Chinese dumpling) |
+| 归化 | 替换为本地文化 | 猪八戒 → a greedy person |
+| 异化 | 保留原文文化 | 龙 → dragon（非西方意义的恶龙）|
+
+### 5.2 习语与成语翻译
+
+| 类型 | 中文 | 英文 |
+|------|------|------|
+| 直译可理解 | 一石二鸟 | kill two birds with one stone |
+| 意译 | 对牛弹琴 | cast pearls before swine |
+| 借用英文习语 | 同舟共济 | be in the same boat |
+| 释义 | 画蛇添足 | do something unnecessary |
+
+### 5.3 诗歌/对联翻译
+
+| 原则 | 说明 |
+|------|------|
+| 意象优先 | 保留核心意象 |
+| 韵律可选 | 不强制押韵 |
+| 意美为上 | 三美（意美、音美、形美）中意美最重要 |
+
+**示例**（许渊冲译《静夜思》）：
+> 床前明月光 → Before my bed a pool of light
+> 疑是地上霜 → I wonder if it's frost aground.
+> 举头望明月 → Looking up, I find the moon bright;
+> 低头思故乡 → Bowing, in homesickness I'm drowned.
+
+### 5.4 品牌名翻译
+
+| 类型 | 示例 | 翻译策略 |
+|------|------|----------|
+| 音译 | Coca-Cola → 可口可乐 | 兼顾音义 |
+| 意译 | Apple → 苹果 | 直译 |
+| 音意结合 | Benz → 奔驰 | 音近+功能 |
+| 创新 | IKEA → 宜家 | 全新创造 |
+
+## 6. 文体与语域翻译
+
+### 6.1 正式与非正式
+
+| 语域 | 中文 | 英文 |
+|------|------|------|
+| 正式 | 敬请关照 | Your kind attention is requested |
+| 非正式 | 麻烦您了 | Please help me |
+| 口语 | 啥事？ | What's up? |
+
+### 6.2 新闻翻译
+
+| 特点 | 策略 |
+|------|------|
+| 标题短小 | 概括核心，省略冠词系动词 |
+| 客观中立 | 避免主观评价 |
+| 时态明确 | 英文现在时表过去事件 |
+
+### 6.3 法律翻译
+
+| 要求 | 说明 |
+|------|------|
+| 准确性 | 一词多义必须精确 |
+| 术语一致 | 同一术语全文统一 |
+| 句式严谨 | 不改变法律效力 |
+
+**常见法律术语**：
+- shall → 应/须
+- may → 可
+- herein → 本文件中
+- whereas → 鉴于
+
+### 6.4 科技翻译
+
+| 特点 | 策略 |
+|------|------|
+| 术语规范 | 遵循行业标准译名 |
+| 被动为主 | 英文被动可转主动 |
+| 长句较多 | 合理切分 |
+
+### 6.5 文学翻译
+
+| 名家观点 | 核心思想 |
+|----------|----------|
+| 严复 | 信、达、雅 |
+| 傅雷 | 神似（重神似不重形似）|
+| 许渊冲 | 三美（意美、音美、形美）|
+
+## 7. 常见翻译技巧汇总
+
+### 7.1 技巧速查表
+
+| 技巧 | 英文名称 | 适用场景 |
+|------|----------|----------|
+| 增译 | Amplification | 补充隐含信息 |
+| 省译 | Omission | 省略冗余信息 |
+| 转译 | Conversion | 转换词性/语态 |
+| 拆译 | Division | 拆分长句 |
+| 合译 | Combination | 合并短句 |
+| 顺译 | Sequential Translation | 按原序翻译 |
+| 逆译 | Inversion | 倒序翻译 |
+| 正反译法 | Negation | 正说反译/反说正译 |
+
+### 7.2 译文评测标准
+
+| 标准 | 说明 |
+|------|------|
+| 准确性 | 信息无遗漏、无错误 |
+| 流畅性 | 符合目标语言习惯 |
+| 一致性 | 术语前后统一 |
+| 得体性 | 适合文体与语境 |
+| 文化适应性 | 避免文化冲突 |
+
+## 8. 常见翻译错误与对策
+
+### 8.1 字面翻译错误
+
+| 错误类型 | 错误 | 正确 |
+|----------|------|------|
+| 望文生义 | rest room → 休息室 | 卫生间 |
+| 直译习语 | 小心滑倒 → carefully slip | Caution: Wet Floor |
+| 文化误解 | 龙 → dragon | Chinese dragon / loong |
+
+### 8.2 语法错误
+
+| 错误类型 | 错误 | 正确 |
+|----------|------|------|
+| 主谓不一致 | He go to school. | He goes to school. |
+| 时态混乱 | I see him yesterday. | I saw him yesterday. |
+| 中文式英文 | I tomorrow go. | I will go tomorrow. |
+
+### 8.3 中式英语（Chinglish）
+
+| 错误 | 正确 |
+|------|------|
+| to study English knowledge | to study English |
+| make a hard work | work hard |
+| the price is very cheap | the price is very low |
+
+### 8.4 英式中文（Translationese）
+
+| 错误 | 正确 |
+|------|------|
+| 被...所...滥用 | 主动语态 |
+| 进行、予以、加以 | 直接使用动词 |
+| 长定语堆砌 | 拆分为短句 |
+
+## 9. 翻译实践流程
+
+### 9.1 翻译步骤
+原文分析 → 理解上下文 → 翻译初稿 → 审校修改 → 润色定稿
+
+
+### 9.2 理解阶段
+1. 通读全文，把握主旨
+2. 分析文体、语气、目标读者
+3. 查阅背景知识和专业术语
+4. 标记难点和歧义点
+
+### 9.3 表达阶段
+1. 先译主干，后添修饰
+2. 注意语序调整
+3. 选择恰当词汇
+4. 保持风格一致
+
+### 9.4 审校阶段
+1. 检查信息完整性（对照原文）
+2. 检查语言流畅性
+3. 检查术语一致性
+4. 检查拼写和标点
+5. 通读润色
+
+## 10. 翻译工具与资源
+
+### 10.1 词典与语料库
+
+| 资源 | 说明 |
+|------|------|
+| 牛津高阶词典 | 权威英文词典 |
+| 现代汉语词典 | 权威中文词典 |
+| 柯林斯词典 | 提供语境例句 |
+| BCC语料库 | 中文语料 |
+| COCA语料库 | 英文语料 |
+
+### 10.2 在线翻译工具
+
+| 工具 | 特点 | 适用场景 |
+|------|------|----------|
+| 百度翻译 | 中英文处理较好 | 快速参考 |
+| Google Translate | 语种丰富 | 快速参考 |
+| DeepL | 质量较高 | 初稿辅助 |
+| ChatGPT | 可对话润色 | 译文优化 |
+
+### 10.3 术语库
+
+| 资源 | 说明 |
+|------|------|
+| TermOnline | 中国术语在线 |
+| 联合国术语库 | 多语种术语 |
+| 微软术语库 | 计算机术语 |
+
+## 11. 翻译资格证书
+
+| 证书 | 说明 |
+|------|------|
+| CATTI（中国）| 全国翻译专业资格（水平）考试 |
+| NAETI（中国）| 全国外语翻译证书考试（已停办）|
+| UNLPP（中国）| 联合国语言人才培训体系 |
+| IELTS/TOEFL | 不专门考翻译，但是语言基础 |
+| ATA（美国）| 美国翻译协会认证 |
+
+## 12. 翻译实战对照示例
+
+### 12.1 句子翻译对照
+
+| 中文 | 英文 |
+|------|------|
+| 他正在洗衣服。 | He is doing the laundry. |
+| 对不起，我迟到了。 | I'm sorry for being late. / Sorry I'm late. |
+| 你介意我打开窗户吗？ | Do you mind if I open the window? |
+| 这个多少钱？ | How much is this? |
+| 我完全同意你的看法。 | I totally agree with you. |
+
+### 12.2 段落翻译对照
+
+**中文原文**：
+> 随着互联网的快速发展，人们获取信息的渠道变得越来越多样化。传统的报纸、电视不再是唯一的选择，社交媒体、新闻客户端等新媒介正在改变人们的阅读习惯。
+
+**英文译文**：
+> With the rapid development of the Internet, the channels through which people access information have become increasingly diverse. Traditional newspapers and television are no longer the only options. New media such as social media and news apps are transforming people's reading habits.
+
+### 12.3 商务信函翻译对照
+
+**中文**：
+> 尊敬的史密斯先生：
+> 
+> 感谢贵方对我公司产品的关注。随函附上产品目录和报价单，请查收。如您有任何疑问，请随时与我们联系。
+> 
+> 此致
+> 敬礼
+> 
+> 张三
+> 销售经理
+
+**英文**：
+> Dear Mr. Smith,
+> 
+> Thank you for your interest in our products. Enclosed please find our product catalog and price list for your reference. Should you have any questions, please do not hesitate to contact us.
+> 
+> Sincerely,
+> Zhang San
+> Sales Manager
+
+## 13. 总结：翻译能力提升要点
+
+| 方面 | 建议 |
+|------|------|
+| 语言基础 | 持续提升中英文水平，多读原著 |
+| 文化积累 | 了解中西文化差异 |
+| 专业知识 | 深耕1-2个专业领域 |
+| 翻译实践 | 多练、多改、多总结 |
+| 工具使用 | 善用词典和语料库 |
+| 审校习惯 | 隔段时间回头看译文 |
+| 反馈学习 | 请他人审阅，接受批评 |
+
+**核心口诀**：
+> 信达雅是目标，语境决定选词，
+> 形合意合要分清，主动被动看习惯，
+> 文化差异要留心，反复审校出精品。
+
+
+
+
+            `
+        }
+
+  
+
+
+
+
+        
+    };
+
+    // 初始化导航栏
+    function initNav() {
+        const nav = document.getElementById("langNav");
+        Object.keys(grammarLibrary).forEach(key => {
+            const btn = document.createElement("button");
+            btn.className = "lang-btn";
+            btn.innerText = grammarLibrary[key].name;
+            btn.onclick = () => renderContent(key);
+            nav.appendChild(btn);
+        });
+        renderHome();
+    }
+
+    // 渲染首页
+    function renderHome() {
+        document.getElementById("sidebar").style.display = "none"; // 首页隐藏侧边栏
+        const content = document.getElementById("markdownContent");
+        content.innerHTML = "<h1>欢迎来到语林语法库</h1><div class='home-grid' id='homeGrid'></div>";
+        
+        const grid = document.getElementById("homeGrid");
+        Object.keys(grammarLibrary).forEach(key => {
+            const card = document.createElement("div");
+            card.className = "nav-card";
+            card.innerHTML = `<h3>${grammarLibrary[key].name}</h3><p style='color:#64748b;margin-top:10px;'>点击进入学习</p>`;
+            card.onclick = () => renderContent(key);
+            grid.appendChild(card);
+        });
+    }
+
+    // 渲染具体页面
+    async function renderContent(key) {
+        document.getElementById("sidebar").style.display = "block"; // 显示侧边栏
+        const data = grammarLibrary[key];
+        const contentDiv = document.getElementById("markdownContent");
+        const tocDiv = document.getElementById("tocLinks");
+        
+        contentDiv.innerHTML = await marked.parse(data.markdown);
+        tocDiv.innerHTML = "";
+        
+        contentDiv.querySelectorAll("h2").forEach((h, idx) => {
+            const id = "h-" + idx;
+            h.id = id;
+            const a = document.createElement("a");
+            a.className = "toc-link";
+            a.innerText = h.innerText;
+            a.href = "#" + id;
+            tocDiv.appendChild(a);
+        });
+    }
+
+
+ 
+    initNav();
+</script>
+</body>
+</html>
